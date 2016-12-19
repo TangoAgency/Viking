@@ -1,0 +1,1 @@
+include ':example', ':viking-viewmodel', ':viking-processor', ':viking-annotations', ':viking', ':viking-mapbindings'

@@ -1,8 +1,32 @@
 apply plugin: 'java'
 
-dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+
+def logger = new com.android.build.gradle.internal.LoggerWrapper(project.logger)
+def sdkHandler = new com.android.build.gradle.internal.SdkHandler(project, logger)
+for (File file : sdkHandler.sdkLoader.repositories) {
+  repositories.maven {
+    url = file.toURI()
+  }
 }
 
-sourceCompatibility = "1.7"
-targetCompatibility = "1.7"
+sourceCompatibility = rootProject.ext.sourceCompatibilityVersion
+targetCompatibility = rootProject.ext.targetCompatibilityVersion
+
+dependencies {
+
+  compile project(':viking-annotations')
+
+  compile deps.autoservice
+  compile deps.autocommon
+  compile deps.javapoet
+
+  compileOnly deps.dagger
+  compileOnly files(org.gradle.internal.jvm.Jvm.current().getToolsJar())
+
+  testCompile 'com.google.testing.compile:compile-testing:0.9'
+  testCompile files(org.gradle.internal.jvm.Jvm.current().getToolsJar())
+  testCompile deps.junit
+  testCompile deps.truth
+}
+
+

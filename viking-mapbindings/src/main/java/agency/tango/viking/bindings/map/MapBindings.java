@@ -1,0 +1,211 @@
+package agency.tango.viking.bindings.map;
+
+import agency.tango.viking.bindings.map.adapters.IClusterItemAdapter;
+import agency.tango.viking.bindings.map.adapters.IMapItemAdapter;
+import agency.tango.viking.bindings.map.adapters.ItemPopupAdapter;
+import agency.tango.viking.bindings.map.clickHandlers.ClusterClickHandler;
+import agency.tango.viking.bindings.map.clickHandlers.ItemClickHandler;
+import agency.tango.viking.bindings.map.mapTypes.GoogleMapView;
+import android.databinding.*;
+import android.location.Location;
+import android.support.annotation.DrawableRes;
+import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.maps.android.heatmaps.Gradient;
+
+import java.util.Collection;
+
+@SuppressWarnings("unchecked")
+public class MapBindings
+{
+    private MapBindings()
+    {
+    }
+
+    @BindingAdapter("radius")
+    public static void setRadius(GoogleMapView bindableMap, int radius)
+    {
+        bindableMap.radius().setValue(radius);
+    }
+
+    @InverseBindingAdapter(attribute = "radius", event = "radiusChanged")
+    public static int getRadius(GoogleMapView bindableMap)
+    {
+        return (int) bindableMap.radius().getValue();
+    }
+
+    @BindingAdapter("radiusChanged")
+    public static void setRadiusOnChangedListener(GoogleMapView bindableMap, InverseBindingListener bindingListener)
+    {
+        setOnValueChangedListener(bindableMap.radius(), bindingListener);
+    }
+
+    @BindingAdapter("zoom")
+    public static void setZoom(GoogleMapView bindableMap, float zoom)
+    {
+        bindableMap.zoom().setValue(zoom);
+    }
+
+    @InverseBindingAdapter(attribute = "zoom", event = "zoomChanged")
+    public static float getZoom(GoogleMapView bindableMap)
+    {
+        return (float) bindableMap.zoom().getValue();
+    }
+
+    @BindingAdapter("zoomChanged")
+    public static void setZoomOnChangedListener(GoogleMapView bindableMap, InverseBindingListener bindingListener)
+    {
+        setOnValueChangedListener(bindableMap.zoom(), bindingListener);
+    }
+
+    @BindingAdapter("location")
+    public static void setLocation(GoogleMapView bindableMap, Location location)
+    {
+        if (location != bindableMap.location().getValue())
+        {
+            bindableMap.postChangedLocation(location);
+        }
+    }
+
+    @InverseBindingAdapter(attribute = "location", event = "locationChanged")
+    public static Location getLocation(GoogleMapView bindableMap)
+    {
+        return (Location) bindableMap.location().getValue();
+    }
+
+    @BindingAdapter("locationChanged")
+    public static void setLocationChangedListener(GoogleMapView bindableMap, InverseBindingListener bindingListener)
+    {
+        setOnValueChangedListener(bindableMap.location(), bindingListener);
+    }
+
+    @BindingAdapter("markerClick")
+    public static void markerClick(GoogleMapView customMarkerMap, ItemClickHandler clickHandler)
+    {
+        customMarkerMap.markerClicked(clickHandler);
+    }
+
+    @BindingAdapter("markerPopupAdapter")
+    public static void markerPopupAdapter(GoogleMapView customMarkerMap, ItemPopupAdapter infoWindowAdapter)
+    {
+        customMarkerMap.popupInfoAdapter(infoWindowAdapter);
+    }
+
+    @BindingAdapter("markerPopupClick")
+    public static void markerPopupClick(GoogleMapView customMarkerMap, ItemClickHandler clickHandler)
+    {
+        customMarkerMap.markerPopupClicked(clickHandler);
+    }
+
+    @BindingAdapter("path")
+    public static void setPath(GoogleMapView customMarkerMap, PolylineOptions polyline)
+    {
+        customMarkerMap.path(polyline);
+    }
+
+    @BindingAdapter("mapClusteringAdapter")
+    public static void mapClusteringAdapter(GoogleMapView customMarkerMap, IClusterItemAdapter adapter)
+    {
+        customMarkerMap.clusterAdapter(adapter);
+    }
+
+    @BindingAdapter("mapItemAdapter")
+    public static void mapItemAdapter(GoogleMapView googleMapView, IMapItemAdapter adapter)
+    {
+        googleMapView.mapAdapter(adapter);
+    }
+
+    @BindingAdapter("mapItems")
+    public static <T> void mapItems(GoogleMapView customMarkerMap, Collection<T> items)
+    {
+        if (items == null)
+        {
+            return;
+        }
+
+//        Collection<IClusterMapItem> clusterMapItemCollection = new ArrayList<>();
+//        for (T item : items)
+//        {
+//            clusterMapItemCollection.add(adapter.getItem(item));
+//        }
+        if (items instanceof ObservableList)
+        {
+            ((ObservableArrayList) items).addOnListChangedCallback(new ObservableList.OnListChangedCallback()
+            {
+                @Override
+                public void onChanged(ObservableList observableList)
+                {
+
+                }
+
+                @Override
+                public void onItemRangeChanged(ObservableList observableList, int i, int i1)
+                {
+
+                }
+
+                @Override
+                public void onItemRangeInserted(ObservableList observableList, int i, int i1)
+                {
+                    customMarkerMap.addItems(observableList.subList(i, i1));
+                }
+
+                @Override
+                public void onItemRangeMoved(ObservableList observableList, int i, int i1, int i2)
+                {
+
+                }
+
+                @Override
+                public void onItemRangeRemoved(ObservableList observableList, int i, int i1)
+                {
+
+                }
+            });
+        }
+
+        customMarkerMap.addItems(items);
+    }
+
+    @BindingAdapter({"groundOverlayDrawable", "groundOverlayBounds"})
+    public static void groundOverlay(GoogleMapView customMarkerMap, @DrawableRes int drawable, LatLngBounds latLngBounds)
+    {
+        customMarkerMap.groundOverlay(drawable, latLngBounds);
+    }
+
+    @BindingAdapter("clusterClick")
+    public static void clusterClick(GoogleMapView clusteredMap, ClusterClickHandler clusterClickHandler)
+    {
+//        clusteredMap.clusterClicked(clusterClickHandler);
+    }
+
+    @BindingAdapter("heatMapRadius")
+    public static void heatRadius(GoogleMapView heatMap, int heatRadius)
+    {
+        heatMap.heatMapRadius(heatRadius);
+    }
+
+    @BindingAdapter("heatMapGradient")
+    public static void gradient(GoogleMapView heatMap, Gradient gradient)
+    {
+        heatMap.heatMapGradient(gradient);
+    }
+
+    @BindingAdapter("heatMapOpacity")
+    public static void opacity(GoogleMapView heatMap, double opacity)
+    {
+        heatMap.heatMapOpacity(opacity);
+    }
+
+    private static void setOnValueChangedListener(BindableItem item, InverseBindingListener bindingListener)
+    {
+        if (bindingListener == null)
+        {
+            item.setOnChangeListener(null);
+        }
+        else
+        {
+            item.setOnChangeListener(value -> bindingListener.onChange());
+        }
+    }
+}

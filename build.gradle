@@ -38,6 +38,7 @@ subprojects { project ->
         dependencies {
             classpath 'com.android.tools.build:gradle:2.2.3'
             classpath 'gradle.plugin.com.kageiit:lintrules:1.1.2'
+            classpath 'me.tatarka:gradle-retrolambda:3.3.0-beta4'
         }
     }
 }
@@ -63,6 +64,7 @@ ext {
 
 def androidToolsVersion = '25.2.0'
 def supportLibraryVersion = '25.1.0'
+def googlePlayServicesVersion = '10.0.1'
 
 ext.deps = [
     // Android
@@ -76,6 +78,10 @@ ext.deps = [
     lintApi: "com.android.tools.lint:lint-api:$androidToolsVersion",
     lintChecks: "com.android.tools.lint:lint-checks:$androidToolsVersion",
     lintTests: "com.android.tools.lint:lint-tests:$androidToolsVersion",
+
+    // Google Services
+    googlePlayServicesMaps: "com.google.android.gms:play-services-maps:$googlePlayServicesVersion",
+    googleMapsUtils: "com.google.maps.android:android-maps-utils:0.4.4",
 
     //dagger
     dagger: 'com.google.dagger:dagger:2.8',

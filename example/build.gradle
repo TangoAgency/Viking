@@ -4,33 +4,48 @@ android {
     compileSdkVersion 25
     buildToolsVersion "25.0.2"
     defaultConfig {
-        applicationId "agency.tango.viking.examp"
+        applicationId "agency.tango.viking.example"
         minSdkVersion 15
         targetSdkVersion 25
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
+    signingConfigs {
+        release {
+            storeFile file("./keystore.jks")
+            storePassword 'Developer123'
+            keyAlias 'production'
+            keyPassword 'Developer123'
+        }
+    }
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
+        }
+        debug {
+            multiDexEnabled true
+            signingConfig signingConfigs.release
+            minifyEnabled false
         }
     }
 
     dataBinding {
         enabled = true
     }
+
 }
 
 dependencies {
 
-    annotationProcessor project (":viking-processor")
-    compile project (":viking-annotations")
-    compile project (":viking-mvp")
-    compile project (":viking-mvvm")
-    compile project (":viking-reactive")
-
+    annotationProcessor project(":viking-processor")
+    compile project(":viking-annotations")
+    compile project(":viking-mvp")
+    compile project(":viking-mvvm")
+    compile project(":viking-reactive")
+    compile project(":viking-mapbindings")
 
     compile deps.rxJava
     compile deps.rxAndroid
@@ -43,5 +58,6 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
+    compile 'com.android.support:appcompat-v7:25.1.0'
     testCompile 'junit:junit:4.12'
 }

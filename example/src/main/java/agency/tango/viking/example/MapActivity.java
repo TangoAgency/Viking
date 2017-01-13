@@ -1,7 +1,7 @@
 package agency.tango.viking.example;
 
 import agency.tango.viking.annotations.AutoModule;
-import agency.tango.viking.bindings.map.mapTypes.GoogleMapView;
+import agency.tango.viking.bindings.map.GoogleMapView;
 import agency.tango.viking.example.databinding.ActivityMapBinding;
 import agency.tango.viking.mvvm.ActivityView;
 import android.content.Context;

@@ -15,7 +15,6 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.GroundOverlayOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
-import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.maps.android.SphericalUtil;
 
@@ -33,13 +32,14 @@ public class GoogleMapView<T> extends MapView {
 
   private ItemClickHandler itemClickHandler;
   private ItemPopupAdapter infoWindowAdapter;
-  private Polyline path;
 
   private BindableItem<Location> location = new BindableItem<>();
   private BindableItem<Float> zoom = new BindableItem<>();
   private BindableItem<Integer> radius = new BindableItem<>();
 
   private MarkerManager<T> markerManager;
+  private PathManager pathManager;
+
   private IMapItemAdapter mapAdapter;
 
   public GoogleMapView(Context context) {
@@ -59,6 +59,7 @@ public class GoogleMapView<T> extends MapView {
 
   public void init() {
     markerManager = new MarkerManager<>(this::getMapAsync);
+    pathManager = new PathManager(this::getMapAsync);
 
     getMapAsync(googleMap -> {
       initGoogleMap();
@@ -129,8 +130,8 @@ public class GoogleMapView<T> extends MapView {
   }
 
   public void postChangedLocation(Location location) {
-    getMapAsync(googleMap1 -> {
-      googleMap1.moveCamera(CameraUpdateFactory.newLatLngZoom(
+    getMapAsync(googleMap -> {
+      googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
           new LatLng(location.getLatitude(), location.getLongitude()), DEFAULT_ZOOM));
     });
     updateField(this.location, location);
@@ -173,15 +174,15 @@ public class GoogleMapView<T> extends MapView {
       itemClickHandler.onClick(item);
     }
   }
-
-  public void path(PolylineOptions polyline) {
-    getMapAsync(googleMap -> {
-      if (path != null) {
-        path.remove();
-      }
-      path = googleMap.addPolyline(polyline);
-    });
-  }
+  //
+  //public void path(PolylineOptions polyline) {
+  //  getMapAsync(googleMap -> {
+  //    if (path != null) {
+  //      path.remove();
+  //    }
+  //    path = googleMap.addPolyline(polyline);
+  //  });
+  //}
 
   public void groundOverlay(@DrawableRes int groundOverlayImage, LatLngBounds latLngBounds) {
     GroundOverlayOptions overlayOptions = new GroundOverlayOptions()
@@ -213,14 +214,10 @@ public class GoogleMapView<T> extends MapView {
     getMapAsync(googleMap -> markerManager.addItems(googleMap, items));
   }
 
-  //    public void paths(Collection<T> items)
-  //    {
-  //        getMapAsync(googleMap -> {
-  //            PathManager<T> pathsManager = new PathsManager<T>();
-  //            pathsManager.addItems(googleMap, items);
-  //        });
-  //    }
-  //
+  public void paths(Collection<PolylineOptions> paths) {
+    getMapAsync(googleMap -> pathManager.addItems(googleMap, paths));
+  }
+
   //    public void overlays(Collection<T> items)
   //    {
   //        getMapAsync(googleMap -> {

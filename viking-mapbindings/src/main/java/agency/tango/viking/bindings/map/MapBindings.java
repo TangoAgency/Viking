@@ -90,9 +90,12 @@ public class MapBindings {
     //        customMarkerMap.markerPopupClicked(clickHandler);
   }
 
-  @BindingAdapter("path")
-  public static void setPath(GoogleMapView customMarkerMap, PolylineOptions polyline) {
-    customMarkerMap.path(polyline);
+  @BindingAdapter("paths")
+  public static void setPaths(GoogleMapView customMarkerMap, Collection<PolylineOptions> polylines) {
+    if (polylines == null) {
+      return;
+    }
+    customMarkerMap.paths(polylines);
   }
 
   @BindingAdapter("mapClusteringAdapter")

@@ -6,7 +6,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 
 import java.util.Collection;
 
-public interface IMapEntityManager<T, M> {
+public interface IMapEntityManager<T> {
   void add(GoogleMap googleMap, T item);
 
   void addItems(GoogleMap googleMap, Collection<T> items);

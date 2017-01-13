@@ -16,7 +16,8 @@ import agency.tango.viking.bindings.map.adapters.IMapItemAdapter;
 
 import static agency.tango.viking.bindings.map.CollectionUtils.moveRange;
 
-public class MarkerManager<T> implements IMapEntityManager<T, Marker> {
+public class MarkerManager<T> extends MapEntityManagerBase<T, Marker>
+    implements IMapEntityManager<T> {
   private final MapResolver mapResolver;
   private List<Marker> markers = new ArrayList<>();
   private IMapItemAdapter<T> mapItemAdapter;
@@ -33,9 +34,11 @@ public class MarkerManager<T> implements IMapEntityManager<T, Marker> {
       @Override
       public void onItemRangeChanged(ObservableList<T> observableList, int fromIndex,
           int itemCount) {
-        for (int i = fromIndex; i < itemCount; i++) {
-          updateMarker(markers.get(i), observableList.get(i));
-        }
+        mapResolver.resolve(googleMap -> {
+          for (int i = fromIndex; i < itemCount; i++) {
+            update(markers.get(i), observableList.get(i), googleMap);
+          }
+        });
       }
 
       @Override
@@ -43,10 +46,8 @@ public class MarkerManager<T> implements IMapEntityManager<T, Marker> {
           int itemCount) {
         mapResolver.resolve(googleMap -> {
           for (int i = fromIndex; i <= observableList.size() - itemCount; i++) {
-            Marker marker = createMarker(googleMap, observableList.get(i));
-            markers.add(i, marker);
+            markers.add(i, create(observableList.get(i), googleMap));
           }
-          markers.size();
         });
       }
 
@@ -73,7 +74,7 @@ public class MarkerManager<T> implements IMapEntityManager<T, Marker> {
 
   @Override
   public void add(GoogleMap googleMap, T item) {
-    this.markers.add(addMarkerToMap(googleMap, createMarkerOptions(item), item));
+    this.markers.add(create(item, googleMap));
   }
 
   @Override
@@ -93,7 +94,6 @@ public class MarkerManager<T> implements IMapEntityManager<T, Marker> {
         marker.remove();
       }
     }
-
   }
 
   @Override
@@ -106,13 +106,6 @@ public class MarkerManager<T> implements IMapEntityManager<T, Marker> {
         }
       }
     }
-  }
-
-  @NonNull
-  private Marker createMarker(GoogleMap googleMap, T item) {
-    Marker marker = googleMap.addMarker(createMarkerOptions(item));
-    marker.setTag(item);
-    return marker;
   }
 
   public void setItemsAdapter(IMapItemAdapter<T> mapItemAdapter) {
@@ -132,14 +125,8 @@ public class MarkerManager<T> implements IMapEntityManager<T, Marker> {
     });
   }
 
-  private Marker addMarkerToMap(GoogleMap googleMap, MarkerOptions markerOptions, T item) {
-    Marker marker = googleMap.addMarker(markerOptions);
-    marker.setTag(item);
-
-    return marker;
-  }
-
-  private MarkerOptions createMarkerOptions(T item) {
+  @Override
+  Marker create(T item, GoogleMap googleMap) {
     if (mapItemAdapter == null) {
       throw new IllegalStateException("MapItemAdapter cannot be null");
     }
@@ -148,17 +135,26 @@ public class MarkerManager<T> implements IMapEntityManager<T, Marker> {
     markerOptions.icon(BitmapDescriptorFactory.fromResource(mapItemAdapter.icon(item)));
     markerOptions.position(mapItemAdapter.position(item));
 
-    return markerOptions;
+    Marker marker = googleMap.addMarker(markerOptions);
+    marker.setTag(item);
+
+    return marker;
   }
 
-  private void updateMarker(Marker marker, T item) {
+  @Override
+  void remove(Marker entity, GoogleMap googleMap) {
+    entity.remove();
+  }
+
+  @Override
+  void update(Marker entity, T item, GoogleMap googleMap) {
     if (mapItemAdapter == null) {
       throw new IllegalStateException("MapItemAdapter cannot be null");
     }
 
-    marker.setTag(item);
+    entity.setTag(item);
 
-    marker.setIcon(BitmapDescriptorFactory.fromResource(mapItemAdapter.icon(item)));
-    marker.setPosition(mapItemAdapter.position(item));
+    entity.setIcon(BitmapDescriptorFactory.fromResource(mapItemAdapter.icon(item)));
+    entity.setPosition(mapItemAdapter.position(item));
   }
 }

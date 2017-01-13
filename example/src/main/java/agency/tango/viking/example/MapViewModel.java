@@ -6,6 +6,7 @@ import android.databinding.ObservableList;
 import android.location.Location;
 
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.PolylineOptions;
 
 import java.util.Collection;
 import java.util.concurrent.TimeUnit;
@@ -22,6 +23,8 @@ public class MapViewModel extends ViewModel {
   public static final float DEFAULT_ZOOM = 15;
 
   private final ObservableList<ExampleModel> models = new ObservableArrayList<>();
+  private final ObservableList<PolylineOptions> paths = new ObservableArrayList<>();
+
   private Location location;
   private float zoom = DEFAULT_ZOOM;
 
@@ -40,24 +43,31 @@ public class MapViewModel extends ViewModel {
           }
         });
 
+    paths.add(new PolylineOptions()
+        .add(new LatLng(0, 0))
+        .add(new LatLng(50, 50)));
+
     Observable.just(1).delay(4, TimeUnit.SECONDS, SchedulerProvider.getInstance()
         .computation())
         .observeOn(SchedulerProvider.getInstance().ui())
         .subscribe(new Consumer<Integer>() {
           @Override
           public void accept(Integer integer) throws Exception {
-            models.add(new ExampleModel(new LatLng(75, 75)));
-            models.add(new ExampleModel(new LatLng(25, 25)));
-            models.add(2, new ExampleModel(new LatLng(5, 5)));
-
+            paths.set(0, new PolylineOptions()
+                .add(new LatLng(25, 14))
+                .add(new LatLng(25, 50)));
           }
         });
-
   }
 
   @Bindable
   public Collection<ExampleModel> getModels() {
     return models;
+  }
+
+  @Bindable
+  public Collection<PolylineOptions> getPaths() {
+    return paths;
   }
 
   @Bindable

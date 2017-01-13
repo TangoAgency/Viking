@@ -106,7 +106,7 @@ public class MapBindings
     @BindingAdapter("mapClusteringAdapter")
     public static void mapClusteringAdapter(GoogleMapView customMarkerMap, IClusterItemAdapter adapter)
     {
-        customMarkerMap.clusterAdapter(adapter);
+//        customMarkerMap.clusterAdapter(adapter);
     }
 
     @BindingAdapter("mapItemAdapter")
@@ -122,49 +122,7 @@ public class MapBindings
         {
             return;
         }
-
-//        Collection<IClusterMapItem> clusterMapItemCollection = new ArrayList<>();
-//        for (T item : items)
-//        {
-//            clusterMapItemCollection.add(adapter.getItem(item));
-//        }
-        if (items instanceof ObservableList)
-        {
-            ((ObservableArrayList) items).addOnListChangedCallback(new ObservableList.OnListChangedCallback()
-            {
-                @Override
-                public void onChanged(ObservableList observableList)
-                {
-
-                }
-
-                @Override
-                public void onItemRangeChanged(ObservableList observableList, int i, int i1)
-                {
-
-                }
-
-                @Override
-                public void onItemRangeInserted(ObservableList observableList, int i, int i1)
-                {
-                    customMarkerMap.addItems(observableList.subList(i, i1));
-                }
-
-                @Override
-                public void onItemRangeMoved(ObservableList observableList, int i, int i1, int i2)
-                {
-
-                }
-
-                @Override
-                public void onItemRangeRemoved(ObservableList observableList, int i, int i1)
-                {
-
-                }
-            });
-        }
-
-        customMarkerMap.addItems(items);
+        customMarkerMap.insertItems(items);
     }
 
     @BindingAdapter({"groundOverlayDrawable", "groundOverlayBounds"})
@@ -182,19 +140,19 @@ public class MapBindings
     @BindingAdapter("heatMapRadius")
     public static void heatRadius(GoogleMapView heatMap, int heatRadius)
     {
-        heatMap.heatMapRadius(heatRadius);
+//        heatMap.heatMapRadius(heatRadius);
     }
 
     @BindingAdapter("heatMapGradient")
     public static void gradient(GoogleMapView heatMap, Gradient gradient)
     {
-        heatMap.heatMapGradient(gradient);
+//        heatMap.heatMapGradient(gradient);
     }
 
     @BindingAdapter("heatMapOpacity")
     public static void opacity(GoogleMapView heatMap, double opacity)
     {
-        heatMap.heatMapOpacity(opacity);
+//        heatMap.heatMapOpacity(opacity);
     }
 
     private static void setOnValueChangedListener(BindableItem item, InverseBindingListener bindingListener)

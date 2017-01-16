@@ -4,36 +4,37 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 
-public class PathManager extends MapEntityManagerBase<PolylineOptions, Polyline>
-    implements IMapEntityManager<PolylineOptions> {
+import agency.tango.viking.bindings.map.models.BindablePolyline;
+
+public class PathManager extends MapEntityManagerBase<BindablePolyline>
+    implements IMapEntityManager<BindablePolyline> {
 
   public PathManager(MapResolver mapResolver) {
     super(mapResolver);
   }
 
   @Override
-  Polyline create(PolylineOptions item, GoogleMap googleMap) {
-    return googleMap.addPolyline(item);
+  BindablePolyline create(BindablePolyline item, GoogleMap googleMap) {
+    item.setPolyline(googleMap.addPolyline(item.getPolylineOptions()));
+    return item;
   }
 
   @Override
-  void remove(Polyline entity, GoogleMap googleMap) {
-    entity.remove();
+  void remove(BindablePolyline entity, GoogleMap googleMap) {
+    entity.getPolyline().remove();
   }
 
   @Override
-  void update(Polyline entity, PolylineOptions item, GoogleMap googleMap) {
-    entity.setClickable(item.isClickable());
-    entity.setPoints(item.getPoints());
-    entity.setColor(item.getColor());
-    entity.setGeodesic(item.isGeodesic());
-    entity.setVisible(item.isVisible());
-    entity.setWidth(item.getWidth());
-    entity.setZIndex(item.getZIndex());
-  }
+  void update(BindablePolyline entity, BindablePolyline item, GoogleMap googleMap) {
+    Polyline polyline = entity.getPolyline();
+    PolylineOptions polylineOptions = item.getPolylineOptions();
 
-  @Override
-  public boolean compareEntities(Polyline polyline, PolylineOptions polylineOptions) {
-    return polyline.getPoints().equals(polylineOptions.getPoints());
+    polyline.setClickable(polylineOptions.isClickable());
+    polyline.setPoints(polylineOptions.getPoints());
+    polyline.setColor(polylineOptions.getColor());
+    polyline.setGeodesic(polylineOptions.isGeodesic());
+    polyline.setVisible(polylineOptions.isVisible());
+    polyline.setWidth(polylineOptions.getWidth());
+    polyline.setZIndex(polylineOptions.getZIndex());
   }
 }

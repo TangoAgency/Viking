@@ -12,7 +12,6 @@ import com.google.maps.android.heatmaps.Gradient;
 import java.util.Collection;
 
 import agency.tango.viking.bindings.map.adapters.IClusterItemAdapter;
-import agency.tango.viking.bindings.map.adapters.IMapItemAdapter;
 import agency.tango.viking.bindings.map.adapters.ItemPopupAdapter;
 import agency.tango.viking.bindings.map.clickHandlers.ClusterClickHandler;
 import agency.tango.viking.bindings.map.clickHandlers.ItemClickHandler;
@@ -112,11 +111,6 @@ public class MapBindings {
   public static void mapClusteringAdapter(GoogleMapView customMarkerMap,
       IClusterItemAdapter adapter) {
     //        customMarkerMap.clusterAdapter(adapter);
-  }
-
-  @BindingAdapter("mapItemAdapter")
-  public static void mapItemAdapter(GoogleMapView googleMapView, IMapItemAdapter adapter) {
-    googleMapView.mapAdapter(adapter);
   }
 
   @BindingAdapter("mapItems")

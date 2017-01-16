@@ -4,44 +4,41 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.GroundOverlay;
 import com.google.android.gms.maps.model.GroundOverlayOptions;
 
-public class OverlayManager extends MapEntityManagerBase<GroundOverlayOptions, GroundOverlay>
-    implements IMapEntityManager<GroundOverlayOptions> {
+import agency.tango.viking.bindings.map.models.BindableOverlay;
+
+public class OverlayManager extends MapEntityManagerBase<BindableOverlay>
+    implements IMapEntityManager<BindableOverlay> {
 
   OverlayManager(MapResolver mapResolver) {
     super(mapResolver);
   }
 
   @Override
-  GroundOverlay create(GroundOverlayOptions item, GoogleMap googleMap) {
-    return googleMap.addGroundOverlay(item);
+  BindableOverlay create(BindableOverlay item, GoogleMap googleMap) {
+    item.setGroundOverlay(googleMap.addGroundOverlay(item.getGroundOverlayOptions()));
+    return item;
   }
 
   @Override
-  void remove(GroundOverlay entity, GoogleMap googleMap) {
-    entity.remove();
+  void remove(BindableOverlay entity, GoogleMap googleMap) {
+    entity.getGroundOverlay().remove();
   }
 
   @Override
-  void update(GroundOverlay entity, GroundOverlayOptions item, GoogleMap googleMap) {
-    if (item.getBounds() != null) {
-      entity.setPositionFromBounds(item.getBounds());
+  void update(BindableOverlay entity, BindableOverlay item, GoogleMap googleMap) {
+    GroundOverlay groundOverlay = entity.getGroundOverlay();
+    GroundOverlayOptions groundOverlayOptions = item.getGroundOverlayOptions();
+
+    if (groundOverlayOptions.getBounds() != null) {
+      groundOverlay.setPositionFromBounds(groundOverlayOptions.getBounds());
     } else {
-      entity.setPosition(item.getLocation());
+      groundOverlay.setPosition(groundOverlayOptions.getLocation());
     }
-    entity.setImage(item.getImage());
-    entity.setBearing(item.getBearing());
-    entity.setZIndex(item.getZIndex());
-    entity.setTransparency(item.getTransparency());
-    entity.setVisible(item.isVisible());
-    entity.setClickable(item.isClickable());
-  }
-
-  @Override
-  boolean compareEntities(GroundOverlay entity, GroundOverlayOptions item) {
-    if (entity.getBounds() != null && item.getBounds() != null) {
-      return entity.getBounds().equals(item.getBounds());
-    }
-
-    return entity.getPosition().equals(item.getLocation());
+    groundOverlay.setImage(groundOverlayOptions.getImage());
+    groundOverlay.setBearing(groundOverlayOptions.getBearing());
+    groundOverlay.setZIndex(groundOverlayOptions.getZIndex());
+    groundOverlay.setTransparency(groundOverlayOptions.getTransparency());
+    groundOverlay.setVisible(groundOverlayOptions.isVisible());
+    groundOverlay.setClickable(groundOverlayOptions.isClickable());
   }
 }

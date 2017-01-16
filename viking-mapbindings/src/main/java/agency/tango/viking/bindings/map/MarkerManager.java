@@ -1,59 +1,46 @@
 package agency.tango.viking.bindings.map;
 
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-import agency.tango.viking.bindings.map.adapters.IMapItemAdapter;
+import agency.tango.viking.bindings.map.models.BindableMarker;
 
-public class MarkerManager<T> extends MapEntityManagerBase<T, Marker>
-    implements IMapEntityManager<T> {
-
-  private IMapItemAdapter<T> mapItemAdapter;
+public class MarkerManager<T> extends MapEntityManagerBase<BindableMarker<T>>
+    implements IMapEntityManager<BindableMarker<T>> {
 
   public MarkerManager(MapResolver mapResolver) {
     super(mapResolver);
   }
 
-  public void setItemsAdapter(IMapItemAdapter<T> mapItemAdapter) {
-    this.mapItemAdapter = mapItemAdapter;
+  @Override
+  BindableMarker<T> create(BindableMarker<T> item, GoogleMap googleMap) {
+    item.setMarker(googleMap.addMarker(item.getMarkerOptions()));
+    return item;
   }
 
   @Override
-  Marker create(T item, GoogleMap googleMap) {
-    if (mapItemAdapter == null) {
-      throw new IllegalStateException("MapItemAdapter cannot be null");
-    }
-
-    MarkerOptions markerOptions = new MarkerOptions();
-    markerOptions.icon(BitmapDescriptorFactory.fromResource(mapItemAdapter.icon(item)));
-    markerOptions.position(mapItemAdapter.position(item));
-
-    Marker marker = googleMap.addMarker(markerOptions);
-    marker.setTag(item);
-
-    return marker;
+  void remove(BindableMarker<T> entity, GoogleMap googleMap) {
+    entity.getMarker().remove();
   }
 
   @Override
-  void remove(Marker entity, GoogleMap googleMap) {
-    entity.remove();
-  }
+  void update(BindableMarker<T> entity, BindableMarker<T> item, GoogleMap googleMap) {
+    Marker marker = entity.getMarker();
+    MarkerOptions markerOptions = item.getMarkerOptions();
 
-  @Override
-  void update(Marker entity, T item, GoogleMap googleMap) {
-    if (mapItemAdapter == null) {
-      throw new IllegalStateException("MapItemAdapter cannot be null");
-    }
-
-    entity.setTag(item);
-    entity.setIcon(BitmapDescriptorFactory.fromResource(mapItemAdapter.icon(item)));
-    entity.setPosition(mapItemAdapter.position(item));
-  }
-
-  @Override
-  boolean compareEntities(Marker entity, T item) {
-    return item.equals(entity.getTag());
+    marker.setIcon(markerOptions.getIcon());
+    marker.setAlpha(markerOptions.getAlpha());
+    marker.setAnchor(markerOptions.getAnchorV(), markerOptions.getAnchorU());
+    marker.setDraggable(markerOptions.isDraggable());
+    marker.setFlat(markerOptions.isFlat());
+    marker.setInfoWindowAnchor(markerOptions.getInfoWindowAnchorV(),
+        markerOptions.getInfoWindowAnchorU());
+    marker.setPosition(markerOptions.getPosition());
+    marker.setRotation(markerOptions.getRotation());
+    marker.setSnippet(markerOptions.getSnippet());
+    marker.setTitle(markerOptions.getTitle());
+    marker.setVisible(markerOptions.isVisible());
+    marker.setZIndex(markerOptions.getZIndex());
   }
 }

@@ -4,14 +4,12 @@ import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.Location;
-import android.support.annotation.DrawableRes;
 import android.support.v4.app.ActivityCompat;
 import android.util.AttributeSet;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.GroundOverlayOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
@@ -21,10 +19,12 @@ import com.google.maps.android.SphericalUtil;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import agency.tango.viking.bindings.map.adapters.IMapItemAdapter;
 import agency.tango.viking.bindings.map.adapters.ItemPopupAdapter;
 import agency.tango.viking.bindings.map.clickHandlers.ItemClickHandler;
 import agency.tango.viking.bindings.map.listeners.ICameraIdleListener;
+import agency.tango.viking.bindings.map.models.BindableMarker;
+import agency.tango.viking.bindings.map.models.BindableOverlay;
+import agency.tango.viking.bindings.map.models.BindablePolyline;
 
 public class GoogleMapView<T> extends MapView {
   public static final float DEFAULT_ZOOM = 15;
@@ -40,8 +40,6 @@ public class GoogleMapView<T> extends MapView {
   private MarkerManager<T> markerManager;
   private PathManager pathManager;
   private OverlayManager overlayManager;
-
-  private IMapItemAdapter mapAdapter;
 
   public GoogleMapView(Context context) {
     super(context);
@@ -112,11 +110,6 @@ public class GoogleMapView<T> extends MapView {
             &&
             ActivityCompat.checkSelfPermission(getContext(),
                 Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED;
-  }
-
-  public void mapAdapter(IMapItemAdapter<T> mapAdapter) {
-    this.mapAdapter = mapAdapter;
-    markerManager.setItemsAdapter(mapAdapter);
   }
 
   public BindableItem<Integer> radius() {
@@ -195,15 +188,15 @@ public class GoogleMapView<T> extends MapView {
   //        }));
   //    }
 
-  public void markers(Collection<T> items) {
+  public void markers(Collection<BindableMarker<T>> items) {
     getMapAsync(googleMap -> markerManager.addItems(googleMap, items));
   }
 
-  public void paths(Collection<PolylineOptions> paths) {
+  public void paths(Collection<BindablePolyline> paths) {
     getMapAsync(googleMap -> pathManager.addItems(googleMap, paths));
   }
 
-  public void overlays(Collection<GroundOverlayOptions> overlays) {
+  public void overlays(Collection<BindableOverlay> overlays) {
     getMapAsync(googleMap -> overlayManager.addItems(googleMap, overlays));
   }
 

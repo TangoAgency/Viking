@@ -17,7 +17,7 @@ public abstract class MapEntityManagerBase<T extends ModelWithId> implements IMa
 
   private final MapResolver mapResolver;
   private ObservableList.OnListChangedCallback<ObservableList<T>> itemsListener;
-  private List<T> entities = new ArrayList<>();
+  protected List<T> entities = new ArrayList<>();
 
   MapEntityManagerBase(MapResolver mapResolver) {
     this.mapResolver = mapResolver;

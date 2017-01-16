@@ -1,5 +1,7 @@
 package agency.tango.viking.bindings.map.models;
 
+import android.support.annotation.Nullable;
+
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
@@ -28,6 +30,7 @@ public class BindableMarker<T> implements ModelWithId {
     return markerOptions;
   }
 
+  @Nullable
   public Marker getMarker() {
     return marker;
   }

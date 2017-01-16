@@ -1,5 +1,7 @@
 package agency.tango.viking.bindings.map;
 
+import android.support.annotation.Nullable;
+
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -42,5 +44,15 @@ public class MarkerManager<T> extends MapEntityManagerBase<BindableMarker<T>>
     marker.setTitle(markerOptions.getTitle());
     marker.setVisible(markerOptions.isVisible());
     marker.setZIndex(markerOptions.getZIndex());
+  }
+
+  @Nullable
+  public BindableMarker<T> retrieveBindableMarker(Marker markerClicked) {
+    for (BindableMarker<T> bindableMarker : entities) {
+      if (bindableMarker.getMarker().equals(markerClicked)) {
+        return bindableMarker;
+      }
+    }
+    return null;
   }
 }

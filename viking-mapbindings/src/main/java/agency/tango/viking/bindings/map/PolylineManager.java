@@ -6,10 +6,10 @@ import com.google.android.gms.maps.model.PolylineOptions;
 
 import agency.tango.viking.bindings.map.models.BindablePolyline;
 
-public class PathManager extends MapEntityManagerBase<BindablePolyline>
+public class PolylineManager extends MapEntityManagerBase<BindablePolyline>
     implements IMapEntityManager<BindablePolyline> {
 
-  public PathManager(MapResolver mapResolver) {
+  public PolylineManager(MapResolver mapResolver) {
     super(mapResolver);
   }
 

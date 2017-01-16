@@ -20,29 +20,29 @@ import com.google.maps.android.heatmaps.HeatmapTileProvider;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import agency.tango.viking.bindings.map.adapters.ItemPopupAdapter;
-import agency.tango.viking.bindings.map.clickHandlers.ItemClickHandler;
+import agency.tango.viking.bindings.map.clickHandlers.ItemClickListener;
 import agency.tango.viking.bindings.map.listeners.ICameraIdleListener;
 import agency.tango.viking.bindings.map.models.BindableMarker;
 import agency.tango.viking.bindings.map.models.BindableOverlay;
 import agency.tango.viking.bindings.map.models.BindablePolyline;
 
 public class GoogleMapView<T> extends MapView {
-  public static final float DEFAULT_ZOOM = 15;
   private ArrayList<ICameraIdleListener> cameraIdleListeners = new ArrayList<>();
 
-  private ItemClickHandler itemClickHandler;
-  private ItemPopupAdapter infoWindowAdapter;
+  private ItemClickListener itemClickListener;
+  //private ItemPopupAdapter infoWindowAdapter;
 
   private BindableItem<Location> location = new BindableItem<>();
   private BindableItem<Float> zoom = new BindableItem<>();
   private BindableItem<Integer> radius = new BindableItem<>();
 
   private MarkerManager<T> markerManager;
-  private PathManager pathManager;
+  private PolylineManager polylineManager;
   private OverlayManager overlayManager;
 
   private TileOverlay heatMapTileOverlay;
+  private GoogleMap.InfoWindowAdapter infoWindowAdapter;
+  private ItemClickListener<BindableMarker<T>> infoWindowClickListener;
 
   public GoogleMapView(Context context) {
     super(context);
@@ -59,9 +59,92 @@ public class GoogleMapView<T> extends MapView {
     init();
   }
 
-  public void init() {
+  public BindableItem<Integer> radius() {
+    return radius;
+  }
+
+  public BindableItem<Location> location() {
+    return location;
+  }
+
+  public BindableItem<Float> zoom() {
+    return zoom;
+  }
+
+  public void postChangedLocation(Location location) {
+    getMapAsync(googleMap -> googleMap.moveCamera(CameraUpdateFactory.newLatLng(
+        new LatLng(location.getLatitude(), location.getLongitude()))));
+    updateField(this.location, location);
+  }
+
+  public void infoWindowAdapter(GoogleMap.InfoWindowAdapter infoWindowAdapter) {
+    getMapAsync(googleMap -> googleMap.setInfoWindowAdapter(infoWindowAdapter));
+  }
+
+  //public void popupInfoAdapter(ItemPopupAdapter infoWindowAdapter) {
+  //  this.infoWindowAdapter = infoWindowAdapter;
+  //  getMapAsync(googleMap -> {
+  //    googleMap.setInfoWindowAdapter(infoWindowAdapter);
+  //
+  //    googleMap.setOnInfoWindowClickListener(marker -> {
+  //      if (infoWindowAdapter != null) {
+  //        infoWindowAdapter.itemClicked(markerManager.retrieveBindableMarker(marker));
+  //      }
+  //    });
+  //  });
+  //}
+
+  public void markerClick(ItemClickListener<BindableMarker<T>> itemClickListener) {
+    this.itemClickListener = itemClickListener;
+  }
+
+  public void infoWindowClick(ItemClickListener<BindableMarker<T>> itemClickListener) {
+    this.infoWindowClickListener = itemClickListener;
+  }
+
+  public void onMarkerClick(BindableMarker item) {
+    if (itemClickListener != null) {
+      itemClickListener.onClick(item);
+    }
+  }
+
+  //    public void markerPopupClicked(ItemClickListener clickHandler)
+  //    {
+  //        getMapAsync(googleMap -> googleMap.setOnInfoWindowClickListener(markerClicked -> {
+  //            for (Marker marker : markers)
+  //            {
+  //                if (marker.equals(markerClicked))
+  //                {
+  //                    clickHandler.onClick(marker.getTag());
+  //                }
+  //            }
+  //        }));
+  //    }
+
+  public void markers(Collection<BindableMarker<T>> items) {
+    getMapAsync(googleMap -> markerManager.addItems(googleMap, items));
+  }
+
+  public void paths(Collection<BindablePolyline> paths) {
+    getMapAsync(googleMap -> polylineManager.addItems(googleMap, paths));
+  }
+
+  public void overlays(Collection<BindableOverlay> overlays) {
+    getMapAsync(googleMap -> overlayManager.addItems(googleMap, overlays));
+  }
+
+  public void heatMap(HeatmapTileProvider heatmapTileProvider) {
+    if (heatMapTileOverlay != null) {
+      heatMapTileOverlay.remove();
+    }
+
+    getMapAsync(googleMap -> heatMapTileOverlay = googleMap.addTileOverlay(
+        new TileOverlayOptions().tileProvider(heatmapTileProvider)));
+  }
+
+  private void init() {
     markerManager = new MarkerManager<>(this::getMapAsync);
-    pathManager = new PathManager(this::getMapAsync);
+    polylineManager = new PolylineManager(this::getMapAsync);
     overlayManager = new OverlayManager(this::getMapAsync);
 
     getMapAsync(googleMap -> {
@@ -78,22 +161,28 @@ public class GoogleMapView<T> extends MapView {
           cameraIdleListener.onCameraIdle();
         }
       });
-      //
-      //            googleMap.setOnMarkerClickListener(markerClicked -> {
-      //                for (Marker marker : markers)
-      //                {
-      //                    if (marker.equals(markerClicked))
-      //                    {
-      //                        onMarkerClick((T) marker.getTag());
-      //                        return false;
-      //                    }
-      //                }
-      //                return true;
-      //            });
+
+      googleMap.setOnMarkerClickListener(markerClicked -> {
+        BindableMarker<T> bindableMarker = markerManager.retrieveBindableMarker(markerClicked);
+        if (bindableMarker != null) {
+          onMarkerClick(bindableMarker);
+          return false;
+        }
+        return true;
+      });
+
+      googleMap.setOnInfoWindowClickListener(markerClicked -> {
+        BindableMarker<T> bindableMarker = markerManager.retrieveBindableMarker(markerClicked);
+        if (bindableMarker != null) {
+          if (infoWindowClickListener != null) {
+            infoWindowClickListener.onClick(bindableMarker);
+          }
+        }
+      });
     });
   }
 
-  public void registerOnCameraIdleListener(ICameraIdleListener cameraIdleListener) {
+  private void registerOnCameraIdleListener(ICameraIdleListener cameraIdleListener) {
     cameraIdleListeners.add(cameraIdleListener);
   }
 
@@ -115,27 +204,7 @@ public class GoogleMapView<T> extends MapView {
                 Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED;
   }
 
-  public BindableItem<Integer> radius() {
-    return radius;
-  }
-
-  public BindableItem<Location> location() {
-    return location;
-  }
-
-  public BindableItem<Float> zoom() {
-    return zoom;
-  }
-
-  public void postChangedLocation(Location location) {
-    getMapAsync(googleMap -> {
-      googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
-          new LatLng(location.getLatitude(), location.getLongitude()), DEFAULT_ZOOM));
-    });
-    updateField(this.location, location);
-  }
-
-  protected <E> void updateField(BindableItem<E> item, E value) {
+  private <E> void updateField(BindableItem<E> item, E value) {
     item.setValue(value);
     item.onValueChanged(value);
   }
@@ -160,71 +229,4 @@ public class GoogleMapView<T> extends MapView {
 
     return width > height ? width : height;
   }
-
-  public void markerClicked(ItemClickHandler itemClickHandler) {
-    this.itemClickHandler = itemClickHandler;
-  }
-
-  public void onMarkerClick(T item) {
-    if (infoWindowAdapter != null) {
-      infoWindowAdapter.itemClicked(item);
-    } else {
-      itemClickHandler.onClick(item);
-    }
-  }
-
-  public void popupInfoAdapter(ItemPopupAdapter infoWindowAdapter) {
-    this.infoWindowAdapter = infoWindowAdapter;
-    getMapAsync(googleMap -> googleMap.setInfoWindowAdapter(infoWindowAdapter));
-  }
-
-  //    public void markerPopupClicked(ItemClickHandler clickHandler)
-  //    {
-  //        getMapAsync(googleMap -> googleMap.setOnInfoWindowClickListener(markerClicked -> {
-  //            for (Marker marker : markers)
-  //            {
-  //                if (marker.equals(markerClicked))
-  //                {
-  //                    clickHandler.onClick(marker.getTag());
-  //                }
-  //            }
-  //        }));
-  //    }
-
-  public void markers(Collection<BindableMarker<T>> items) {
-    getMapAsync(googleMap -> markerManager.addItems(googleMap, items));
-  }
-
-  public void paths(Collection<BindablePolyline> paths) {
-    getMapAsync(googleMap -> pathManager.addItems(googleMap, paths));
-  }
-
-  public void overlays(Collection<BindableOverlay> overlays) {
-    getMapAsync(googleMap -> overlayManager.addItems(googleMap, overlays));
-  }
-
-  public void heatMap(HeatmapTileProvider heatmapTileProvider) {
-    if (heatMapTileOverlay != null) {
-      heatMapTileOverlay.remove();
-    }
-
-    getMapAsync(googleMap -> heatMapTileOverlay = googleMap.addTileOverlay(
-        new TileOverlayOptions().tileProvider(heatmapTileProvider)));
-  }
-
-  //    public void overlays(Collection<T> items)
-  //    {
-  //        getMapAsync(googleMap -> {
-  //            PathManager<T> pathsManager = new PathsManager<T>();
-  //            pathsManager.addItems(googleMap, items);
-  //        });
-  //    }
-  //
-  //    public void heatmap(Collection<T> items)
-  //    {
-  //        getMapAsync(googleMap -> {
-  //            PathManager<T> pathsManager = new PathsManager<T>();
-  //            pathsManager.addItems(googleMap, items);
-  //        });
-  //    }
 }

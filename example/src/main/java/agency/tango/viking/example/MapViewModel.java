@@ -4,11 +4,14 @@ import android.databinding.Bindable;
 import android.databinding.ObservableArrayList;
 import android.databinding.ObservableList;
 import android.location.Location;
+import android.view.View;
 
+import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.GroundOverlayOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.maps.android.heatmaps.HeatmapTileProvider;
@@ -19,6 +22,7 @@ import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
+import agency.tango.viking.bindings.map.clickHandlers.ItemClickListener;
 import agency.tango.viking.bindings.map.models.BindableMarker;
 import agency.tango.viking.bindings.map.models.BindableOverlay;
 import agency.tango.viking.bindings.map.models.BindablePolyline;
@@ -50,7 +54,9 @@ public class MapViewModel extends ViewModel {
     models.add(new BindableMarker<>(
         new ExampleModel(new LatLng(0, 0)),
         0,
-        new MarkerOptions().position(new LatLng(0, 0))));
+        new MarkerOptions()
+            .title("marker")
+            .position(new LatLng(0, 0))));
 
     paths.add(new BindablePolyline(0,
         new PolylineOptions().add(new LatLng(0, 0)).add(new LatLng(50, 50))));
@@ -73,11 +79,6 @@ public class MapViewModel extends ViewModel {
         .subscribe(new Consumer<Integer>() {
           @Override
           public void accept(Integer integer) throws Exception {
-
-            models.set(0, new BindableMarker<>(
-                new ExampleModel(new LatLng(50, 50)),
-                0,
-                new MarkerOptions().position(new LatLng(50, 50))));
 
             paths.set(0, new BindablePolyline(0,
                 new PolylineOptions().add(new LatLng(25, 14)).add(new LatLng(25, 50))));
@@ -135,5 +136,41 @@ public class MapViewModel extends ViewModel {
   public void setZoom(float zoom) {
     this.zoom = zoom;
     notifyPropertyChanged(BR.zoom);
+  }
+
+  @Bindable
+  public ItemClickListener<BindableMarker<ExampleModel>> getMarkerClick() {
+    return new ItemClickListener<BindableMarker<ExampleModel>>() {
+      @Override
+      public void onClick(BindableMarker<ExampleModel> item) {
+        item.getMarker().setPosition(new LatLng(20, 20));
+      }
+    };
+  }
+
+  @Bindable
+  public ItemClickListener<BindableMarker<ExampleModel>> getInfoWindowClick() {
+    return new ItemClickListener<BindableMarker<ExampleModel>>() {
+      @Override
+      public void onClick(BindableMarker<ExampleModel> item) {
+        item.getMarker().setPosition(new LatLng(-20, -20));
+        item.getMarker().hideInfoWindow();
+      }
+    };
+  }
+
+  @Bindable
+  public GoogleMap.InfoWindowAdapter getInfoWindowAdapter() {
+    return new GoogleMap.InfoWindowAdapter() {
+      @Override
+      public View getInfoWindow(Marker marker) {
+        return null;
+      }
+
+      @Override
+      public View getInfoContents(Marker marker) {
+        return null;
+      }
+    };
   }
 }

@@ -11,7 +11,9 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.maps.android.heatmaps.HeatmapTileProvider;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.concurrent.TimeUnit;
 
@@ -31,6 +33,8 @@ public class MapViewModel extends ViewModel {
   private final ObservableList<BindableMarker<ExampleModel>> models = new ObservableArrayList<>();
   private final ObservableList<BindablePolyline> paths = new ObservableArrayList<>();
   private final ObservableList<BindableOverlay> overlays = new ObservableArrayList<>();
+
+  private HeatmapTileProvider heatmapTileProvider;
 
   private Location location;
   private float zoom = DEFAULT_ZOOM;
@@ -56,6 +60,13 @@ public class MapViewModel extends ViewModel {
             .image(BitmapDescriptorFactory.fromResource(R.drawable.amu_bubble_mask))
             .positionFromBounds(new LatLngBounds(new LatLng(0, 0), new LatLng(5, 5)))));
 
+    heatmapTileProvider = new HeatmapTileProvider.Builder()
+        .data(Arrays.asList(new LatLng(0, 0),
+            new LatLng(1, 1),
+            new LatLng(2, 2)))
+        .radius(50)
+        .build();
+
     Observable.just(1).delay(4, TimeUnit.SECONDS, SchedulerProvider.getInstance()
         .computation())
         .observeOn(SchedulerProvider.getInstance().ui())
@@ -75,6 +86,14 @@ public class MapViewModel extends ViewModel {
                 new GroundOverlayOptions()
                     .image(BitmapDescriptorFactory.fromResource(R.drawable.amu_bubble_mask))
                     .positionFromBounds(new LatLngBounds(new LatLng(5, 10), new LatLng(10, 15)))));
+
+            heatmapTileProvider = new HeatmapTileProvider.Builder()
+                .data(Arrays.asList(new LatLng(18, 18),
+                    new LatLng(19, 19),
+                    new LatLng(20, 20)))
+                .radius(50)
+                .build();
+            notifyPropertyChanged(BR.heatMap);
           }
         });
   }
@@ -91,6 +110,12 @@ public class MapViewModel extends ViewModel {
 
   @Bindable
   public Collection<BindableOverlay> getOverlays() {return overlays;}
+
+  @Bindable
+  public HeatmapTileProvider getHeatMap() {
+
+    return heatmapTileProvider;
+  }
 
   @Bindable
   public Location getLocation() {

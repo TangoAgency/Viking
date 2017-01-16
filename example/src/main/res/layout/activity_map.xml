@@ -21,6 +21,7 @@
       android:id="@+id/map"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
+      bind:heatMap="@{viewModel.heatMap}"
       bind:location="@={viewModel.location}"
       bind:mapItems="@{viewModel.models}"
       bind:overlays="@{viewModel.overlays}"

@@ -10,11 +10,12 @@ import android.util.AttributeSet;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
-import com.google.android.gms.maps.model.GroundOverlayOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
-import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.android.gms.maps.model.TileOverlay;
+import com.google.android.gms.maps.model.TileOverlayOptions;
 import com.google.maps.android.SphericalUtil;
+import com.google.maps.android.heatmaps.HeatmapTileProvider;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -40,6 +41,8 @@ public class GoogleMapView<T> extends MapView {
   private MarkerManager<T> markerManager;
   private PathManager pathManager;
   private OverlayManager overlayManager;
+
+  private TileOverlay heatMapTileOverlay;
 
   public GoogleMapView(Context context) {
     super(context);
@@ -198,6 +201,15 @@ public class GoogleMapView<T> extends MapView {
 
   public void overlays(Collection<BindableOverlay> overlays) {
     getMapAsync(googleMap -> overlayManager.addItems(googleMap, overlays));
+  }
+
+  public void heatMap(HeatmapTileProvider heatmapTileProvider) {
+    if (heatMapTileOverlay != null) {
+      heatMapTileOverlay.remove();
+    }
+
+    getMapAsync(googleMap -> heatMapTileOverlay = googleMap.addTileOverlay(
+        new TileOverlayOptions().tileProvider(heatmapTileProvider)));
   }
 
   //    public void overlays(Collection<T> items)

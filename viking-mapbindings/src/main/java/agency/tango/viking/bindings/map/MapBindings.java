@@ -7,7 +7,7 @@ import android.location.Location;
 
 import com.google.android.gms.maps.model.GroundOverlayOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
-import com.google.maps.android.heatmaps.Gradient;
+import com.google.maps.android.heatmaps.HeatmapTileProvider;
 
 import java.util.Collection;
 
@@ -127,19 +127,10 @@ public class MapBindings {
     //        clusteredMap.clusterClicked(clusterClickHandler);
   }
 
-  @BindingAdapter("heatMapRadius")
-  public static void heatRadius(GoogleMapView heatMap, int heatRadius) {
-    //        heatMap.heatMapRadius(heatRadius);
-  }
-
-  @BindingAdapter("heatMapGradient")
-  public static void gradient(GoogleMapView heatMap, Gradient gradient) {
-    //        heatMap.heatMapGradient(gradient);
-  }
-
-  @BindingAdapter("heatMapOpacity")
-  public static void opacity(GoogleMapView heatMap, double opacity) {
-    //        heatMap.heatMapOpacity(opacity);
+  @BindingAdapter("heatMap")
+  public static void heatRadius(GoogleMapView googleMapView,
+      HeatmapTileProvider heatmapTileProvider) {
+    googleMapView.heatMap(heatmapTileProvider);
   }
 
   private static void setOnValueChangedListener(BindableItem item,

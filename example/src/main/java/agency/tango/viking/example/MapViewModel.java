@@ -5,7 +5,10 @@ import android.databinding.ObservableArrayList;
 import android.databinding.ObservableList;
 import android.location.Location;
 
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.GroundOverlayOptions;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.PolylineOptions;
 
 import java.util.Collection;
@@ -24,28 +27,28 @@ public class MapViewModel extends ViewModel {
 
   private final ObservableList<ExampleModel> models = new ObservableArrayList<>();
   private final ObservableList<PolylineOptions> paths = new ObservableArrayList<>();
+  private final ObservableList<GroundOverlayOptions> overlays = new ObservableArrayList<>();
 
   private Location location;
   private float zoom = DEFAULT_ZOOM;
 
   @Inject
   public MapViewModel() {
-    final ExampleModel e = new ExampleModel(new LatLng(0, 0));
-    models.add(e);
+  }
 
-    Observable.just(1).delay(2, TimeUnit.SECONDS, SchedulerProvider.getInstance()
-        .computation())
-        .observeOn(SchedulerProvider.getInstance().ui())
-        .subscribe(new Consumer<Integer>() {
-          @Override
-          public void accept(Integer integer) throws Exception {
-            models.set(0, new ExampleModel(new LatLng(50, 50)));
-          }
-        });
+  @Override
+  public void start() {
+    super.start();
+
+    models.add(new ExampleModel(new LatLng(0, 0)));
 
     paths.add(new PolylineOptions()
         .add(new LatLng(0, 0))
         .add(new LatLng(50, 50)));
+
+    overlays.add(new GroundOverlayOptions()
+        .image(BitmapDescriptorFactory.fromResource(R.drawable.amu_bubble_mask))
+        .positionFromBounds(new LatLngBounds(new LatLng(0, 0), new LatLng(5, 5))));
 
     Observable.just(1).delay(4, TimeUnit.SECONDS, SchedulerProvider.getInstance()
         .computation())
@@ -53,9 +56,15 @@ public class MapViewModel extends ViewModel {
         .subscribe(new Consumer<Integer>() {
           @Override
           public void accept(Integer integer) throws Exception {
+            models.set(0, new ExampleModel(new LatLng(50, 50)));
+
             paths.set(0, new PolylineOptions()
                 .add(new LatLng(25, 14))
                 .add(new LatLng(25, 50)));
+
+            overlays.set(0, new GroundOverlayOptions()
+                .image(BitmapDescriptorFactory.fromResource(R.drawable.amu_bubble_mask))
+                .positionFromBounds(new LatLngBounds(new LatLng(5, 10), new LatLng(10, 15))));
           }
         });
   }
@@ -69,6 +78,9 @@ public class MapViewModel extends ViewModel {
   public Collection<PolylineOptions> getPaths() {
     return paths;
   }
+
+  @Bindable
+  public Collection<GroundOverlayOptions> getOverlays() {return overlays;}
 
   @Bindable
   public Location getLocation() {

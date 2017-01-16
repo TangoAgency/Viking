@@ -39,6 +39,7 @@ public class GoogleMapView<T> extends MapView {
 
   private MarkerManager<T> markerManager;
   private PathManager pathManager;
+  private OverlayManager overlayManager;
 
   private IMapItemAdapter mapAdapter;
 
@@ -60,6 +61,7 @@ public class GoogleMapView<T> extends MapView {
   public void init() {
     markerManager = new MarkerManager<>(this::getMapAsync);
     pathManager = new PathManager(this::getMapAsync);
+    overlayManager = new OverlayManager(this::getMapAsync);
 
     getMapAsync(googleMap -> {
       initGoogleMap();
@@ -174,23 +176,6 @@ public class GoogleMapView<T> extends MapView {
       itemClickHandler.onClick(item);
     }
   }
-  //
-  //public void path(PolylineOptions polyline) {
-  //  getMapAsync(googleMap -> {
-  //    if (path != null) {
-  //      path.remove();
-  //    }
-  //    path = googleMap.addPolyline(polyline);
-  //  });
-  //}
-
-  public void groundOverlay(@DrawableRes int groundOverlayImage, LatLngBounds latLngBounds) {
-    GroundOverlayOptions overlayOptions = new GroundOverlayOptions()
-        .image(BitmapDescriptorFactory.fromResource(groundOverlayImage))
-        .positionFromBounds(latLngBounds);
-
-    getMapAsync(googleMap -> googleMap.addGroundOverlay(overlayOptions));
-  }
 
   public void popupInfoAdapter(ItemPopupAdapter infoWindowAdapter) {
     this.infoWindowAdapter = infoWindowAdapter;
@@ -216,6 +201,10 @@ public class GoogleMapView<T> extends MapView {
 
   public void paths(Collection<PolylineOptions> paths) {
     getMapAsync(googleMap -> pathManager.addItems(googleMap, paths));
+  }
+
+  public void overlays(Collection<GroundOverlayOptions> overlays) {
+    getMapAsync(googleMap -> overlayManager.addItems(googleMap, overlays));
   }
 
   //    public void overlays(Collection<T> items)

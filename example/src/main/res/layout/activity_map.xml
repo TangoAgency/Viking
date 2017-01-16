@@ -24,6 +24,7 @@
       bind:location="@={viewModel.location}"
       bind:mapItemAdapter="@{viewModel.adapter}"
       bind:mapItems="@{viewModel.models}"
+      bind:overlays="@{viewModel.overlays}"
       bind:paths="@{viewModel.paths}"
       bind:zoom="@={viewModel.zoom}"
       />

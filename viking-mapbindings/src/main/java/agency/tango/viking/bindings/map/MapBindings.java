@@ -4,9 +4,8 @@ import android.databinding.BindingAdapter;
 import android.databinding.InverseBindingAdapter;
 import android.databinding.InverseBindingListener;
 import android.location.Location;
-import android.support.annotation.DrawableRes;
 
-import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.GroundOverlayOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.maps.android.heatmaps.Gradient;
 
@@ -18,7 +17,7 @@ import agency.tango.viking.bindings.map.adapters.ItemPopupAdapter;
 import agency.tango.viking.bindings.map.clickHandlers.ClusterClickHandler;
 import agency.tango.viking.bindings.map.clickHandlers.ItemClickHandler;
 
-@SuppressWarnings("unchecked")
+@SuppressWarnings({ "unchecked", "unused" })
 public class MapBindings {
   private MapBindings() {
   }
@@ -91,11 +90,22 @@ public class MapBindings {
   }
 
   @BindingAdapter("paths")
-  public static void setPaths(GoogleMapView customMarkerMap, Collection<PolylineOptions> polylines) {
+  public static void setPaths(GoogleMapView customMarkerMap,
+      Collection<PolylineOptions> polylines) {
     if (polylines == null) {
       return;
     }
     customMarkerMap.paths(polylines);
+  }
+
+  @BindingAdapter("overlays")
+  public static void setOverlays(GoogleMapView googleMapView,
+      Collection<GroundOverlayOptions> overlays) {
+    if (overlays == null) {
+      return;
+    }
+
+    googleMapView.overlays(overlays);
   }
 
   @BindingAdapter("mapClusteringAdapter")
@@ -115,12 +125,6 @@ public class MapBindings {
       return;
     }
     customMarkerMap.markers(items);
-  }
-
-  @BindingAdapter({ "groundOverlayDrawable", "groundOverlayBounds" })
-  public static void groundOverlay(GoogleMapView customMarkerMap, @DrawableRes int drawable,
-      LatLngBounds latLngBounds) {
-    customMarkerMap.groundOverlay(drawable, latLngBounds);
   }
 
   @BindingAdapter("clusterClick")

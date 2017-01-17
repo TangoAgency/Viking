@@ -28,7 +28,7 @@
       bind:mapItems="@{viewModel.models}"
       bind:markerClick="@{viewModel.markerClick}"
       bind:overlays="@{viewModel.overlays}"
-      bind:paths="@{viewModel.paths}"
+      bind:polylines="@{viewModel.polylines}"
       bind:zoom="@={viewModel.zoom}"
       />
 

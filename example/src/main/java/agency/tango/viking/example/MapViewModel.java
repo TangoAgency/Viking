@@ -35,7 +35,7 @@ public class MapViewModel extends ViewModel {
   public static final float DEFAULT_ZOOM = 15;
 
   private final ObservableList<BindableMarker<ExampleModel>> models = new ObservableArrayList<>();
-  private final ObservableList<BindablePolyline> paths = new ObservableArrayList<>();
+  private final ObservableList<BindablePolyline> polylines = new ObservableArrayList<>();
   private final ObservableList<BindableOverlay> overlays = new ObservableArrayList<>();
 
   private HeatmapTileProvider heatmapTileProvider;
@@ -58,7 +58,7 @@ public class MapViewModel extends ViewModel {
             .title("marker")
             .position(new LatLng(0, 0))));
 
-    paths.add(new BindablePolyline(0,
+    polylines.add(new BindablePolyline(0,
         new PolylineOptions().add(new LatLng(0, 0)).add(new LatLng(50, 50))));
 
     overlays.add(new BindableOverlay(0,
@@ -80,7 +80,7 @@ public class MapViewModel extends ViewModel {
           @Override
           public void accept(Integer integer) throws Exception {
 
-            paths.set(0, new BindablePolyline(0,
+            polylines.set(0, new BindablePolyline(0,
                 new PolylineOptions().add(new LatLng(25, 14)).add(new LatLng(25, 50))));
 
             overlays.set(0, new BindableOverlay(0,
@@ -105,8 +105,8 @@ public class MapViewModel extends ViewModel {
   }
 
   @Bindable
-  public Collection<BindablePolyline> getPaths() {
-    return paths;
+  public Collection<BindablePolyline> getPolylines() {
+    return polylines;
   }
 
   @Bindable

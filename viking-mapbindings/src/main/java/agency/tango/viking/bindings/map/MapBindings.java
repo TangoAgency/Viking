@@ -88,26 +88,13 @@ public class MapBindings {
     googleMapView.infoWindowClick(itemClickListener);
   }
 
-  //
-  //@BindingAdapter("markerPopupAdapter")
-  //public static void markerPopupAdapter(GoogleMapView customMarkerMap,
-  //    ItemPopupAdapter infoWindowAdapter) {
-  //  customMarkerMap.popupInfoAdapter(infoWindowAdapter);
-  //}
-
-  @BindingAdapter("markerPopupClick")
-  public static void markerPopupClick(GoogleMapView customMarkerMap,
-      ItemClickListener clickHandler) {
-    //        customMarkerMap.markerPopupClicked(clickHandler);
-  }
-
-  @BindingAdapter("paths")
-  public static void setPaths(GoogleMapView customMarkerMap,
+  @BindingAdapter("polylines")
+  public static void setPolylines(GoogleMapView googleMapView,
       Collection<PolylineOptions> polylines) {
     if (polylines == null) {
       return;
     }
-    customMarkerMap.paths(polylines);
+    googleMapView.polylines(polylines);
   }
 
   @BindingAdapter("overlays")
@@ -144,6 +131,114 @@ public class MapBindings {
   public static void heatRadius(GoogleMapView googleMapView,
       HeatmapTileProvider heatmapTileProvider) {
     googleMapView.heatMap(heatmapTileProvider);
+  }
+
+  @BindingAdapter("polylineClickListener")
+  public static void polylineClickListener(GoogleMapView googleMapView,
+      GoogleMap.OnPolylineClickListener polylineClickListener) {
+    googleMapView.polylineClickListener(polylineClickListener);
+  }
+
+  @BindingAdapter("polygonClickListener")
+  public static void polygonClickListener(GoogleMapView googleMapView,
+      GoogleMap.OnPolygonClickListener polygonClickListener) {
+    googleMapView.polygonClickListener(polygonClickListener);
+  }
+
+  @BindingAdapter("cameraMoveStartedListener")
+  public static void cameraMoveStartedListener(GoogleMapView googleMapView,
+      GoogleMap.OnCameraMoveStartedListener cameraMoveStartedListener) {
+    googleMapView.cameraMoveStartedListener(cameraMoveStartedListener);
+  }
+
+  @BindingAdapter("cameraMoveCanceledListener")
+  public static void cameraMoveCanceledListener(GoogleMapView googleMapView,
+      GoogleMap.OnCameraMoveCanceledListener cameraMoveCanceledListener) {
+    googleMapView.cameraMoveCanceledListener(cameraMoveCanceledListener);
+  }
+
+  @BindingAdapter("cameraIdleListener")
+  public static void cameraIdleListener(GoogleMapView googleMapView,
+      GoogleMap.OnCameraIdleListener cameraIdleListener) {
+    googleMapView.cameraIdleListener(cameraIdleListener);
+  }
+
+  @BindingAdapter("onCameraMoveListener")
+  public static void onCameraMoveListener(GoogleMapView googleMapView,
+      GoogleMap.OnCameraMoveListener onCameraMoveListener) {
+    googleMapView.onCameraMoveListener(onCameraMoveListener);
+  }
+
+  @BindingAdapter("onCircleClickListener")
+  public static void onCircleClickListener(GoogleMapView googleMapView,
+      GoogleMap.OnCircleClickListener onCircleClickListener) {
+    googleMapView.onCircleClickListener(onCircleClickListener);
+  }
+
+  @BindingAdapter("onGroundOverlayClickListener")
+  public static void onGroundOverlayClickListener(GoogleMapView googleMapView,
+      GoogleMap.OnGroundOverlayClickListener onGroundOverlayClickListener) {
+    googleMapView.onGroundOverlayClickListener(onGroundOverlayClickListener);
+  }
+
+  @BindingAdapter("onIndoorStateChangedListener")
+  public static void onIndoorStateChangedListener(GoogleMapView googleMapView,
+      GoogleMap.OnIndoorStateChangeListener onIndoorStateChangedListener) {
+    googleMapView.onIndoorStateChangedListener(onIndoorStateChangedListener);
+  }
+
+  @BindingAdapter("onInfoWindowCloseListener")
+  public static void onInfoWindowCloseListener(GoogleMapView googleMapView,
+      GoogleMap.OnInfoWindowCloseListener onInfoWindowCloseListener) {
+    googleMapView.onInfoWindowCloseListener(onInfoWindowCloseListener);
+  }
+
+  @BindingAdapter("onInfoWindowLongClickListener")
+  public static void onInfoWindowLongClickListener(GoogleMapView googleMapView,
+      GoogleMap.OnInfoWindowLongClickListener onInfoWindowLongClickListener) {
+    googleMapView.onInfoWindowLongClickListener(onInfoWindowLongClickListener);
+  }
+
+  @BindingAdapter("onMapClickListener")
+  public static void onMapClickListener(GoogleMapView googleMapView,
+      GoogleMap.OnMapClickListener onMapClickListener) {
+    googleMapView.onMapClickListener(onMapClickListener);
+  }
+
+  @BindingAdapter("onMapLoadedCallback")
+  public static void onMapLoadedCallback(GoogleMapView googleMapView,
+      GoogleMap.OnMapLoadedCallback onMapLoadedCallback) {
+    googleMapView.onMapLoadedCallback(onMapLoadedCallback);
+  }
+
+  @BindingAdapter("onMapLongClickListener")
+  public static void onMapLongClickListener(GoogleMapView googleMapView,
+      GoogleMap.OnMapLongClickListener onMapLongClickListener) {
+    googleMapView.onMapLongClickListener(onMapLongClickListener);
+  }
+
+  @BindingAdapter("onMarkerDragListener")
+  public static void onMarkerDragListener(GoogleMapView googleMapView,
+      GoogleMap.OnMarkerDragListener onMarkerDragListener) {
+    googleMapView.onMarkerDragListener(onMarkerDragListener);
+  }
+
+  @BindingAdapter("onMyLocationButtonClickListener")
+  public static void onMyLocationButtonClickListener(GoogleMapView googleMapView,
+      GoogleMap.OnMyLocationButtonClickListener onMyLocationButtonClickListener) {
+    googleMapView.onMyLocationButtonClickListener(onMyLocationButtonClickListener);
+  }
+
+  @BindingAdapter("onPoiClickListener")
+  public static void onPoiClickListener(GoogleMapView googleMapView,
+      GoogleMap.OnPoiClickListener onPoiClickListener) {
+    googleMapView.onPoiClickListener(onPoiClickListener);
+  }
+
+  @BindingAdapter("snapshot")
+  public static void cameraIdleListener(GoogleMapView googleMapView,
+      GoogleMap.SnapshotReadyCallback snapshotReadyCallback) {
+    googleMapView.snapshot(snapshotReadyCallback);
   }
 
   private static void setOnValueChangedListener(BindableItem item,

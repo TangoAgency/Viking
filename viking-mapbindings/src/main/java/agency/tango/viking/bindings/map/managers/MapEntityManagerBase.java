@@ -1,4 +1,4 @@
-package agency.tango.viking.bindings.map;
+package agency.tango.viking.bindings.map.managers;
 
 import android.databinding.ObservableList;
 
@@ -9,11 +9,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import agency.tango.viking.bindings.map.models.ModelWithId;
+import agency.tango.viking.bindings.map.models.MapEntity;
 
 import static agency.tango.viking.bindings.map.CollectionUtils.moveRange;
 
-public abstract class MapEntityManagerBase<T extends ModelWithId> implements IMapEntityManager<T> {
+public abstract class MapEntityManagerBase<T extends MapEntity> implements IMapEntityManager<T> {
 
   private final MapResolver mapResolver;
   private ObservableList.OnListChangedCallback<ObservableList<T>> itemsListener;
@@ -33,7 +33,7 @@ public abstract class MapEntityManagerBase<T extends ModelWithId> implements IMa
           int itemCount) {
         mapResolver.resolve(googleMap -> {
           for (int i = fromIndex; i < itemCount; i++) {
-            update(entities.get(i), observableList.get(i), googleMap);
+            updateOnMap(entities.get(i), observableList.get(i), googleMap);
           }
         });
       }
@@ -43,7 +43,7 @@ public abstract class MapEntityManagerBase<T extends ModelWithId> implements IMa
           int itemCount) {
         mapResolver.resolve(googleMap -> {
           for (int i = fromIndex; i <= observableList.size() - itemCount; i++) {
-            entities.add(i, create(observableList.get(i), googleMap));
+            entities.add(i, addToMap(observableList.get(i), googleMap));
           }
         });
       }
@@ -61,7 +61,7 @@ public abstract class MapEntityManagerBase<T extends ModelWithId> implements IMa
           for (int i = fromIndex; i < itemCount; i++) {
             T entity = entities.remove(i);
             if (entity != null) {
-              remove(entity, googleMap);
+              removeFromMap(entity, googleMap);
             }
           }
         });
@@ -71,7 +71,7 @@ public abstract class MapEntityManagerBase<T extends ModelWithId> implements IMa
 
   @Override
   public void add(GoogleMap googleMap, T item) {
-    entities.add(create(item, googleMap));
+    entities.add(addToMap(item, googleMap));
   }
 
   @Override
@@ -88,7 +88,7 @@ public abstract class MapEntityManagerBase<T extends ModelWithId> implements IMa
     for (T entity : entities) {
       if (entity.getId() == item.getId()) {
         entities.remove(entity);
-        remove(entity, googleMap);
+        removeFromMap(entity, googleMap);
       }
     }
   }
@@ -98,7 +98,8 @@ public abstract class MapEntityManagerBase<T extends ModelWithId> implements IMa
     for (T entity : entities) {
       for (T item : items) {
         if (entity.getId() == item.getId()) {
-          remove(entity, googleMap);
+          removeFromMap(entity, googleMap);
+          entities.remove(entity);
         }
       }
     }
@@ -107,7 +108,7 @@ public abstract class MapEntityManagerBase<T extends ModelWithId> implements IMa
   private void addItems(Collection<T> items) {
     mapResolver.resolve(googleMap -> {
       for (T entity : entities) {
-        remove(entity, googleMap);
+        removeFromMap(entity, googleMap);
       }
       entities.clear();
 
@@ -117,9 +118,9 @@ public abstract class MapEntityManagerBase<T extends ModelWithId> implements IMa
     });
   }
 
-  abstract T create(T item, GoogleMap googleMap);
+  abstract T addToMap(T item, GoogleMap googleMap);
 
-  abstract void remove(T entity, GoogleMap googleMap);
+  abstract void removeFromMap(T entity, GoogleMap googleMap);
 
-  abstract void update(T entity, T item, GoogleMap googleMap);
+  abstract void updateOnMap(T entity, T item, GoogleMap googleMap);
 }

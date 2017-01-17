@@ -3,7 +3,6 @@ package agency.tango.viking.example;
 import android.databinding.Bindable;
 import android.databinding.ObservableArrayList;
 import android.databinding.ObservableList;
-import android.location.Location;
 import android.view.View;
 
 import com.google.android.gms.maps.GoogleMap;
@@ -14,6 +13,8 @@ import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.maps.android.clustering.Cluster;
+import com.google.maps.android.clustering.ClusterManager;
 import com.google.maps.android.heatmaps.HeatmapTileProvider;
 
 import java.util.Arrays;
@@ -37,10 +38,11 @@ public class MapViewModel extends ViewModel {
   private final ObservableList<BindableMarker<ExampleModel>> models = new ObservableArrayList<>();
   private final ObservableList<BindablePolyline> polylines = new ObservableArrayList<>();
   private final ObservableList<BindableOverlay> overlays = new ObservableArrayList<>();
+  private final ObservableList<ClusterModel> clusterItems = new ObservableArrayList<>();
 
   private HeatmapTileProvider heatmapTileProvider;
 
-  private Location location;
+  private LatLng latLng;
   private float zoom = DEFAULT_ZOOM;
 
   @Inject
@@ -50,6 +52,13 @@ public class MapViewModel extends ViewModel {
   @Override
   public void start() {
     super.start();
+
+    clusterItems.add(new ClusterModel(0, new LatLng(1.101110, 0.000000)));
+    clusterItems.add(new ClusterModel(1, new LatLng(2.202222, 0.000002)));
+    clusterItems.add(new ClusterModel(2, new LatLng(3.303334, 0.000004)));
+    clusterItems.add(new ClusterModel(3, new LatLng(4.404446, 0.000006)));
+    clusterItems.add(new ClusterModel(4, new LatLng(5.505558, 0.000008)));
+    clusterItems.add(new ClusterModel(5, new LatLng(6.606660, 0.000010)));
 
     models.add(new BindableMarker<>(
         new ExampleModel(new LatLng(0, 0)),
@@ -100,6 +109,9 @@ public class MapViewModel extends ViewModel {
   }
 
   @Bindable
+  public Collection<ClusterModel> getClusterItems() {return clusterItems;}
+
+  @Bindable
   public Collection<BindableMarker<ExampleModel>> getModels() {
     return models;
   }
@@ -119,13 +131,13 @@ public class MapViewModel extends ViewModel {
   }
 
   @Bindable
-  public Location getLocation() {
-    return this.location;
+  public LatLng getLatLng() {
+    return this.latLng;
   }
 
-  public void setLocation(Location location) {
-    this.location = location;
-    this.notifyPropertyChanged(BR.location);
+  public void setLatLng(LatLng latLng) {
+    this.latLng = latLng;
+    this.notifyPropertyChanged(BR.latLng);
   }
 
   @Bindable
@@ -139,7 +151,7 @@ public class MapViewModel extends ViewModel {
   }
 
   @Bindable
-  public ItemClickListener<BindableMarker<ExampleModel>> getMarkerClick() {
+  public ItemClickListener<BindableMarker<ExampleModel>> getMarkerClickListener() {
     return new ItemClickListener<BindableMarker<ExampleModel>>() {
       @Override
       public void onClick(BindableMarker<ExampleModel> item) {
@@ -149,7 +161,7 @@ public class MapViewModel extends ViewModel {
   }
 
   @Bindable
-  public ItemClickListener<BindableMarker<ExampleModel>> getInfoWindowClick() {
+  public ItemClickListener<BindableMarker<ExampleModel>> getInfoWindowClickListener() {
     return new ItemClickListener<BindableMarker<ExampleModel>>() {
       @Override
       public void onClick(BindableMarker<ExampleModel> item) {
@@ -170,6 +182,17 @@ public class MapViewModel extends ViewModel {
       @Override
       public View getInfoContents(Marker marker) {
         return null;
+      }
+    };
+  }
+
+  @Bindable
+  public ClusterManager.OnClusterClickListener getClusterClickListener() {
+    return new ClusterManager.OnClusterClickListener() {
+      @Override
+      public boolean onClusterClick(Cluster cluster) {
+        setLatLng(cluster.getPosition());
+        return false;
       }
     };
   }

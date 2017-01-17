@@ -1,4 +1,4 @@
-package agency.tango.viking.bindings.map;
+package agency.tango.viking.bindings.map.managers;
 
 import com.android.annotations.NonNull;
 import com.google.android.gms.maps.GoogleMap;

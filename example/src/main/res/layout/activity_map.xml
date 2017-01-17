@@ -17,17 +17,20 @@
     android:layout_height="match_parent"
     tools:context="agency.tango.viking.example.MapActivity"
     >
+
     <agency.tango.viking.bindings.map.GoogleMapView
       android:id="@+id/map"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
+      bind:clusterItems="@{viewModel.clusterItems}"
+      bind:clusterClickListener="@{viewModel.clusterClickListener}"
       bind:heatMap="@{viewModel.heatMap}"
       bind:infoWindowAdapter="@{viewModel.infoWindowAdapter}"
-      bind:infoWindowClick="@{viewModel.infoWindowClick}"
-      bind:location="@={viewModel.location}"
+      bind:infoWindowClickListener="@{viewModel.infoWindowClickListener}"
+      bind:latLng="@={viewModel.latLng}"
       bind:mapItems="@{viewModel.models}"
-      bind:markerClick="@{viewModel.markerClick}"
-      bind:overlays="@{viewModel.overlays}"
+      bind:markerClickListener="@{viewModel.markerClickListener}"
+      bind:groundOverlays="@{viewModel.overlays}"
       bind:polylines="@{viewModel.polylines}"
       bind:zoom="@={viewModel.zoom}"
       />

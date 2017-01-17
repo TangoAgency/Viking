@@ -1,4 +1,4 @@
-package agency.tango.viking.bindings.map;
+package agency.tango.viking.bindings.map.managers;
 
 import android.support.annotation.Nullable;
 
@@ -16,18 +16,18 @@ public class MarkerManager<T> extends MapEntityManagerBase<BindableMarker<T>>
   }
 
   @Override
-  BindableMarker<T> create(BindableMarker<T> item, GoogleMap googleMap) {
+  BindableMarker<T> addToMap(BindableMarker<T> item, GoogleMap googleMap) {
     item.setMarker(googleMap.addMarker(item.getMarkerOptions()));
     return item;
   }
 
   @Override
-  void remove(BindableMarker<T> entity, GoogleMap googleMap) {
+  void removeFromMap(BindableMarker<T> entity, GoogleMap googleMap) {
     entity.getMarker().remove();
   }
 
   @Override
-  void update(BindableMarker<T> entity, BindableMarker<T> item, GoogleMap googleMap) {
+  void updateOnMap(BindableMarker<T> entity, BindableMarker<T> item, GoogleMap googleMap) {
     Marker marker = entity.getMarker();
     MarkerOptions markerOptions = item.getMarkerOptions();
 

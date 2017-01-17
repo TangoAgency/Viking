@@ -3,7 +3,7 @@ package agency.tango.viking.bindings.map.models;
 import com.google.android.gms.maps.model.GroundOverlay;
 import com.google.android.gms.maps.model.GroundOverlayOptions;
 
-public class BindableOverlay implements ModelWithId {
+public class BindableOverlay implements MapEntity {
   private final long id;
   private final GroundOverlayOptions groundOverlayOptions;
   private GroundOverlay groundOverlay;

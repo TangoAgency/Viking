@@ -5,7 +5,7 @@ import android.support.annotation.Nullable;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-public class BindableMarker<T> implements ModelWithId {
+public class BindableMarker<T> implements MapEntity {
   private final T object;
   private final long id;
   private final MarkerOptions markerOptions;

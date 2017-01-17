@@ -1,4 +1,4 @@
-package agency.tango.viking.bindings.map;
+package agency.tango.viking.bindings.map.managers;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.Polyline;
@@ -14,18 +14,18 @@ public class PolylineManager extends MapEntityManagerBase<BindablePolyline>
   }
 
   @Override
-  BindablePolyline create(BindablePolyline item, GoogleMap googleMap) {
+  BindablePolyline addToMap(BindablePolyline item, GoogleMap googleMap) {
     item.setPolyline(googleMap.addPolyline(item.getPolylineOptions()));
     return item;
   }
 
   @Override
-  void remove(BindablePolyline entity, GoogleMap googleMap) {
+  void removeFromMap(BindablePolyline entity, GoogleMap googleMap) {
     entity.getPolyline().remove();
   }
 
   @Override
-  void update(BindablePolyline entity, BindablePolyline item, GoogleMap googleMap) {
+  void updateOnMap(BindablePolyline entity, BindablePolyline item, GoogleMap googleMap) {
     Polyline polyline = entity.getPolyline();
     PolylineOptions polylineOptions = item.getPolylineOptions();
 

@@ -1,4 +1,4 @@
-package agency.tango.viking.bindings.map;
+package agency.tango.viking.bindings.map.managers;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.GroundOverlay;
@@ -9,23 +9,23 @@ import agency.tango.viking.bindings.map.models.BindableOverlay;
 public class OverlayManager extends MapEntityManagerBase<BindableOverlay>
     implements IMapEntityManager<BindableOverlay> {
 
-  OverlayManager(MapResolver mapResolver) {
+  public OverlayManager(MapResolver mapResolver) {
     super(mapResolver);
   }
 
   @Override
-  BindableOverlay create(BindableOverlay item, GoogleMap googleMap) {
+  BindableOverlay addToMap(BindableOverlay item, GoogleMap googleMap) {
     item.setGroundOverlay(googleMap.addGroundOverlay(item.getGroundOverlayOptions()));
     return item;
   }
 
   @Override
-  void remove(BindableOverlay entity, GoogleMap googleMap) {
+  void removeFromMap(BindableOverlay entity, GoogleMap googleMap) {
     entity.getGroundOverlay().remove();
   }
 
   @Override
-  void update(BindableOverlay entity, BindableOverlay item, GoogleMap googleMap) {
+  void updateOnMap(BindableOverlay entity, BindableOverlay item, GoogleMap googleMap) {
     GroundOverlay groundOverlay = entity.getGroundOverlay();
     GroundOverlayOptions groundOverlayOptions = item.getGroundOverlayOptions();
 

@@ -3,7 +3,6 @@ package agency.tango.viking.bindings.map;
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
-import android.location.Location;
 import android.support.v4.app.ActivityCompat;
 import android.util.AttributeSet;
 
@@ -15,12 +14,18 @@ import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.TileOverlay;
 import com.google.android.gms.maps.model.TileOverlayOptions;
 import com.google.maps.android.SphericalUtil;
+import com.google.maps.android.clustering.ClusterManager;
+import com.google.maps.android.clustering.algo.Algorithm;
 import com.google.maps.android.heatmaps.HeatmapTileProvider;
 
 import java.util.ArrayList;
 import java.util.Collection;
 
 import agency.tango.viking.bindings.map.clickHandlers.ItemClickListener;
+import agency.tango.viking.bindings.map.managers.ClusterItemManager;
+import agency.tango.viking.bindings.map.managers.MarkerManager;
+import agency.tango.viking.bindings.map.managers.OverlayManager;
+import agency.tango.viking.bindings.map.managers.PolylineManager;
 import agency.tango.viking.bindings.map.models.BindableMarker;
 import agency.tango.viking.bindings.map.models.BindableOverlay;
 import agency.tango.viking.bindings.map.models.BindablePolyline;
@@ -28,7 +33,7 @@ import agency.tango.viking.bindings.map.models.BindablePolyline;
 public class GoogleMapView<T> extends MapView {
   private ArrayList<GoogleMap.OnCameraIdleListener> cameraIdleListeners = new ArrayList<>();
 
-  private BindableItem<Location> location = new BindableItem<>();
+  private BindableItem<LatLng> latLng = new BindableItem<>();
   private BindableItem<Float> zoom = new BindableItem<>();
   private BindableItem<Integer> radius = new BindableItem<>();
 
@@ -36,10 +41,13 @@ public class GoogleMapView<T> extends MapView {
   private PolylineManager polylineManager;
   private OverlayManager overlayManager;
 
+  private ClusterManager<ClusterMapItem> clusterManager;
+  private ClusterItemManager<ClusterMapItem> clusterItemManager;
+
   private TileOverlay heatMapTileOverlay;
 
   private ItemClickListener<BindableMarker<T>> infoWindowClickListener;
-  private ItemClickListener<BindableMarker<T>> itemClickListener;
+  private ItemClickListener<BindableMarker<T>> markerItemClickListener;
 
   public GoogleMapView(Context context) {
     super(context);
@@ -60,126 +68,193 @@ public class GoogleMapView<T> extends MapView {
     return radius;
   }
 
-  public BindableItem<Location> location() {
-    return location;
+  public BindableItem<LatLng> latLng() {
+    return latLng;
   }
 
   public BindableItem<Float> zoom() {
     return zoom;
   }
 
-  public void postChangedLocation(Location location) {
-    getMapAsync(googleMap -> googleMap.moveCamera(CameraUpdateFactory.newLatLng(
-        new LatLng(location.getLatitude(), location.getLongitude()))));
-    updateField(this.location, location);
+  public void postChangedLocation(LatLng latLng) {
+    getMapAsync(googleMap -> googleMap.moveCamera(CameraUpdateFactory.newLatLng(latLng)));
+    updateField(this.latLng, latLng);
   }
 
-  public void infoWindowAdapter(GoogleMap.InfoWindowAdapter infoWindowAdapter) {
+  public void setInfoWindowAdapter(GoogleMap.InfoWindowAdapter infoWindowAdapter) {
     getMapAsync(googleMap -> googleMap.setInfoWindowAdapter(infoWindowAdapter));
   }
 
   //region Listeners
-  public void markerClick(ItemClickListener<BindableMarker<T>> itemClickListener) {
-    this.itemClickListener = itemClickListener;
+  public void setOnMarkerClickListener(
+      ItemClickListener<BindableMarker<T>> markerItemClickListener) {
+    this.markerItemClickListener = markerItemClickListener;
   }
 
-  public void infoWindowClick(ItemClickListener<BindableMarker<T>> infoWindowClickListener) {
+  public void setOnInfoWindowClickListener(
+      ItemClickListener<BindableMarker<T>> infoWindowClickListener) {
     this.infoWindowClickListener = infoWindowClickListener;
   }
 
-  public void polylineClickListener(GoogleMap.OnPolylineClickListener polylineItemClickListener) {
+  public void setOnPolylineClickListener(
+      GoogleMap.OnPolylineClickListener polylineItemClickListener) {
     getMapAsync(googleMap -> googleMap.setOnPolylineClickListener(polylineItemClickListener));
   }
 
-  public void polygonClickListener(GoogleMap.OnPolygonClickListener onPolygonClickListener) {
+  public void setOnPolygonClickListener(GoogleMap.OnPolygonClickListener onPolygonClickListener) {
     getMapAsync(googleMap -> googleMap.setOnPolygonClickListener(onPolygonClickListener));
   }
 
-  public void cameraMoveStartedListener(
+  public void setOnCameraMoveStartedListener(
       GoogleMap.OnCameraMoveStartedListener onCameraMoveStartedListener) {
     getMapAsync(googleMap -> googleMap.setOnCameraMoveStartedListener(onCameraMoveStartedListener));
   }
 
-  public void cameraMoveCanceledListener(
+  public void setOnCameraMoveCanceledListener(
       GoogleMap.OnCameraMoveCanceledListener onCameraMoveCanceledListener) {
     getMapAsync(
         googleMap -> googleMap.setOnCameraMoveCanceledListener(onCameraMoveCanceledListener));
   }
 
-  public void cameraIdleListener(GoogleMap.OnCameraIdleListener onCameraIdleListener) {
+  public void setOnCameraIdleListener(GoogleMap.OnCameraIdleListener onCameraIdleListener) {
     registerOnCameraIdleListener(onCameraIdleListener);
   }
 
-  public void onCameraMoveListener(GoogleMap.OnCameraMoveListener onCameraMoveListener) {
+  public void setOnCameraMoveListener(GoogleMap.OnCameraMoveListener onCameraMoveListener) {
     getMapAsync(googleMap -> googleMap.setOnCameraMoveListener(onCameraMoveListener));
   }
 
-  public void onCircleClickListener(GoogleMap.OnCircleClickListener onCircleClickListener) {
+  public void setOnCircleClickListener(GoogleMap.OnCircleClickListener onCircleClickListener) {
     getMapAsync(googleMap -> googleMap.setOnCircleClickListener(onCircleClickListener));
   }
 
-  public void onGroundOverlayClickListener(
+  public void setOnGroundOverlayClickListener(
       GoogleMap.OnGroundOverlayClickListener onGroundOverlayClickListener) {
     getMapAsync(
         googleMap -> googleMap.setOnGroundOverlayClickListener(onGroundOverlayClickListener));
   }
 
-  public void onIndoorStateChangedListener(
+  public void setOnIndoorStateChangeListener(
       GoogleMap.OnIndoorStateChangeListener onIndoorStateChangeListener) {
     getMapAsync(googleMap -> googleMap.setOnIndoorStateChangeListener(onIndoorStateChangeListener));
   }
 
-  public void onInfoWindowCloseListener(
+  public void setOnInfoWindowCloseListener(
       GoogleMap.OnInfoWindowCloseListener onInfoWindowCloseListener) {
     getMapAsync(googleMap -> googleMap.setOnInfoWindowCloseListener(onInfoWindowCloseListener));
   }
 
-  public void onInfoWindowLongClickListener(
+  public void setOnInfoWindowLongClickListener(
       GoogleMap.OnInfoWindowLongClickListener onInfoWindowLongClickListener) {
     getMapAsync(
         googleMap -> googleMap.setOnInfoWindowLongClickListener(onInfoWindowLongClickListener));
   }
 
-  public void onMapClickListener(GoogleMap.OnMapClickListener onMapClickListener) {
+  public void setOnMapClickListener(GoogleMap.OnMapClickListener onMapClickListener) {
     getMapAsync(googleMap -> googleMap.setOnMapClickListener(onMapClickListener));
   }
 
-  public void onMapLoadedCallback(GoogleMap.OnMapLoadedCallback onMapLoadedCallback) {
+  public void setOnMapLoadedCallback(GoogleMap.OnMapLoadedCallback onMapLoadedCallback) {
     getMapAsync(googleMap -> googleMap.setOnMapLoadedCallback(onMapLoadedCallback));
   }
 
-  public void onMapLongClickListener(GoogleMap.OnMapLongClickListener onMapLongClickListener) {
+  public void setOnMapLongClickListener(GoogleMap.OnMapLongClickListener onMapLongClickListener) {
     getMapAsync(googleMap -> googleMap.setOnMapLongClickListener(onMapLongClickListener));
   }
 
-  public void onMarkerDragListener(GoogleMap.OnMarkerDragListener onMarkerDragListener) {
+  public void setOnMarkerDragListener(GoogleMap.OnMarkerDragListener onMarkerDragListener) {
     getMapAsync(googleMap -> googleMap.setOnMarkerDragListener(onMarkerDragListener));
   }
 
-  public void onMyLocationButtonClickListener(
+  public void setOnMyLocationButtonClickListener(
       GoogleMap.OnMyLocationButtonClickListener onMyLocationButtonClickListener) {
     getMapAsync(
         googleMap -> googleMap.setOnMyLocationButtonClickListener(onMyLocationButtonClickListener));
   }
 
-  public void onPoiClickListener(GoogleMap.OnPoiClickListener onPoiClickListener) {
+  public void setOnPoiClickListener(GoogleMap.OnPoiClickListener onPoiClickListener) {
     getMapAsync(googleMap -> googleMap.setOnPoiClickListener(onPoiClickListener));
   }
 
-  public void snapshot(GoogleMap.SnapshotReadyCallback snapshotReadyCallback) {
+  public void setSnapshotReadyCallback(GoogleMap.SnapshotReadyCallback snapshotReadyCallback) {
     getMapAsync(googleMap -> googleMap.snapshot(snapshotReadyCallback));
   }
   //endregion
 
-  public void markers(Collection<BindableMarker<T>> items) {
-    getMapAsync(googleMap -> markerManager.addItems(googleMap, items));
+  //region Cluster
+  public void setOnClusterClickListener(
+      ClusterManager.OnClusterClickListener<ClusterMapItem> clusterClickListener) {
+    getMapAsync(googleMap -> {
+      if (clusterManager != null) {
+        clusterManager.setOnClusterClickListener(clusterClickListener);
+      }
+    });
+  }
+
+  public void setOnClusterItemClickListener(
+      ClusterManager.OnClusterItemClickListener<ClusterMapItem> clusterItemClickListener) {
+    getMapAsync(googleMap -> {
+      if (clusterManager != null) {
+        clusterManager.setOnClusterItemClickListener(clusterItemClickListener);
+      }
+    });
+  }
+
+  public void setOnClusterInfoWindowClickListener(
+      ClusterManager.OnClusterInfoWindowClickListener<ClusterMapItem> clusterInfoWindowClickListener) {
+    getMapAsync(googleMap -> {
+      if (clusterManager != null) {
+        clusterManager.setOnClusterInfoWindowClickListener(clusterInfoWindowClickListener);
+      }
+    });
+  }
+
+  public void setOnClusterItemInfoWindowClickListener(
+      ClusterManager.OnClusterItemInfoWindowClickListener<ClusterMapItem> clusterItemInfoWindowClickListener) {
+    getMapAsync(googleMap -> {
+      if (clusterManager != null) {
+        clusterManager.setOnClusterItemInfoWindowClickListener(clusterItemInfoWindowClickListener);
+      }
+    });
+  }
+
+  public void setAlgorithm(Algorithm<ClusterMapItem> algorithm) {
+    getMapAsync(googleMap -> {
+      if (clusterManager != null) {
+        clusterManager.setAlgorithm(algorithm);
+      }
+    });
+  }
+
+  public void setRendererFactory(RendererFactory<ClusterMapItem> rendererFactory) {
+    getMapAsync(googleMap -> {
+      if (clusterManager != null) {
+        clusterManager.setRenderer(
+            rendererFactory.createRenderer(getContext(), googleMap, clusterManager));
+      }
+    });
+  }
+
+  public void clusterItems(Collection<ClusterMapItem> clusterItems) {
+    getMapAsync(googleMap -> {
+      if (clusterManager == null) {
+        clusterManager = new ClusterManager<>(getContext(), googleMap);
+        clusterItemManager = new ClusterItemManager<>(this::getMapAsync, clusterManager);
+      }
+      clusterItemManager.addItems(googleMap, clusterItems);
+    });
+  }
+  //endregion
+
+  public void markers(Collection<BindableMarker<T>> markers) {
+    getMapAsync(googleMap -> markerManager.addItems(googleMap, markers));
   }
 
   public void polylines(Collection<BindablePolyline> polylines) {
     getMapAsync(googleMap -> polylineManager.addItems(googleMap, polylines));
   }
 
-  public void overlays(Collection<BindableOverlay> overlays) {
+  public void groundOverlays(Collection<BindableOverlay> overlays) {
     getMapAsync(googleMap -> overlayManager.addItems(googleMap, overlays));
   }
 
@@ -201,22 +276,30 @@ public class GoogleMapView<T> extends MapView {
       initGoogleMap();
 
       registerOnCameraIdleListener(() -> {
-        updateField(location, getLocation(googleMap));
+        updateField(latLng, getLatLng(googleMap));
         updateField(zoom, googleMap.getCameraPosition().zoom);
         updateField(radius, currentRadius(googleMap));
       });
 
       googleMap.setOnCameraIdleListener(() -> {
+        if (clusterManager != null) {
+          clusterManager.onCameraIdle();
+        }
+
         for (GoogleMap.OnCameraIdleListener cameraIdleListener : cameraIdleListeners) {
           cameraIdleListener.onCameraIdle();
         }
       });
 
       googleMap.setOnMarkerClickListener(markerClicked -> {
-        if (itemClickListener != null) {
+        if (clusterManager != null) {
+          clusterManager.onMarkerClick(markerClicked);
+        }
+
+        if (markerItemClickListener != null) {
           BindableMarker<T> bindableMarker = markerManager.retrieveBindableMarker(markerClicked);
           if (bindableMarker != null) {
-            itemClickListener.onClick(bindableMarker);
+            markerItemClickListener.onClick(bindableMarker);
             return false;
           }
         }
@@ -261,11 +344,8 @@ public class GoogleMapView<T> extends MapView {
     item.onValueChanged(value);
   }
 
-  private Location getLocation(GoogleMap googleMap) {
-    Location location = new Location("user");
-    location.setLatitude(googleMap.getCameraPosition().target.latitude);
-    location.setLongitude(googleMap.getCameraPosition().target.longitude);
-    return location;
+  private LatLng getLatLng(GoogleMap googleMap) {
+    return googleMap.getCameraPosition().target;
   }
 
   private int currentRadius(GoogleMap googleMap) {

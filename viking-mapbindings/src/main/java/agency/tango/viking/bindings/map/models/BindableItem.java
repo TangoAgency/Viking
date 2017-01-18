@@ -1,4 +1,4 @@
-package agency.tango.viking.bindings.map;
+package agency.tango.viking.bindings.map.models;
 
 import agency.tango.viking.bindings.map.listeners.IValueChangedListener;
 

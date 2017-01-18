@@ -1,20 +1,24 @@
 package agency.tango.viking.example;
 
+import android.content.Context;
 import android.databinding.Bindable;
 import android.databinding.ObservableArrayList;
 import android.databinding.ObservableList;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.TextView;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.GroundOverlayOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
-import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.maps.android.clustering.Cluster;
 import com.google.maps.android.clustering.ClusterManager;
+import com.google.maps.android.clustering.algo.StaticCluster;
+import com.google.maps.android.clustering.view.ClusterRenderer;
 import com.google.maps.android.heatmaps.HeatmapTileProvider;
 
 import java.util.Arrays;
@@ -23,6 +27,9 @@ import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
+import agency.tango.viking.bindings.map.adapters.CustomInfoWindowAdapter;
+import agency.tango.viking.bindings.map.InfoWindowAdapterFactory;
+import agency.tango.viking.bindings.map.RendererFactory;
 import agency.tango.viking.bindings.map.clickHandlers.ItemClickListener;
 import agency.tango.viking.bindings.map.models.BindableMarker;
 import agency.tango.viking.bindings.map.models.BindableOverlay;
@@ -61,11 +68,11 @@ public class MapViewModel extends ViewModel {
     clusterItems.add(new ClusterModel(5, new LatLng(6.606660, 0.000010)));
 
     models.add(new BindableMarker<>(
-        new ExampleModel(new LatLng(0, 0)),
+        new ExampleModel("Hello", "World"),
         0,
         new MarkerOptions()
             .title("marker")
-            .position(new LatLng(0, 0))));
+            .position(new LatLng(3, 3))));
 
     polylines.add(new BindablePolyline(0,
         new PolylineOptions().add(new LatLng(0, 0)).add(new LatLng(50, 50))));
@@ -156,6 +163,7 @@ public class MapViewModel extends ViewModel {
       @Override
       public void onClick(BindableMarker<ExampleModel> item) {
         item.getMarker().setPosition(new LatLng(20, 20));
+        item.getMarker().showInfoWindow();
       }
     };
   }
@@ -172,16 +180,57 @@ public class MapViewModel extends ViewModel {
   }
 
   @Bindable
-  public GoogleMap.InfoWindowAdapter getInfoWindowAdapter() {
-    return new GoogleMap.InfoWindowAdapter() {
+  public InfoWindowAdapterFactory<BindableMarker<ExampleModel>> getInfoWindowAdapter() {
+    return new InfoWindowAdapterFactory<BindableMarker<ExampleModel>>() {
       @Override
-      public View getInfoWindow(Marker marker) {
-        return null;
-      }
+      public CustomInfoWindowAdapter<BindableMarker<ExampleModel>> createInfoWindowAdapter(
+          final Context context) {
+        return new CustomInfoWindowAdapter<BindableMarker<ExampleModel>>() {
+          @Override
+          public View getInfoWindow(BindableMarker<ExampleModel> bindableMarker) {
+            return null;
+          }
 
+          @Override
+          public View getInfoContents(BindableMarker<ExampleModel> bindableMarker) {
+            View view = LayoutInflater.from(context).inflate(R.layout.info_window, null);
+
+            TextView title = (TextView) view.findViewById(R.id.tv_title);
+            TextView description = (TextView) view.findViewById(R.id.tv_description);
+
+            title.setText(bindableMarker.getObject().getTitle());
+            description.setText(bindableMarker.getObject().getDescription());
+            return view;
+          }
+        };
+      }
+    };
+  }
+
+  @Bindable
+  public InfoWindowAdapterFactory<StaticCluster> getClusterInfoWindowAdapter() {
+    return new InfoWindowAdapterFactory<StaticCluster>() {
       @Override
-      public View getInfoContents(Marker marker) {
-        return null;
+      public CustomInfoWindowAdapter<StaticCluster> createInfoWindowAdapter(final Context context) {
+        return new CustomInfoWindowAdapter<StaticCluster>() {
+          @Override
+          public View getInfoWindow(StaticCluster cluster) {
+            return null;
+          }
+
+          @Override
+          public View getInfoContents(StaticCluster cluster) {
+            View view = LayoutInflater.from(context).inflate(R.layout.info_window, null);
+
+            TextView title = (TextView) view.findViewById(R.id.tv_title);
+            TextView description = (TextView) view.findViewById(R.id.tv_description);
+
+            title.setText(String.format("SIZE: %d", cluster.getItems().size()));
+            description.setText(String.format("LatLng: %f %f", cluster.getPosition().latitude,
+                cluster.getPosition().longitude));
+            return view;
+          }
+        };
       }
     };
   }
@@ -193,6 +242,17 @@ public class MapViewModel extends ViewModel {
       public boolean onClusterClick(Cluster cluster) {
         setLatLng(cluster.getPosition());
         return false;
+      }
+    };
+  }
+
+  @Bindable
+  public RendererFactory<ClusterModel> getRendererFactory() {
+    return new RendererFactory<ClusterModel>() {
+      @Override
+      public ClusterRenderer<ClusterModel> createRenderer(Context context, GoogleMap googleMap,
+          ClusterManager<ClusterModel> clusterManager) {
+        return new CustomClusterRenderer(context, googleMap, clusterManager);
       }
     };
   }

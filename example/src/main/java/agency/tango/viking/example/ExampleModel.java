@@ -1,15 +1,19 @@
 package agency.tango.viking.example;
 
-import com.google.android.gms.maps.model.LatLng;
-
 public class ExampleModel {
-  private final LatLng latLng;
+  private String description;
+  private String title;
 
-  public ExampleModel(LatLng latLng) {
-    this.latLng = latLng;
+  public ExampleModel(String title, String description) {
+    this.title = title;
+    this.description = description;
   }
 
-  public LatLng getLatLng() {
-    return latLng;
+  public String getDescription() {
+    return description;
+  }
+
+  public String getTitle() {
+    return title;
   }
 }

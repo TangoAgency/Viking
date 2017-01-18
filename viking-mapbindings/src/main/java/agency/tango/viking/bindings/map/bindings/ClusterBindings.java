@@ -2,6 +2,8 @@ package agency.tango.viking.bindings.map.bindings;
 
 import android.databinding.BindingAdapter;
 
+import com.google.maps.android.clustering.Cluster;
+import com.google.maps.android.clustering.ClusterItem;
 import com.google.maps.android.clustering.ClusterManager;
 import com.google.maps.android.clustering.algo.Algorithm;
 
@@ -9,6 +11,7 @@ import java.util.Collection;
 
 import agency.tango.viking.bindings.map.ClusterMapItem;
 import agency.tango.viking.bindings.map.GoogleMapView;
+import agency.tango.viking.bindings.map.InfoWindowAdapterFactory;
 import agency.tango.viking.bindings.map.RendererFactory;
 
 public class ClusterBindings {
@@ -26,15 +29,27 @@ public class ClusterBindings {
   }
 
   @BindingAdapter("rendererFactory")
-  public static <T extends ClusterMapItem> void setRendererFactory(GoogleMapView googleMapView,
+  public static <T extends ClusterMapItem> void rendererFactory(GoogleMapView googleMapView,
       RendererFactory<T> rendererFactory) {
     googleMapView.setRendererFactory(rendererFactory);
   }
 
   @BindingAdapter("algorithm")
-  public static <T extends ClusterMapItem> void setAlgorithm(GoogleMapView googleMapView,
+  public static <T extends ClusterMapItem> void algorithm(GoogleMapView googleMapView,
       Algorithm<T> algorithm) {
     googleMapView.setAlgorithm(algorithm);
+  }
+
+  @BindingAdapter("clusterItemInfoWindowAdapter")
+  public static <T extends ClusterItem> void clusterItemInfoWindowAdapter(GoogleMapView googleMapView,
+      InfoWindowAdapterFactory<T> infoWindowAdapterFactory) {
+    googleMapView.setClusterItemInfoWindowAdapter(infoWindowAdapterFactory);
+  }
+
+  @BindingAdapter("clusterInfoWindowAdapter")
+  public static <T extends Cluster> void clusterInfoWindowAdapter(GoogleMapView googleMapView,
+      InfoWindowAdapterFactory<T> infoWindowAdapterFactory) {
+    googleMapView.setClusterInfoWindowAdapter(infoWindowAdapterFactory);
   }
 
   @BindingAdapter("clusterClickListener")

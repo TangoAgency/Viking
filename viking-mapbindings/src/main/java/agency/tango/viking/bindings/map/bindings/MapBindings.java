@@ -8,7 +8,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.maps.android.heatmaps.HeatmapTileProvider;
 
-import agency.tango.viking.bindings.map.BindableItem;
+import agency.tango.viking.bindings.map.models.BindableItem;
 import agency.tango.viking.bindings.map.GoogleMapView;
 
 @SuppressWarnings({ "unused" })
@@ -121,7 +121,7 @@ public class MapBindings {
   }
 
   @BindingAdapter("snapshotReadyCallback")
-  public static void cameraIdleListener(GoogleMapView googleMapView,
+  public static void snapshotReadyCallback(GoogleMapView googleMapView,
       GoogleMap.SnapshotReadyCallback snapshotReadyCallback) {
     googleMapView.setSnapshotReadyCallback(snapshotReadyCallback);
   }

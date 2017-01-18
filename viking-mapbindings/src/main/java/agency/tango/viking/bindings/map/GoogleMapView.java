@@ -18,20 +18,28 @@ import com.google.maps.android.clustering.ClusterManager;
 import com.google.maps.android.clustering.algo.Algorithm;
 import com.google.maps.android.heatmaps.HeatmapTileProvider;
 
-import java.util.ArrayList;
 import java.util.Collection;
 
+import agency.tango.viking.bindings.map.adapters.ClusterItemWindowInfoAdapter;
+import agency.tango.viking.bindings.map.adapters.ClusterWindowInfoAdapter;
+import agency.tango.viking.bindings.map.adapters.CompositeInfoWindowAdapter;
+import agency.tango.viking.bindings.map.adapters.MarkerInfoWindowAdapter;
 import agency.tango.viking.bindings.map.clickHandlers.ItemClickListener;
+import agency.tango.viking.bindings.map.listeners.CompositeInfoWindowClickListener;
+import agency.tango.viking.bindings.map.listeners.CompositeMarkerClickListener;
+import agency.tango.viking.bindings.map.listeners.CompositeOnCameraIdleListener;
+import agency.tango.viking.bindings.map.listeners.MarkerClickListener;
+import agency.tango.viking.bindings.map.listeners.WindowInfoClickListener;
 import agency.tango.viking.bindings.map.managers.ClusterItemManager;
 import agency.tango.viking.bindings.map.managers.MarkerManager;
 import agency.tango.viking.bindings.map.managers.OverlayManager;
 import agency.tango.viking.bindings.map.managers.PolylineManager;
+import agency.tango.viking.bindings.map.models.BindableItem;
 import agency.tango.viking.bindings.map.models.BindableMarker;
 import agency.tango.viking.bindings.map.models.BindableOverlay;
 import agency.tango.viking.bindings.map.models.BindablePolyline;
 
 public class GoogleMapView<T> extends MapView {
-  private ArrayList<GoogleMap.OnCameraIdleListener> cameraIdleListeners = new ArrayList<>();
 
   private BindableItem<LatLng> latLng = new BindableItem<>();
   private BindableItem<Float> zoom = new BindableItem<>();
@@ -46,8 +54,10 @@ public class GoogleMapView<T> extends MapView {
 
   private TileOverlay heatMapTileOverlay;
 
-  private ItemClickListener<BindableMarker<T>> infoWindowClickListener;
-  private ItemClickListener<BindableMarker<T>> markerItemClickListener;
+  private CompositeOnCameraIdleListener onCameraIdleListener;
+  private CompositeInfoWindowAdapter infoWindowAdapter;
+  private CompositeMarkerClickListener markerClickListener;
+  private CompositeInfoWindowClickListener infoWindowClickListener;
 
   public GoogleMapView(Context context) {
     super(context);
@@ -76,24 +86,17 @@ public class GoogleMapView<T> extends MapView {
     return zoom;
   }
 
-  public void postChangedLocation(LatLng latLng) {
-    getMapAsync(googleMap -> googleMap.moveCamera(CameraUpdateFactory.newLatLng(latLng)));
-    updateField(this.latLng, latLng);
-  }
-
-  public void setInfoWindowAdapter(GoogleMap.InfoWindowAdapter infoWindowAdapter) {
-    getMapAsync(googleMap -> googleMap.setInfoWindowAdapter(infoWindowAdapter));
-  }
-
   //region Listeners
   public void setOnMarkerClickListener(
       ItemClickListener<BindableMarker<T>> markerItemClickListener) {
-    this.markerItemClickListener = markerItemClickListener;
+    markerClickListener.addOnMarkerClickListener(
+        new MarkerClickListener<>(markerItemClickListener, markerManager));
   }
 
   public void setOnInfoWindowClickListener(
       ItemClickListener<BindableMarker<T>> infoWindowClickListener) {
-    this.infoWindowClickListener = infoWindowClickListener;
+    this.infoWindowClickListener.addOnInfoWindowClickListener(
+        new WindowInfoClickListener<>(infoWindowClickListener, markerManager));
   }
 
   public void setOnPolylineClickListener(
@@ -117,7 +120,7 @@ public class GoogleMapView<T> extends MapView {
   }
 
   public void setOnCameraIdleListener(GoogleMap.OnCameraIdleListener onCameraIdleListener) {
-    registerOnCameraIdleListener(onCameraIdleListener);
+    this.onCameraIdleListener.addOnCameraIdleListener(onCameraIdleListener);
   }
 
   public void setOnCameraMoveListener(GoogleMap.OnCameraMoveListener onCameraMoveListener) {
@@ -226,6 +229,31 @@ public class GoogleMapView<T> extends MapView {
     });
   }
 
+  public void setClusterItemInfoWindowAdapter(
+      InfoWindowAdapterFactory infoWindowAdapterFactory) {
+    getMapAsync(googleMap -> {
+      if (clusterManager != null) {
+        ClusterItemWindowInfoAdapter adapter = new ClusterItemWindowInfoAdapter(
+            infoWindowAdapterFactory.createInfoWindowAdapter(getContext()), clusterManager);
+
+        clusterManager.getClusterMarkerCollection().setOnInfoWindowAdapter(adapter);
+        infoWindowAdapter.addInfoWindowAdapter(adapter);
+      }
+    });
+  }
+
+  public void setClusterInfoWindowAdapter(InfoWindowAdapterFactory infoWindowAdapterFactory) {
+    getMapAsync(googleMap -> {
+      if (clusterManager != null) {
+        ClusterWindowInfoAdapter adapter = new ClusterWindowInfoAdapter(
+            infoWindowAdapterFactory.createInfoWindowAdapter(getContext()), clusterManager);
+
+        clusterManager.getClusterMarkerCollection().setOnInfoWindowAdapter(adapter);
+        infoWindowAdapter.addInfoWindowAdapter(adapter);
+      }
+    });
+  }
+
   public void setRendererFactory(RendererFactory<ClusterMapItem> rendererFactory) {
     getMapAsync(googleMap -> {
       if (clusterManager != null) {
@@ -240,6 +268,11 @@ public class GoogleMapView<T> extends MapView {
       if (clusterManager == null) {
         clusterManager = new ClusterManager<>(getContext(), googleMap);
         clusterItemManager = new ClusterItemManager<>(this::getMapAsync, clusterManager);
+        onCameraIdleListener.addOnCameraIdleListener(() -> clusterManager.onCameraIdle());
+        markerClickListener.addOnMarkerClickListener(
+            marker -> clusterManager.onMarkerClick(marker));
+        infoWindowClickListener.addOnInfoWindowClickListener(
+            marker -> clusterManager.onInfoWindowClick(marker));
       }
       clusterItemManager.addItems(googleMap, clusterItems);
     });
@@ -267,7 +300,22 @@ public class GoogleMapView<T> extends MapView {
         new TileOverlayOptions().tileProvider(heatmapTileProvider)));
   }
 
+  public void setInfoWindowAdapter(
+      InfoWindowAdapterFactory<BindableMarker<T>> infoWindowAdapterFactory) {
+    getMapAsync(googleMap -> {
+      MarkerInfoWindowAdapter<T> adapter = new MarkerInfoWindowAdapter<>(
+          infoWindowAdapterFactory.createInfoWindowAdapter(getContext()), markerManager);
+
+      infoWindowAdapter.addInfoWindowAdapter(adapter);
+    });
+  }
+
   private void init() {
+    onCameraIdleListener = new CompositeOnCameraIdleListener();
+    infoWindowAdapter = new CompositeInfoWindowAdapter();
+    markerClickListener = new CompositeMarkerClickListener();
+    infoWindowClickListener = new CompositeInfoWindowClickListener();
+
     markerManager = new MarkerManager<>(this::getMapAsync);
     polylineManager = new PolylineManager(this::getMapAsync);
     overlayManager = new OverlayManager(this::getMapAsync);
@@ -275,50 +323,17 @@ public class GoogleMapView<T> extends MapView {
     getMapAsync(googleMap -> {
       initGoogleMap();
 
-      registerOnCameraIdleListener(() -> {
+      googleMap.setOnCameraIdleListener(onCameraIdleListener);
+      googleMap.setInfoWindowAdapter(infoWindowAdapter);
+      googleMap.setOnMarkerClickListener(markerClickListener);
+      googleMap.setOnInfoWindowClickListener(infoWindowClickListener);
+
+      onCameraIdleListener.addOnCameraIdleListener(() -> {
         updateField(latLng, getLatLng(googleMap));
         updateField(zoom, googleMap.getCameraPosition().zoom);
         updateField(radius, currentRadius(googleMap));
       });
-
-      googleMap.setOnCameraIdleListener(() -> {
-        if (clusterManager != null) {
-          clusterManager.onCameraIdle();
-        }
-
-        for (GoogleMap.OnCameraIdleListener cameraIdleListener : cameraIdleListeners) {
-          cameraIdleListener.onCameraIdle();
-        }
-      });
-
-      googleMap.setOnMarkerClickListener(markerClicked -> {
-        if (clusterManager != null) {
-          clusterManager.onMarkerClick(markerClicked);
-        }
-
-        if (markerItemClickListener != null) {
-          BindableMarker<T> bindableMarker = markerManager.retrieveBindableMarker(markerClicked);
-          if (bindableMarker != null) {
-            markerItemClickListener.onClick(bindableMarker);
-            return false;
-          }
-        }
-        return true;
-      });
-
-      googleMap.setOnInfoWindowClickListener(markerClicked -> {
-        if (infoWindowClickListener != null) {
-          BindableMarker<T> bindableMarker = markerManager.retrieveBindableMarker(markerClicked);
-          if (bindableMarker != null) {
-            infoWindowClickListener.onClick(bindableMarker);
-          }
-        }
-      });
     });
-  }
-
-  private void registerOnCameraIdleListener(GoogleMap.OnCameraIdleListener cameraIdleListener) {
-    cameraIdleListeners.add(cameraIdleListener);
   }
 
   private void initGoogleMap() {
@@ -342,6 +357,11 @@ public class GoogleMapView<T> extends MapView {
   private <E> void updateField(BindableItem<E> item, E value) {
     item.setValue(value);
     item.onValueChanged(value);
+  }
+
+  public void postChangedLocation(LatLng latLng) {
+    getMapAsync(googleMap -> googleMap.moveCamera(CameraUpdateFactory.newLatLng(latLng)));
+    updateField(this.latLng, latLng);
   }
 
   private LatLng getLatLng(GoogleMap googleMap) {

@@ -7,6 +7,7 @@ import com.google.android.gms.maps.GoogleMap;
 import java.util.Collection;
 
 import agency.tango.viking.bindings.map.GoogleMapView;
+import agency.tango.viking.bindings.map.InfoWindowAdapterFactory;
 import agency.tango.viking.bindings.map.clickHandlers.ItemClickListener;
 import agency.tango.viking.bindings.map.models.BindableMarker;
 
@@ -30,8 +31,8 @@ public class MarkerBindings {
   }
 
   @BindingAdapter("infoWindowAdapter")
-  public static void infoWindowAdapter(GoogleMapView googleMapView,
-      GoogleMap.InfoWindowAdapter infoWindowAdapter) {
+  public static <T> void infoWindowAdapter(GoogleMapView googleMapView,
+      InfoWindowAdapterFactory<T> infoWindowAdapter) {
     googleMapView.setInfoWindowAdapter(infoWindowAdapter);
   }
 

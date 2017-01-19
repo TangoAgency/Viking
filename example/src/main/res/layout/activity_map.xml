@@ -25,6 +25,8 @@
       bind:clusterItems="@{viewModel.clusterItems}"
       bind:clusterClickListener="@{viewModel.clusterClickListener}"
       bind:clusterInfoWindowAdapter="@{viewModel.clusterInfoWindowAdapter}"
+      bind:circles="@{viewModel.circles}"
+      bind:circleClickListener="@{viewModel.circleClickListener}"
       bind:groundOverlays="@{viewModel.overlays}"
       bind:heatMap="@{viewModel.heatMap}"
       bind:groundOverlayClickListener="@{viewModel.overlayClickListener}"

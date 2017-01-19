@@ -102,11 +102,6 @@ public class MapBindings {
     googleMapView.setOnPolygonClickListener(polygonClickListener);
   }
 
-  @BindingAdapter("circleClickListener")
-  public static void onCircleClickListener(GoogleMapView googleMapView,
-      GoogleMap.OnCircleClickListener onCircleClickListener) {
-    googleMapView.setOnCircleClickListener(onCircleClickListener);
-  }
 
   @BindingAdapter("indoorStateChangeListener")
   public static void onIndoorStateChangedListener(GoogleMapView googleMapView,

@@ -15,15 +15,6 @@ public class PolylineClickListener implements GoogleMap.OnPolylineClickListener 
     this.polylineManager = polylineManager;
   }
 
-  private BindablePolyline getModel(Polyline polyline) {
-    return polylineManager.retrieveBindablePolyline(polyline);
-  }
-
-  public void setItemClickListener(
-      ItemClickListener<BindablePolyline> itemClickListener) {
-    this.itemClickListener = itemClickListener;
-  }
-
   @Override
   public void onPolylineClick(Polyline polyline) {
     if (itemClickListener != null) {
@@ -32,5 +23,14 @@ public class PolylineClickListener implements GoogleMap.OnPolylineClickListener 
         itemClickListener.onClick(model);
       }
     }
+  }
+
+  public void setItemClickListener(
+      ItemClickListener<BindablePolyline> itemClickListener) {
+    this.itemClickListener = itemClickListener;
+  }
+
+  private BindablePolyline getModel(Polyline polyline) {
+    return polylineManager.retrieveBindablePolyline(polyline);
   }
 }

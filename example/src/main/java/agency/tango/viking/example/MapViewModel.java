@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.GroundOverlayOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
@@ -27,10 +28,11 @@ import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
-import agency.tango.viking.bindings.map.adapters.CustomInfoWindowAdapter;
 import agency.tango.viking.bindings.map.InfoWindowAdapterFactory;
 import agency.tango.viking.bindings.map.RendererFactory;
+import agency.tango.viking.bindings.map.adapters.CustomInfoWindowAdapter;
 import agency.tango.viking.bindings.map.clickHandlers.ItemClickListener;
+import agency.tango.viking.bindings.map.models.BindableCircle;
 import agency.tango.viking.bindings.map.models.BindableMarker;
 import agency.tango.viking.bindings.map.models.BindableOverlay;
 import agency.tango.viking.bindings.map.models.BindablePolyline;
@@ -45,6 +47,7 @@ public class MapViewModel extends ViewModel {
   private final ObservableList<BindableMarker<ExampleModel>> models = new ObservableArrayList<>();
   private final ObservableList<BindablePolyline> polylines = new ObservableArrayList<>();
   private final ObservableList<BindableOverlay> overlays = new ObservableArrayList<>();
+  private final ObservableList<BindableCircle> circles = new ObservableArrayList<>();
   private final ObservableList<ClusterModel> clusterItems = new ObservableArrayList<>();
 
   private HeatmapTileProvider heatmapTileProvider;
@@ -66,6 +69,11 @@ public class MapViewModel extends ViewModel {
     clusterItems.add(new ClusterModel(3, new LatLng(4.404446, 0.000006)));
     clusterItems.add(new ClusterModel(4, new LatLng(5.505558, 0.000008)));
     clusterItems.add(new ClusterModel(5, new LatLng(6.606660, 0.000010)));
+
+    circles.add(new BindableCircle(0, new CircleOptions()
+        .radius(5000)
+        .clickable(true)
+        .center(new LatLng(0, 0))));
 
     models.add(new BindableMarker<>(
         new ExampleModel("Hello", "World"),
@@ -139,6 +147,9 @@ public class MapViewModel extends ViewModel {
   public Collection<BindableOverlay> getOverlays() {return overlays;}
 
   @Bindable
+  public Collection<BindableCircle> getCircles() {return circles;}
+
+  @Bindable
   public HeatmapTileProvider getHeatMap() {
 
     return heatmapTileProvider;
@@ -202,6 +213,16 @@ public class MapViewModel extends ViewModel {
       @Override
       public void onClick(BindableOverlay item) {
         item.getGroundOverlay().setPosition(new LatLng(0, 0));
+      }
+    };
+  }
+
+  @Bindable
+  public ItemClickListener<BindableCircle> getCircleClickListener() {
+    return new ItemClickListener<BindableCircle>() {
+      @Override
+      public void onClick(BindableCircle item) {
+        item.getCircle().setFillColor(R.color.colorAccent);
       }
     };
   }

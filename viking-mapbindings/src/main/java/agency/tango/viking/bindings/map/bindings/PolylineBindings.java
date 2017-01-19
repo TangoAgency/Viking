@@ -2,12 +2,13 @@ package agency.tango.viking.bindings.map.bindings;
 
 import android.databinding.BindingAdapter;
 
-import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.PolylineOptions;
 
 import java.util.Collection;
 
 import agency.tango.viking.bindings.map.GoogleMapView;
+import agency.tango.viking.bindings.map.clickHandlers.ItemClickListener;
+import agency.tango.viking.bindings.map.models.BindablePolyline;
 
 public class PolylineBindings {
   private PolylineBindings() {}
@@ -23,7 +24,7 @@ public class PolylineBindings {
 
   @BindingAdapter("polylineClickListener")
   public static void polylineClickListener(GoogleMapView googleMapView,
-      GoogleMap.OnPolylineClickListener polylineClickListener) {
-    googleMapView.setOnPolylineClickListener(polylineClickListener);
+      ItemClickListener<BindablePolyline> itemClickListener) {
+    googleMapView.setOnPolylineClickListener(itemClickListener);
   }
 }

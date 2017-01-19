@@ -29,6 +29,8 @@ import agency.tango.viking.bindings.map.listeners.CompositeInfoWindowClickListen
 import agency.tango.viking.bindings.map.listeners.CompositeMarkerClickListener;
 import agency.tango.viking.bindings.map.listeners.CompositeOnCameraIdleListener;
 import agency.tango.viking.bindings.map.listeners.MarkerClickListener;
+import agency.tango.viking.bindings.map.listeners.OverlayClickListener;
+import agency.tango.viking.bindings.map.listeners.PolylineClickListener;
 import agency.tango.viking.bindings.map.listeners.WindowInfoClickListener;
 import agency.tango.viking.bindings.map.managers.ClusterItemManager;
 import agency.tango.viking.bindings.map.managers.MarkerManager;
@@ -58,6 +60,8 @@ public class GoogleMapView<T> extends MapView {
   private CompositeInfoWindowAdapter infoWindowAdapter;
   private CompositeMarkerClickListener markerClickListener;
   private CompositeInfoWindowClickListener infoWindowClickListener;
+  private PolylineClickListener polylineClickListener;
+  private OverlayClickListener overlayClickListener;
 
   public GoogleMapView(Context context) {
     super(context);
@@ -99,9 +103,13 @@ public class GoogleMapView<T> extends MapView {
         new WindowInfoClickListener<>(infoWindowClickListener, markerManager));
   }
 
-  public void setOnPolylineClickListener(
-      GoogleMap.OnPolylineClickListener polylineItemClickListener) {
-    getMapAsync(googleMap -> googleMap.setOnPolylineClickListener(polylineItemClickListener));
+  public void setOnPolylineClickListener(ItemClickListener<BindablePolyline> itemClickListener) {
+    polylineClickListener.setItemClickListener(itemClickListener);
+  }
+
+  public void setOnGroundOverlayClickListener(
+      ItemClickListener<BindableOverlay> itemClickListener) {
+    overlayClickListener.setItemClickListener(itemClickListener);
   }
 
   public void setOnPolygonClickListener(GoogleMap.OnPolygonClickListener onPolygonClickListener) {
@@ -129,12 +137,6 @@ public class GoogleMapView<T> extends MapView {
 
   public void setOnCircleClickListener(GoogleMap.OnCircleClickListener onCircleClickListener) {
     getMapAsync(googleMap -> googleMap.setOnCircleClickListener(onCircleClickListener));
-  }
-
-  public void setOnGroundOverlayClickListener(
-      GoogleMap.OnGroundOverlayClickListener onGroundOverlayClickListener) {
-    getMapAsync(
-        googleMap -> googleMap.setOnGroundOverlayClickListener(onGroundOverlayClickListener));
   }
 
   public void setOnIndoorStateChangeListener(
@@ -311,14 +313,16 @@ public class GoogleMapView<T> extends MapView {
   }
 
   private void init() {
+    markerManager = new MarkerManager<>(this::getMapAsync);
+    polylineManager = new PolylineManager(this::getMapAsync);
+    overlayManager = new OverlayManager(this::getMapAsync);
+
     onCameraIdleListener = new CompositeOnCameraIdleListener();
     infoWindowAdapter = new CompositeInfoWindowAdapter();
     markerClickListener = new CompositeMarkerClickListener();
     infoWindowClickListener = new CompositeInfoWindowClickListener();
-
-    markerManager = new MarkerManager<>(this::getMapAsync);
-    polylineManager = new PolylineManager(this::getMapAsync);
-    overlayManager = new OverlayManager(this::getMapAsync);
+    polylineClickListener = new PolylineClickListener(polylineManager);
+    overlayClickListener = new OverlayClickListener(overlayManager);
 
     getMapAsync(googleMap -> {
       initGoogleMap();
@@ -327,6 +331,8 @@ public class GoogleMapView<T> extends MapView {
       googleMap.setInfoWindowAdapter(infoWindowAdapter);
       googleMap.setOnMarkerClickListener(markerClickListener);
       googleMap.setOnInfoWindowClickListener(infoWindowClickListener);
+      googleMap.setOnPolylineClickListener(polylineClickListener);
+      googleMap.setOnGroundOverlayClickListener(overlayClickListener);
 
       onCameraIdleListener.addOnCameraIdleListener(() -> {
         updateField(latLng, getLatLng(googleMap));

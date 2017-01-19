@@ -1,5 +1,7 @@
 package agency.tango.viking.bindings.map.managers;
 
+import android.support.annotation.Nullable;
+
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.GroundOverlay;
 import com.google.android.gms.maps.model.GroundOverlayOptions;
@@ -40,5 +42,15 @@ public class OverlayManager extends MapEntityManagerBase<BindableOverlay>
     groundOverlay.setTransparency(groundOverlayOptions.getTransparency());
     groundOverlay.setVisible(groundOverlayOptions.isVisible());
     groundOverlay.setClickable(groundOverlayOptions.isClickable());
+  }
+
+  @Nullable
+  public BindableOverlay retrieveBindableOverlay(GroundOverlay groundOverlay) {
+    for (BindableOverlay bindableOverlay : entities) {
+      if (bindableOverlay.getGroundOverlay().equals(groundOverlay)) {
+        return bindableOverlay;
+      }
+    }
+    return null;
   }
 }

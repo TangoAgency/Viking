@@ -1,5 +1,7 @@
 package agency.tango.viking.bindings.map.managers;
 
+import android.support.annotation.Nullable;
+
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
@@ -36,5 +38,15 @@ public class PolylineManager extends MapEntityManagerBase<BindablePolyline>
     polyline.setVisible(polylineOptions.isVisible());
     polyline.setWidth(polylineOptions.getWidth());
     polyline.setZIndex(polylineOptions.getZIndex());
+  }
+
+  @Nullable
+  public BindablePolyline retrieveBindablePolyline(Polyline polyline) {
+    for (BindablePolyline bindablePolyline : entities) {
+      if (bindablePolyline.getPolyline().equals(polyline)) {
+        return bindablePolyline;
+      }
+    }
+    return null;
   }
 }

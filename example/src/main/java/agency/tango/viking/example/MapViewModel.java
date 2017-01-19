@@ -75,7 +75,10 @@ public class MapViewModel extends ViewModel {
             .position(new LatLng(3, 3))));
 
     polylines.add(new BindablePolyline(0,
-        new PolylineOptions().add(new LatLng(0, 0)).add(new LatLng(50, 50))));
+        new PolylineOptions()
+            .clickable(true)
+            .add(new LatLng(0, 0))
+            .add(new LatLng(50, 50))));
 
     overlays.add(new BindableOverlay(0,
         new GroundOverlayOptions()
@@ -97,10 +100,14 @@ public class MapViewModel extends ViewModel {
           public void accept(Integer integer) throws Exception {
 
             polylines.set(0, new BindablePolyline(0,
-                new PolylineOptions().add(new LatLng(25, 14)).add(new LatLng(25, 50))));
+                new PolylineOptions()
+                    .clickable(true)
+                    .add(new LatLng(25, 14))
+                    .add(new LatLng(25, 50))));
 
             overlays.set(0, new BindableOverlay(0,
                 new GroundOverlayOptions()
+                    .clickable(true)
                     .image(BitmapDescriptorFactory.fromResource(R.drawable.amu_bubble_mask))
                     .positionFromBounds(new LatLngBounds(new LatLng(5, 10), new LatLng(10, 15)))));
 
@@ -175,6 +182,26 @@ public class MapViewModel extends ViewModel {
       public void onClick(BindableMarker<ExampleModel> item) {
         item.getMarker().setPosition(new LatLng(-20, -20));
         item.getMarker().hideInfoWindow();
+      }
+    };
+  }
+
+  @Bindable
+  public ItemClickListener<BindablePolyline> getPolylineClickListener() {
+    return new ItemClickListener<BindablePolyline>() {
+      @Override
+      public void onClick(BindablePolyline item) {
+        item.getPolyline().setWidth(50f);
+      }
+    };
+  }
+
+  @Bindable
+  public ItemClickListener<BindableOverlay> getOverlayClickListener() {
+    return new ItemClickListener<BindableOverlay>() {
+      @Override
+      public void onClick(BindableOverlay item) {
+        item.getGroundOverlay().setPosition(new LatLng(0, 0));
       }
     };
   }

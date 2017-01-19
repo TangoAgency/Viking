@@ -2,12 +2,13 @@ package agency.tango.viking.bindings.map.bindings;
 
 import android.databinding.BindingAdapter;
 
-import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.GroundOverlayOptions;
 
 import java.util.Collection;
 
 import agency.tango.viking.bindings.map.GoogleMapView;
+import agency.tango.viking.bindings.map.clickHandlers.ItemClickListener;
+import agency.tango.viking.bindings.map.models.BindableOverlay;
 
 public class OverlaysBindings {
   private OverlaysBindings() {
@@ -25,7 +26,7 @@ public class OverlaysBindings {
 
   @BindingAdapter("groundOverlayClickListener")
   public static void onGroundOverlayClickListener(GoogleMapView googleMapView,
-      GoogleMap.OnGroundOverlayClickListener onGroundOverlayClickListener) {
-    googleMapView.setOnGroundOverlayClickListener(onGroundOverlayClickListener);
+      ItemClickListener<BindableOverlay> itemClickListener) {
+    googleMapView.setOnGroundOverlayClickListener(itemClickListener);
   }
 }

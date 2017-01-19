@@ -34,6 +34,8 @@
       bind:infoWindowClickListener="@{viewModel.infoWindowClickListener}"
       bind:latLng="@={viewModel.latLng}"
       bind:mapItems="@{viewModel.models}"
+      bind:polygons="@{viewModel.polygons}"
+      bind:polygonClickListener="@{viewModel.polygonClickListener}"
       bind:polylineClickListener="@{viewModel.polylineClickListener}"
       bind:polylines="@{viewModel.polylines}"
       bind:rendererFactory="@{viewModel.rendererFactory}"

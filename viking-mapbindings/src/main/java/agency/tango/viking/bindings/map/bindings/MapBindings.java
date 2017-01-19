@@ -96,13 +96,6 @@ public class MapBindings {
     googleMapView.setOnMyLocationButtonClickListener(onMyLocationButtonClickListener);
   }
 
-  @BindingAdapter("polygonClickListener")
-  public static void polygonClickListener(GoogleMapView googleMapView,
-      GoogleMap.OnPolygonClickListener polygonClickListener) {
-    googleMapView.setOnPolygonClickListener(polygonClickListener);
-  }
-
-
   @BindingAdapter("indoorStateChangeListener")
   public static void onIndoorStateChangedListener(GoogleMapView googleMapView,
       GoogleMap.OnIndoorStateChangeListener onIndoorStateChangedListener) {

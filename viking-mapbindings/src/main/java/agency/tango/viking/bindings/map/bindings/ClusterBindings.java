@@ -14,6 +14,7 @@ import agency.tango.viking.bindings.map.GoogleMapView;
 import agency.tango.viking.bindings.map.InfoWindowAdapterFactory;
 import agency.tango.viking.bindings.map.RendererFactory;
 
+@SuppressWarnings({ "unused" })
 public class ClusterBindings {
   private ClusterBindings() {
   }

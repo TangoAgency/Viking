@@ -8,6 +8,7 @@ import agency.tango.viking.bindings.map.GoogleMapView;
 import agency.tango.viking.bindings.map.listeners.ItemClickListener;
 import agency.tango.viking.bindings.map.models.BindableOverlay;
 
+@SuppressWarnings({ "unused" })
 public class OverlaysBindings {
   private OverlaysBindings() {
   }

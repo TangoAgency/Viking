@@ -12,6 +12,7 @@ import agency.tango.viking.bindings.map.listeners.ItemClickListener;
 import agency.tango.viking.bindings.map.listeners.OnMarkerClickListener;
 import agency.tango.viking.bindings.map.models.BindableMarker;
 
+@SuppressWarnings({ "unused" })
 public class MarkerBindings {
   private MarkerBindings() {
   }

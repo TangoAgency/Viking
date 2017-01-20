@@ -8,6 +8,7 @@ import agency.tango.viking.bindings.map.GoogleMapView;
 import agency.tango.viking.bindings.map.listeners.ItemClickListener;
 import agency.tango.viking.bindings.map.models.BindablePolygon;
 
+@SuppressWarnings({ "unused" })
 public class PolygonBindings {
   private PolygonBindings() {
   }

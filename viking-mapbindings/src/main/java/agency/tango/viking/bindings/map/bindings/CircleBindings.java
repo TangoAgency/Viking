@@ -8,6 +8,7 @@ import agency.tango.viking.bindings.map.GoogleMapView;
 import agency.tango.viking.bindings.map.listeners.ItemClickListener;
 import agency.tango.viking.bindings.map.models.BindableCircle;
 
+@SuppressWarnings({ "unused" })
 public class CircleBindings {
   private CircleBindings() {}
 

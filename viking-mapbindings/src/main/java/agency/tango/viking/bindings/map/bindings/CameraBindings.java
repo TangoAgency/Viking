@@ -6,6 +6,7 @@ import com.google.android.gms.maps.GoogleMap;
 
 import agency.tango.viking.bindings.map.GoogleMapView;
 
+@SuppressWarnings({ "unused" })
 public class CameraBindings {
   private CameraBindings() {
   }

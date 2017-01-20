@@ -8,6 +8,7 @@ import agency.tango.viking.bindings.map.GoogleMapView;
 import agency.tango.viking.bindings.map.listeners.ItemClickListener;
 import agency.tango.viking.bindings.map.models.BindablePolyline;
 
+@SuppressWarnings({ "unused" })
 public class PolylineBindings {
   private PolylineBindings() {}
 

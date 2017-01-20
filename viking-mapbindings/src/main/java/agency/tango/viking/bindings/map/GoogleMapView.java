@@ -105,102 +105,207 @@ public class GoogleMapView<T> extends MapView {
   }
 
   //region Listeners
+
+  /**
+   * Add on camera idle listener
+   *
+   * @param onCameraIdleListener {@link GoogleMap.OnCameraIdleListener} to add
+   */
   public void setOnCameraIdleListener(GoogleMap.OnCameraIdleListener onCameraIdleListener) {
     this.onCameraIdleListener.addOnCameraIdleListener(onCameraIdleListener);
   }
 
+  /**
+   * Set on camera move started listener
+   *
+   * @param onCameraMoveStartedListener {@link GoogleMap.OnCameraMoveStartedListener} to set
+   */
   public void setOnCameraMoveStartedListener(
       GoogleMap.OnCameraMoveStartedListener onCameraMoveStartedListener) {
     getMapAsync(googleMap -> googleMap.setOnCameraMoveStartedListener(onCameraMoveStartedListener));
   }
 
+  /**
+   * Set on camera move canceled listener
+   *
+   * @param onCameraMoveCanceledListener {@link GoogleMap.OnCameraMoveCanceledListener} to set
+   */
   public void setOnCameraMoveCanceledListener(
       GoogleMap.OnCameraMoveCanceledListener onCameraMoveCanceledListener) {
     getMapAsync(
         googleMap -> googleMap.setOnCameraMoveCanceledListener(onCameraMoveCanceledListener));
   }
 
+  /**
+   * Set on camera move listener
+   *
+   * @param onCameraMoveListener {@link GoogleMap.OnCameraMoveListener} to set
+   */
   public void setOnCameraMoveListener(GoogleMap.OnCameraMoveListener onCameraMoveListener) {
     getMapAsync(googleMap -> googleMap.setOnCameraMoveListener(onCameraMoveListener));
   }
 
+  /**
+   * Set on indoor state change listener
+   *
+   * @param onIndoorStateChangeListener {@link GoogleMap.OnIndoorStateChangeListener} to set
+   */
   public void setOnIndoorStateChangeListener(
       GoogleMap.OnIndoorStateChangeListener onIndoorStateChangeListener) {
     getMapAsync(googleMap -> googleMap.setOnIndoorStateChangeListener(onIndoorStateChangeListener));
   }
 
+  /**
+   * Set on info window close listener
+   *
+   * @param onInfoWindowCloseListener {@link GoogleMap.OnInfoWindowCloseListener} to set
+   */
   public void setOnInfoWindowCloseListener(
       GoogleMap.OnInfoWindowCloseListener onInfoWindowCloseListener) {
     getMapAsync(googleMap -> googleMap.setOnInfoWindowCloseListener(onInfoWindowCloseListener));
   }
 
+  /**
+   * Set on info window long click listener
+   *
+   * @param onInfoWindowLongClickListener {@link GoogleMap.OnInfoWindowLongClickListener} to set
+   */
   public void setOnInfoWindowLongClickListener(
       GoogleMap.OnInfoWindowLongClickListener onInfoWindowLongClickListener) {
     getMapAsync(
         googleMap -> googleMap.setOnInfoWindowLongClickListener(onInfoWindowLongClickListener));
   }
 
+  /**
+   * Set on map click listener
+   *
+   * @param onMapClickListener {@link GoogleMap.OnMapClickListener} to set
+   */
   public void setOnMapClickListener(GoogleMap.OnMapClickListener onMapClickListener) {
     getMapAsync(googleMap -> googleMap.setOnMapClickListener(onMapClickListener));
   }
 
+  /**
+   * Set on map loaded callback
+   *
+   * @param onMapLoadedCallback {@link GoogleMap.OnMapLoadedCallback} to set
+   */
   public void setOnMapLoadedCallback(GoogleMap.OnMapLoadedCallback onMapLoadedCallback) {
     getMapAsync(googleMap -> googleMap.setOnMapLoadedCallback(onMapLoadedCallback));
   }
 
+  /**
+   * Set on map long click listener
+   *
+   * @param onMapLongClickListener {@link GoogleMap.OnMapLongClickListener} to set
+   */
   public void setOnMapLongClickListener(GoogleMap.OnMapLongClickListener onMapLongClickListener) {
     getMapAsync(googleMap -> googleMap.setOnMapLongClickListener(onMapLongClickListener));
   }
 
+  /**
+   * Set on marker drag listener
+   *
+   * @param onMarkerDragListener {@link GoogleMap.OnMarkerDragListener} to set
+   */
   public void setOnMarkerDragListener(GoogleMap.OnMarkerDragListener onMarkerDragListener) {
     getMapAsync(googleMap -> googleMap.setOnMarkerDragListener(onMarkerDragListener));
   }
 
+  /**
+   * Set on my location button click listener
+   *
+   * @param onMyLocationButtonClickListener {@link GoogleMap.OnMyLocationButtonClickListener} to
+   * set
+   */
   public void setOnMyLocationButtonClickListener(
       GoogleMap.OnMyLocationButtonClickListener onMyLocationButtonClickListener) {
     getMapAsync(
         googleMap -> googleMap.setOnMyLocationButtonClickListener(onMyLocationButtonClickListener));
   }
 
+  /**
+   * Set on poi click listener
+   *
+   * @param onPoiClickListener {@link GoogleMap.OnPoiClickListener} to set
+   */
   public void setOnPoiClickListener(GoogleMap.OnPoiClickListener onPoiClickListener) {
     getMapAsync(googleMap -> googleMap.setOnPoiClickListener(onPoiClickListener));
   }
 
+  /**
+   * Set snapshot ready callback
+   *
+   * @param snapshotReadyCallback {@link GoogleMap.SnapshotReadyCallback} to set
+   */
   public void setSnapshotReadyCallback(GoogleMap.SnapshotReadyCallback snapshotReadyCallback) {
     getMapAsync(googleMap -> googleMap.snapshot(snapshotReadyCallback));
   }
   //endregion
 
   //region Cluster
+
+  /**
+   * Set on clusters click listener
+   *
+   * @param clusterClickListener {@link ClusterManager.OnClusterClickListener} to set
+   */
   public void setOnClusterClickListener(
       ClusterManager.OnClusterClickListener<ClusterMapItem> clusterClickListener) {
     customClusterManager.onClusterManagerReady(
         clusterManager -> clusterManager.setOnClusterClickListener(clusterClickListener));
   }
 
+  /**
+   * Set on clusters item click listener
+   *
+   * @param clusterItemClickListener {@link ClusterManager.OnClusterItemClickListener} to set
+   */
   public void setOnClusterItemClickListener(
       ClusterManager.OnClusterItemClickListener<ClusterMapItem> clusterItemClickListener) {
     customClusterManager.onClusterManagerReady(
         clusterManager -> clusterManager.setOnClusterItemClickListener(clusterItemClickListener));
   }
 
+  /**
+   * Set on cluster info window click listener
+   *
+   * @param clusterInfoWindowClickListener {@link ClusterManager.OnClusterInfoWindowClickListener}
+   * to set
+   */
   public void setOnClusterInfoWindowClickListener(
       ClusterManager.OnClusterInfoWindowClickListener<ClusterMapItem> clusterInfoWindowClickListener) {
     customClusterManager.onClusterManagerReady(clusterManager ->
         clusterManager.setOnClusterInfoWindowClickListener(clusterInfoWindowClickListener));
   }
 
+  /**
+   * Set on cluster item info window click listener
+   *
+   * @param clusterItemInfoWindowClickListener {@link ClusterManager.OnClusterItemInfoWindowClickListener}
+   * to set
+   */
   public void setOnClusterItemInfoWindowClickListener(
       ClusterManager.OnClusterItemInfoWindowClickListener<ClusterMapItem> clusterItemInfoWindowClickListener) {
     customClusterManager.onClusterManagerReady(clusterManager ->
         clusterManager.setOnClusterItemInfoWindowClickListener(clusterItemInfoWindowClickListener));
   }
 
+  /**
+   * Set algorithm for clustering
+   *
+   * @param algorithm {@link Algorithm} to set
+   */
   public void setAlgorithm(Algorithm<ClusterMapItem> algorithm) {
     customClusterManager.onClusterManagerReady(clusterManager ->
         clusterManager.setAlgorithm(algorithm));
   }
 
+  /**
+   * Set info window adapter on cluster item
+   *
+   * @param infoWindowAdapterFactory {@link InfoWindowAdapterFactory} to set
+   */
   public void setClusterItemInfoWindowAdapter(
       InfoWindowAdapterFactory<ClusterMapItem> infoWindowAdapterFactory) {
     customClusterManager.onClusterManagerReady(clusterManager -> {
@@ -212,6 +317,11 @@ public class GoogleMapView<T> extends MapView {
     });
   }
 
+  /**
+   * Set info window adapter on cluster
+   *
+   * @param infoWindowAdapterFactory {@link InfoWindowAdapterFactory} to set
+   */
   public void setClusterInfoWindowAdapter(
       InfoWindowAdapterFactory infoWindowAdapterFactory) {
     customClusterManager.onClusterManagerReady(clusterManager -> {
@@ -223,12 +333,22 @@ public class GoogleMapView<T> extends MapView {
     });
   }
 
+  /**
+   * Set renderer for cluster items
+   *
+   * @param rendererFactory {@link RendererFactory} to set
+   */
   public void setRendererFactory(RendererFactory<ClusterMapItem> rendererFactory) {
     getMapAsync(googleMap -> customClusterManager.onClusterManagerReady(
         clusterManager -> clusterManager.setRenderer(
             rendererFactory.createRenderer(getContext(), googleMap, clusterManager))));
   }
 
+  /**
+   * Set cluster items to be displayed on map view
+   *
+   * @param clusterItems Collection of {@link ClusterMapItem} to set
+   */
   public void clusterItems(Collection<ClusterMapItem> clusterItems) {
     getMapAsync(googleMap -> customClusterManager.onClusterManagerReady(clusterManager -> {
       clusterItemManager = new ClusterItemManager<>(this::getMapAsync, clusterManager);
@@ -242,73 +362,32 @@ public class GoogleMapView<T> extends MapView {
   //endregion
 
   //region Markers
+
+  /**
+   * Set markers to be displayed on map view
+   *
+   * @param markers Collection of {@link BindableMarker} to set
+   */
   public void markers(Collection<BindableMarker<T>> markers) {
     getMapAsync(googleMap -> markerManager.addItems(googleMap, markers));
   }
 
+  /**
+   * Set on marker click listener
+   *
+   * @param markerItemClickListener {@link OnMarkerClickListener} to set
+   */
   public void setOnMarkerClickListener(
       OnMarkerClickListener<BindableMarker<T>> markerItemClickListener) {
     markerClickListener.addOnMarkerClickListener(
         new MarkerClickListener<>(markerItemClickListener, markerManager));
   }
 
-  public void setOnInfoWindowClickListener(
-      ItemClickListener<BindableMarker<T>> infoWindowClickListener) {
-    this.infoWindowClickListener.addOnInfoWindowClickListener(
-        new WindowInfoClickListener<>(infoWindowClickListener, markerManager));
-  }
-  //endregion
-
-  //region Polylines
-  public void polylines(Collection<BindablePolyline> polylines) {
-    getMapAsync(googleMap -> polylineManager.addItems(googleMap, polylines));
-  }
-
-  public void setOnPolylineClickListener(ItemClickListener<BindablePolyline> itemClickListener) {
-    polylineClickListener.setItemClickListener(itemClickListener);
-  }
-  //endregion
-
-  //region GroundOverlays
-  public void groundOverlays(Collection<BindableOverlay> overlays) {
-    getMapAsync(googleMap -> overlayManager.addItems(googleMap, overlays));
-  }
-
-  public void setOnGroundOverlayClickListener(
-      ItemClickListener<BindableOverlay> itemClickListener) {
-    overlayClickListener.setItemClickListener(itemClickListener);
-  }
-  //endregion
-
-  //region Circles
-  public void circles(Collection<BindableCircle> circles) {
-    getMapAsync(googleMap -> circleManager.addItems(googleMap, circles));
-  }
-
-  public void setOnCircleClickListener(ItemClickListener<BindableCircle> itemClickListener) {
-    circleClickListener.setItemClickListener(itemClickListener);
-  }
-  //endregion
-
-  //region Polygons
-  public void polygons(Collection<BindablePolygon> polygons) {
-    getMapAsync(googleMap -> polygonManager.addItems(googleMap, polygons));
-  }
-
-  public void setOnPolygonClickListener(ItemClickListener<BindablePolygon> itemClickListener) {
-    polygonClickListener.setItemClickListener(itemClickListener);
-  }
-  //endregion
-
-  public void heatMap(HeatmapTileProvider heatmapTileProvider) {
-    if (heatMapTileOverlay != null) {
-      heatMapTileOverlay.remove();
-    }
-
-    getMapAsync(googleMap -> heatMapTileOverlay = googleMap.addTileOverlay(
-        new TileOverlayOptions().tileProvider(heatmapTileProvider)));
-  }
-
+  /**
+   * Set info window adapter for markers
+   *
+   * @param infoWindowAdapterFactory {@link InfoWindowAdapterFactory} to set
+   */
   public void setInfoWindowAdapter(
       InfoWindowAdapterFactory<BindableMarker<T>> infoWindowAdapterFactory) {
     getMapAsync(googleMap -> {
@@ -317,6 +396,117 @@ public class GoogleMapView<T> extends MapView {
 
       infoWindowAdapter.addInfoWindowAdapter(adapter);
     });
+  }
+
+  /**
+   * Set on info window click listener
+   *
+   * @param infoWindowClickListener {@link ItemClickListener} to set
+   */
+  public void setOnInfoWindowClickListener(
+      ItemClickListener<BindableMarker<T>> infoWindowClickListener) {
+    this.infoWindowClickListener.addOnInfoWindowClickListener(
+        new WindowInfoClickListener<>(infoWindowClickListener, markerManager));
+  }
+  //endregion
+
+  //region Polylines
+
+  /**
+   * Set polylines to be displayed on map view
+   *
+   * @param polylines Collection of {@link BindablePolyline} to set
+   */
+  public void polylines(Collection<BindablePolyline> polylines) {
+    getMapAsync(googleMap -> polylineManager.addItems(googleMap, polylines));
+  }
+
+  /**
+   * Set on polyline click listener
+   *
+   * @param itemClickListener {@link ItemClickListener} to set
+   */
+  public void setOnPolylineClickListener(ItemClickListener<BindablePolyline> itemClickListener) {
+    polylineClickListener.setItemClickListener(itemClickListener);
+  }
+  //endregion
+
+  //region GroundOverlays
+
+  /**
+   * Set overlays to be displayed on map view
+   *
+   * @param overlays Collection of {@link BindableOverlay} to set
+   */
+  public void groundOverlays(Collection<BindableOverlay> overlays) {
+    getMapAsync(googleMap -> overlayManager.addItems(googleMap, overlays));
+  }
+
+  /**
+   * Set on ground overlay click listener
+   *
+   * @param itemClickListener {@link ItemClickListener} to set
+   */
+  public void setOnGroundOverlayClickListener(
+      ItemClickListener<BindableOverlay> itemClickListener) {
+    overlayClickListener.setItemClickListener(itemClickListener);
+  }
+  //endregion
+
+  //region Circles
+
+  /**
+   * Set circles to be displayed on map view
+   *
+   * @param circles Collection of {@link BindableCircle} to set
+   */
+  public void circles(Collection<BindableCircle> circles) {
+    getMapAsync(googleMap -> circleManager.addItems(googleMap, circles));
+  }
+
+  /**
+   * Set on circle click listener
+   *
+   * @param itemClickListener {@link ItemClickListener} to set
+   */
+  public void setOnCircleClickListener(ItemClickListener<BindableCircle> itemClickListener) {
+    circleClickListener.setItemClickListener(itemClickListener);
+  }
+  //endregion
+
+  //region Polygons
+
+  /**
+   * Set polygons to be displayed on map view
+   *
+   * @param polygons Collection of {@link BindablePolygon} to set
+   */
+  public void polygons(Collection<BindablePolygon> polygons) {
+    getMapAsync(googleMap -> polygonManager.addItems(googleMap, polygons));
+  }
+
+  /**
+   * Set on polygon click listener
+   *
+   * @param itemClickListener {@link ItemClickListener} to set
+   */
+  public void setOnPolygonClickListener(ItemClickListener<BindablePolygon> itemClickListener) {
+    polygonClickListener.setItemClickListener(itemClickListener);
+  }
+  //endregion
+
+  /**
+   * Set heatMapTileProvider to be displayed on map view
+   *
+   * @param heatmapTileProvider {@link HeatmapTileProvider} to set
+   */
+  public void heatMap(HeatmapTileProvider heatmapTileProvider) {
+    if (heatMapTileOverlay != null) {
+      heatMapTileOverlay.remove();
+    }
+
+    getMapAsync(googleMap -> heatMapTileOverlay = googleMap.addTileOverlay(
+        new TileOverlayOptions().tileProvider(heatmapTileProvider)));
   }
 
   private void init() {

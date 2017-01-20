@@ -6,6 +6,8 @@ import android.os.Bundle;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 
+import net.droidlabs.vikingmap.views.MapAwareActivityView;
+
 import agency.tango.viking.annotations.AutoModule;
 import agency.tango.viking.example.databinding.ActivityMapBinding;
 
@@ -20,7 +22,6 @@ public class MapActivity extends MapAwareActivityView<MapViewModel, ActivityMapB
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     MapsInitializer.initialize(getApplicationContext());
-    mapView().onCreate(savedInstanceState);
   }
 
   @Override

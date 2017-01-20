@@ -42,6 +42,5 @@ public class App extends Application implements HasActivitySubcomponentBuilders 
 
     component = DiComponent.Initializer.init(this);
     component.inject(this);
-
   }
 }

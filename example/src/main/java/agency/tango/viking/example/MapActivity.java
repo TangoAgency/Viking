@@ -3,17 +3,14 @@ package agency.tango.viking.example;
 import android.content.Context;
 import android.os.Bundle;
 
+import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 
 import agency.tango.viking.annotations.AutoModule;
-import agency.tango.viking.bindings.map.GoogleMapView;
 import agency.tango.viking.example.databinding.ActivityMapBinding;
-import agency.tango.viking.mvvm.ActivityView;
 
 @AutoModule
-public class MapActivity extends ActivityView<MapViewModel, ActivityMapBinding> {
-
-  private GoogleMapView mapView;
+public class MapActivity extends MapAwareActivityView<MapViewModel, ActivityMapBinding> {
 
   public MapActivity() {
     super(R.layout.activity_map);
@@ -23,7 +20,12 @@ public class MapActivity extends ActivityView<MapViewModel, ActivityMapBinding> 
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     MapsInitializer.initialize(getApplicationContext());
-    mapView.onCreate(savedInstanceState);
+    mapView().onCreate(savedInstanceState);
+  }
+
+  @Override
+  public MapView mapView() {
+    return binding().map;
   }
 
   @Override
@@ -37,74 +39,6 @@ public class MapActivity extends ActivityView<MapViewModel, ActivityMapBinding> 
   @Override
   protected void bind(ActivityMapBinding binding) {
     binding.setViewModel(viewModel());
-    //binding.setView(this);
-    mapView = binding.map;
   }
 
-  //    @Nullable
-  //    @Override
-  //    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
-  //    {
-  //        View view = super.onCreateView(inflater, container, savedInstanceState);
-  //        Bundle mapViewBundle;
-  //        if (savedInstanceState != null)
-  //        {
-  //            mapViewBundle = savedInstanceState.getBundle(MAPVIEW_BUNDLE_KEY);
-  //        }
-  //        else
-  //        {
-  //            mapViewBundle = new Bundle();
-  //        }
-  //        mapView.onCreate(mapViewBundle);
-  //        return view;
-  //    }
-
-  @Override
-  public void onSaveInstanceState(Bundle outState) {
-    //        super.onSaveInstanceState(outState);
-    //        Bundle mapViewBundle = outState.getBundle(MAPVIEW_BUNDLE_KEY);
-    //        if (mapViewBundle == null)
-    //        {
-    //            mapViewBundle = new Bundle();
-    //            outState.putBundle(MAPVIEW_BUNDLE_KEY, mapViewBundle);
-    //        }
-    //
-    //        mapView.onSaveInstanceState(mapViewBundle);
-  }
-
-  @Override
-  public void onResume() {
-    super.onResume();
-    mapView.onResume();
-  }
-
-  @Override
-  public void onStart() {
-    super.onStart();
-    mapView.onStart();
-  }
-
-  @Override
-  public void onStop() {
-    super.onStop();
-    mapView.onStop();
-  }
-
-  @Override
-  public void onPause() {
-    mapView.onPause();
-    super.onPause();
-  }
-
-  @Override
-  public void onDestroy() {
-    mapView.onDestroy();
-    super.onDestroy();
-  }
-
-  @Override
-  public void onLowMemory() {
-    super.onLowMemory();
-    mapView.onLowMemory();
-  }
 }

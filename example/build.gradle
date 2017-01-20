@@ -46,6 +46,7 @@ dependencies {
     compile project(":viking-mvvm")
     compile project(":viking-reactive")
     compile project(":viking-mapbindings")
+    compile project(":viking-map-aware-views")
 
     compile deps.rxJava
     compile deps.rxAndroid

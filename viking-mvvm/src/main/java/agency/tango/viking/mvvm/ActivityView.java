@@ -75,6 +75,10 @@ public abstract class ActivityView<VM extends ViewModel, VD extends ViewDataBind
 
   protected abstract void bind(VD binding);
 
+  protected VD binding() {
+    return binding;
+  }
+
   public final VM viewModel() {
     return viewModel;
   }

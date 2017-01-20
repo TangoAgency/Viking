@@ -33,6 +33,7 @@ import agency.tango.viking.bindings.map.InfoWindowAdapterFactory;
 import agency.tango.viking.bindings.map.RendererFactory;
 import agency.tango.viking.bindings.map.adapters.CustomInfoWindowAdapter;
 import agency.tango.viking.bindings.map.listeners.ItemClickListener;
+import agency.tango.viking.bindings.map.listeners.OnMarkerClickListener;
 import agency.tango.viking.bindings.map.models.BindableCircle;
 import agency.tango.viking.bindings.map.models.BindableMarker;
 import agency.tango.viking.bindings.map.models.BindableOverlay;
@@ -189,12 +190,13 @@ public class MapViewModel extends ViewModel {
   }
 
   @Bindable
-  public ItemClickListener<BindableMarker<ExampleModel>> getMarkerClickListener() {
-    return new ItemClickListener<BindableMarker<ExampleModel>>() {
+  public OnMarkerClickListener<BindableMarker<ExampleModel>> getMarkerClickListener() {
+    return new OnMarkerClickListener<BindableMarker<ExampleModel>>() {
       @Override
-      public void onClick(BindableMarker<ExampleModel> item) {
+      public boolean onClick(BindableMarker<ExampleModel> item) {
         item.getMarker().setPosition(new LatLng(20, 20));
         item.getMarker().showInfoWindow();
+        return true;
       }
     };
   }

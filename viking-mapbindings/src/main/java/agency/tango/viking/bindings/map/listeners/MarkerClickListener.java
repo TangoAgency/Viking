@@ -9,9 +9,9 @@ import agency.tango.viking.bindings.map.models.BindableMarker;
 public class MarkerClickListener<T> extends MarkerClickAdapter<BindableMarker<T>> {
   private final MarkerManager<T> markerManager;
 
-  public MarkerClickListener(ItemClickListener<BindableMarker<T>> itemClickListener,
+  public MarkerClickListener(OnMarkerClickListener<BindableMarker<T>> markerClickListener,
       MarkerManager<T> markerManager) {
-    super(itemClickListener);
+    super(markerClickListener);
     this.markerManager = markerManager;
   }
 

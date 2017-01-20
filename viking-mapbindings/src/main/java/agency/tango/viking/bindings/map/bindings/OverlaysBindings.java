@@ -2,8 +2,6 @@ package agency.tango.viking.bindings.map.bindings;
 
 import android.databinding.BindingAdapter;
 
-import com.google.android.gms.maps.model.GroundOverlayOptions;
-
 import java.util.Collection;
 
 import agency.tango.viking.bindings.map.GoogleMapView;
@@ -14,9 +12,9 @@ public class OverlaysBindings {
   private OverlaysBindings() {
   }
 
-  @BindingAdapter("groundOverlays")
+  @BindingAdapter("gmv_groundOverlays")
   public static void setGroundOverlays(GoogleMapView googleMapView,
-      Collection<GroundOverlayOptions> groundOverlay) {
+      Collection<BindableOverlay> groundOverlay) {
     if (groundOverlay == null) {
       return;
     }
@@ -24,7 +22,7 @@ public class OverlaysBindings {
     googleMapView.groundOverlays(groundOverlay);
   }
 
-  @BindingAdapter("groundOverlayClickListener")
+  @BindingAdapter("gmv_groundOverlayClickListener")
   public static void onGroundOverlayClickListener(GoogleMapView googleMapView,
       ItemClickListener<BindableOverlay> itemClickListener) {
     googleMapView.setOnGroundOverlayClickListener(itemClickListener);

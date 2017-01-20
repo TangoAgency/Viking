@@ -18,7 +18,7 @@ public class ClusterBindings {
   private ClusterBindings() {
   }
 
-  @BindingAdapter("clusterItems")
+  @BindingAdapter("gmv_clusterItems")
   public static <T extends ClusterMapItem> void clusterItems(GoogleMapView googleMapView,
       Collection<T> items) {
     if (items == null) {
@@ -28,51 +28,51 @@ public class ClusterBindings {
     googleMapView.clusterItems(items);
   }
 
-  @BindingAdapter("rendererFactory")
+  @BindingAdapter("gmv_rendererFactory")
   public static <T extends ClusterMapItem> void rendererFactory(GoogleMapView googleMapView,
       RendererFactory<T> rendererFactory) {
     googleMapView.setRendererFactory(rendererFactory);
   }
 
-  @BindingAdapter("algorithm")
+  @BindingAdapter("gmv_algorithm")
   public static <T extends ClusterMapItem> void algorithm(GoogleMapView googleMapView,
       Algorithm<T> algorithm) {
     googleMapView.setAlgorithm(algorithm);
   }
 
-  @BindingAdapter("clusterItemInfoWindowAdapter")
+  @BindingAdapter("gmv_clusterItemInfoWindowAdapter")
   public static <T extends ClusterItem> void clusterItemInfoWindowAdapter(GoogleMapView googleMapView,
       InfoWindowAdapterFactory<T> infoWindowAdapterFactory) {
     googleMapView.setClusterItemInfoWindowAdapter(infoWindowAdapterFactory);
   }
 
-  @BindingAdapter("clusterInfoWindowAdapter")
+  @BindingAdapter("gmv_clusterInfoWindowAdapter")
   public static <T extends Cluster> void clusterInfoWindowAdapter(GoogleMapView googleMapView,
       InfoWindowAdapterFactory<T> infoWindowAdapterFactory) {
     googleMapView.setClusterInfoWindowAdapter(infoWindowAdapterFactory);
   }
 
-  @BindingAdapter("clusterClickListener")
+  @BindingAdapter("gmv_clusterClickListener")
   public static <T extends ClusterMapItem> void clusterClickListener(GoogleMapView googleMapView,
       ClusterManager.OnClusterClickListener<T> onClusterClickListener) {
     googleMapView.setOnClusterClickListener(onClusterClickListener);
   }
 
-  @BindingAdapter("clusterItemClickListener")
+  @BindingAdapter("gmv_clusterItemClickListener")
   public static <T extends ClusterMapItem> void clusterItemClickListener(
       GoogleMapView googleMapView,
       ClusterManager.OnClusterItemClickListener<T> onClusterItemClickListener) {
     googleMapView.setOnClusterItemClickListener(onClusterItemClickListener);
   }
 
-  @BindingAdapter("clusterInfoWindowClickListener")
+  @BindingAdapter("gmv_clusterInfoWindowClickListener")
   public static <T extends ClusterMapItem> void clusterInfoWindowClickListener(
       GoogleMapView googleMapView,
       ClusterManager.OnClusterInfoWindowClickListener<T> onClusterInfoWindowClickListener) {
     googleMapView.setOnClusterInfoWindowClickListener(onClusterInfoWindowClickListener);
   }
 
-  @BindingAdapter("onClusterItemInfoWindowClickListener")
+  @BindingAdapter("gmv_onClusterItemInfoWindowClickListener")
   public static <T extends ClusterMapItem> void onClusterItemInfoWindowClickListener(
       GoogleMapView googleMapView,
       ClusterManager.OnClusterItemInfoWindowClickListener<T> onClusterItemInfoWindowClickListener) {

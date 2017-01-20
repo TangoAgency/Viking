@@ -24,12 +24,13 @@ import agency.tango.viking.bindings.map.adapters.ClusterItemWindowInfoAdapter;
 import agency.tango.viking.bindings.map.adapters.ClusterWindowInfoAdapter;
 import agency.tango.viking.bindings.map.adapters.CompositeInfoWindowAdapter;
 import agency.tango.viking.bindings.map.adapters.MarkerInfoWindowAdapter;
-import agency.tango.viking.bindings.map.listeners.ItemClickListener;
 import agency.tango.viking.bindings.map.listeners.CircleClickListener;
 import agency.tango.viking.bindings.map.listeners.CompositeInfoWindowClickListener;
 import agency.tango.viking.bindings.map.listeners.CompositeMarkerClickListener;
 import agency.tango.viking.bindings.map.listeners.CompositeOnCameraIdleListener;
+import agency.tango.viking.bindings.map.listeners.ItemClickListener;
 import agency.tango.viking.bindings.map.listeners.MarkerClickListener;
+import agency.tango.viking.bindings.map.listeners.OnMarkerClickListener;
 import agency.tango.viking.bindings.map.listeners.OverlayClickListener;
 import agency.tango.viking.bindings.map.listeners.PolygonClickListener;
 import agency.tango.viking.bindings.map.listeners.PolylineClickListener;
@@ -102,7 +103,7 @@ public class GoogleMapView<T> extends MapView {
 
   //region Listeners
   public void setOnMarkerClickListener(
-      ItemClickListener<BindableMarker<T>> markerItemClickListener) {
+      OnMarkerClickListener<BindableMarker<T>> markerItemClickListener) {
     markerClickListener.addOnMarkerClickListener(
         new MarkerClickListener<>(markerItemClickListener, markerManager));
   }

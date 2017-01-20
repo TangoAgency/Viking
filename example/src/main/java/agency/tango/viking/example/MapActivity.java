@@ -1,10 +1,8 @@
 package agency.tango.viking.example;
 
 import android.content.Context;
-import android.os.Bundle;
 
 import com.google.android.gms.maps.MapView;
-import com.google.android.gms.maps.MapsInitializer;
 
 import net.droidlabs.vikingmap.views.MapAwareActivityView;
 

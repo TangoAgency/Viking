@@ -2,8 +2,6 @@ package agency.tango.viking.bindings.map.bindings;
 
 import android.databinding.BindingAdapter;
 
-import com.google.android.gms.maps.model.PolygonOptions;
-
 import java.util.Collection;
 
 import agency.tango.viking.bindings.map.GoogleMapView;
@@ -14,16 +12,16 @@ public class PolygonBindings {
   private PolygonBindings() {
   }
 
-  @BindingAdapter("polygons")
+  @BindingAdapter("gmv_polygons")
   public static void setPolygons(GoogleMapView googleMapView,
-      Collection<PolygonOptions> polygons) {
+      Collection<BindablePolygon> polygons) {
     if (polygons == null) {
       return;
     }
     googleMapView.polygons(polygons);
   }
 
-  @BindingAdapter("polygonClickListener")
+  @BindingAdapter("gmv_polygonClickListener")
   public static void polygonClickListener(GoogleMapView googleMapView,
       ItemClickListener<BindablePolygon> itemClickListener) {
     googleMapView.setOnPolygonClickListener(itemClickListener);

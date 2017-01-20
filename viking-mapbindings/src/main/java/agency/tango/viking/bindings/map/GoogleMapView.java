@@ -24,7 +24,7 @@ import agency.tango.viking.bindings.map.adapters.ClusterItemWindowInfoAdapter;
 import agency.tango.viking.bindings.map.adapters.ClusterWindowInfoAdapter;
 import agency.tango.viking.bindings.map.adapters.CompositeInfoWindowAdapter;
 import agency.tango.viking.bindings.map.adapters.MarkerInfoWindowAdapter;
-import agency.tango.viking.bindings.map.clickHandlers.ItemClickListener;
+import agency.tango.viking.bindings.map.listeners.ItemClickListener;
 import agency.tango.viking.bindings.map.listeners.CircleClickListener;
 import agency.tango.viking.bindings.map.listeners.CompositeInfoWindowClickListener;
 import agency.tango.viking.bindings.map.listeners.CompositeMarkerClickListener;

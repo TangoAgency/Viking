@@ -3,7 +3,6 @@ package agency.tango.viking.bindings.map.listeners;
 import com.google.android.gms.maps.model.Marker;
 
 import agency.tango.viking.bindings.map.adapters.MarkerClickAdapter;
-import agency.tango.viking.bindings.map.clickHandlers.ItemClickListener;
 import agency.tango.viking.bindings.map.managers.MarkerManager;
 import agency.tango.viking.bindings.map.models.BindableMarker;
 

@@ -7,7 +7,7 @@ import com.google.android.gms.maps.model.GroundOverlayOptions;
 import java.util.Collection;
 
 import agency.tango.viking.bindings.map.GoogleMapView;
-import agency.tango.viking.bindings.map.clickHandlers.ItemClickListener;
+import agency.tango.viking.bindings.map.listeners.ItemClickListener;
 import agency.tango.viking.bindings.map.models.BindableOverlay;
 
 public class OverlaysBindings {

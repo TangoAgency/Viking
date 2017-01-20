@@ -3,7 +3,7 @@ package agency.tango.viking.bindings.map.adapters;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.Marker;
 
-import agency.tango.viking.bindings.map.clickHandlers.ItemClickListener;
+import agency.tango.viking.bindings.map.listeners.ItemClickListener;
 
 public abstract class MarkerClickAdapter<T> implements GoogleMap.OnMarkerClickListener {
   private final ItemClickListener<T> itemClickListener;

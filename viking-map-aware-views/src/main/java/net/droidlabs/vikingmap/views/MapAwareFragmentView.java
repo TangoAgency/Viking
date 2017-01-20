@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.MapsInitializer;
 
 import agency.tango.viking.mvvm.FragmentView;
 import agency.tango.viking.mvvm.ViewModel;
@@ -26,6 +27,9 @@ public abstract class MapAwareFragmentView<VM extends ViewModel, VD extends View
   public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
       @Nullable Bundle savedInstanceState) {
     View view = super.onCreateView(inflater, container, savedInstanceState);
+
+    MapsInitializer.initialize(getActivity());
+
     Bundle mapViewBundle;
     if (savedInstanceState != null) {
       mapViewBundle = savedInstanceState.getBundle(MAPVIEW_BUNDLE_KEY);

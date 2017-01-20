@@ -19,17 +19,6 @@ public class MapActivity extends MapAwareActivityView<MapViewModel, ActivityMapB
   }
 
   @Override
-  protected void onCreate(Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
-    MapsInitializer.initialize(getApplicationContext());
-  }
-
-  @Override
-  public MapView mapView() {
-    return binding().map;
-  }
-
-  @Override
   protected void inject(Context context) {
     App.get(context)
         .getActivityComponentBuilder(MapActivity.class, MapActivity_Component.Builder.class)
@@ -42,4 +31,8 @@ public class MapActivity extends MapAwareActivityView<MapViewModel, ActivityMapB
     binding.setViewModel(viewModel());
   }
 
+  @Override
+  public MapView mapView() {
+    return binding().map;
+  }
 }

@@ -7,7 +7,7 @@ import com.google.android.gms.maps.model.CircleOptions;
 import java.util.Collection;
 
 import agency.tango.viking.bindings.map.GoogleMapView;
-import agency.tango.viking.bindings.map.clickHandlers.ItemClickListener;
+import agency.tango.viking.bindings.map.listeners.ItemClickListener;
 import agency.tango.viking.bindings.map.models.BindableCircle;
 
 public class CircleBindings {

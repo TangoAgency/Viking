@@ -3,7 +3,6 @@ package agency.tango.viking.bindings.map.listeners;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.Polyline;
 
-import agency.tango.viking.bindings.map.clickHandlers.ItemClickListener;
 import agency.tango.viking.bindings.map.managers.PolylineManager;
 import agency.tango.viking.bindings.map.models.BindablePolyline;
 

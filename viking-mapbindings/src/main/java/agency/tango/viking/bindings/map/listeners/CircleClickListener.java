@@ -3,7 +3,6 @@ package agency.tango.viking.bindings.map.listeners;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.Circle;
 
-import agency.tango.viking.bindings.map.clickHandlers.ItemClickListener;
 import agency.tango.viking.bindings.map.managers.CircleManager;
 import agency.tango.viking.bindings.map.models.BindableCircle;
 

@@ -1,9 +1,6 @@
 package agency.tango.viking.bindings.map;
 
-import android.Manifest;
 import android.content.Context;
-import android.content.pm.PackageManager;
-import android.support.v4.app.ActivityCompat;
 import android.util.AttributeSet;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -100,6 +97,11 @@ public class GoogleMapView<T> extends MapView {
 
   public BindableItem<Float> zoom() {
     return zoom;
+  }
+
+  public void postChangedLocation(LatLng latLng) {
+    getMapAsync(googleMap -> googleMap.moveCamera(CameraUpdateFactory.newLatLng(latLng)));
+    this.latLng.setValue(latLng);
   }
 
   //region Listeners
@@ -213,7 +215,7 @@ public class GoogleMapView<T> extends MapView {
   public void setClusterInfoWindowAdapter(
       InfoWindowAdapterFactory infoWindowAdapterFactory) {
     customClusterManager.onClusterManagerReady(clusterManager -> {
-      ClusterWindowInfoAdapter adapter = new ClusterWindowInfoAdapter<>(
+      ClusterWindowInfoAdapter adapter = new ClusterWindowInfoAdapter(
           infoWindowAdapterFactory.createInfoWindowAdapter(getContext()), clusterManager);
 
       clusterManager.getClusterMarkerCollection().setOnInfoWindowAdapter(adapter);
@@ -317,11 +319,6 @@ public class GoogleMapView<T> extends MapView {
     });
   }
 
-  public void postChangedLocation(LatLng latLng) {
-    getMapAsync(googleMap -> googleMap.moveCamera(CameraUpdateFactory.newLatLng(latLng)));
-    updateField(this.latLng, latLng);
-  }
-
   private void init() {
     markerManager = new MarkerManager<>(this::getMapAsync);
     polylineManager = new PolylineManager(this::getMapAsync);
@@ -340,8 +337,6 @@ public class GoogleMapView<T> extends MapView {
     polygonClickListener = new PolygonClickListener(polygonManager);
 
     getMapAsync(googleMap -> {
-      initGoogleMap();
-
       googleMap.setOnCameraIdleListener(onCameraIdleListener);
       googleMap.setInfoWindowAdapter(infoWindowAdapter);
       googleMap.setOnMarkerClickListener(markerClickListener);
@@ -352,34 +347,11 @@ public class GoogleMapView<T> extends MapView {
       googleMap.setOnPolygonClickListener(polygonClickListener);
 
       onCameraIdleListener.addOnCameraIdleListener(() -> {
-        updateField(latLng, getLatLng(googleMap));
-        updateField(zoom, googleMap.getCameraPosition().zoom);
-        updateField(radius, currentRadius(googleMap));
+        latLng.setValue(getLatLng(googleMap));
+        zoom.setValue(googleMap.getCameraPosition().zoom);
+        radius.setValue(currentRadius(googleMap));
       });
     });
-  }
-
-  private void initGoogleMap() {
-    getMapAsync(googleMap -> {
-      if (checkLocationPermission()) {
-        googleMap.setMyLocationEnabled(true);
-      }
-      googleMap.getUiSettings().setMyLocationButtonEnabled(true);
-    });
-  }
-
-  private boolean checkLocationPermission() {
-    return
-        ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION)
-            == PackageManager.PERMISSION_GRANTED
-            &&
-            ActivityCompat.checkSelfPermission(getContext(),
-                Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED;
-  }
-
-  private <E> void updateField(BindableItem<E> item, E value) {
-    item.setValue(value);
-    item.onValueChanged(value);
   }
 
   private LatLng getLatLng(GoogleMap googleMap) {

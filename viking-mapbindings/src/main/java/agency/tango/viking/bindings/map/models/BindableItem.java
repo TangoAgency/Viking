@@ -11,14 +11,17 @@ public class BindableItem<T> {
   }
 
   public void setValue(T value) {
-    this.value = value;
+    if (this.value != value) {
+      this.value = value;
+      onValueChanged(value);
+    }
   }
 
   public void setOnChangeListener(IValueChangedListener<T> listener) {
     this.listener = listener;
   }
 
-  public void onValueChanged(T value) {
+  private void onValueChanged(T value) {
     if (listener != null) {
       listener.onValueChange(value);
     }

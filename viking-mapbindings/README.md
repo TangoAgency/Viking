@@ -1,8 +1,8 @@
 # Viking Map Bindings
 Viking Map Bindings is a library for using Google MapView with Android Data Binding with many API improvements.
 
-### To use it first please read this: [Android Data Binding]
-## Usage
+### To use this library, please read this: [Android Data Binding]
+## Usage in project
 ### Step 1:
 Enable Data Binding in your project [Android Data Binding Setup]
 ### Step 2:
@@ -22,13 +22,121 @@ Add to your [xml] [GoogleMapView]
 ### Step 4:
 Bind EVERYTHING!!!
 
+
+### Binding examples
+This section will introduce you how to bind objects to [GoogleMapView]
+#### Complex example
 Example based on [Viking ViewModel]:
   - [MapViewModel]
   - [MapActivity]
   - [activity_map.xml]
 
+#### Binding markers
+If you want to bind list of markers you need to create ObservableList in your ViewModel.
+```java
+private ObservableList<BindableMarker<ExampleModel>> models = new ObservableArrayList<>();
+```
+With this library you are allowed to bind any model you want to the specific marker.
+Secondly you need to add items to list.
+```java
+    models.add(new BindableMarker<>(
+        new ExampleModel("Hello", "World"),
+        0,
+        new MarkerOptions()
+            .title("marker")
+            .position(new LatLng(3, 3))));
+```
+Before last step you need to make ObservableList bindable.
+```java
+  @Bindable
+  public Collection<BindableMarker<ExampleModel>> getModels() {
+    return models;
+  }
+```
+Now just bind list in your xml view
+```
+  <agency.tango.viking.bindings.map.GoogleMapView
+      android:id="@+id/map"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      bind:gmv_markers="@{viewModel.models}"
+      />
+```
+
+#### Binding click listeners
+To bind listener to any object to any object you need to do two things. In this example I will bind markers click listener.
+
+First you need to add proper ```@Bindable``` method to your class
+```java
+  @Bindable
+  public OnMarkerClickListener<BindableMarker<ExampleModel>> getMarkerClickListener() {
+    return new OnMarkerClickListener<BindableMarker<ExampleModel>>() {
+      @Override
+      public boolean onClick(BindableMarker<ExampleModel> item) {
+        item.getMarker().setPosition(new LatLng(20, 20));
+        item.getMarker().showInfoWindow();
+        return true;
+      }
+    };
+  }
+```
+And the second step is binding listener in xml view
+```
+  <agency.tango.viking.bindings.map.GoogleMapView
+      android:id="@+id/map"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      bind:gmv_markerClickListener="@{viewModel.markerClickListener}"
+      />
+```
+
+#### Binding window info adapters
+With this library you are allowed to use WindowInfoAdapterFactory which returns binded data for given marker or cluster item.
+This example will present how to user WindowInfoAdapterFactory for markers.
+
+First add ```@Bindable``` method in your class
+```java
+  @Bindable
+  public InfoWindowAdapterFactory<BindableMarker<ExampleModel>> getInfoWindowAdapter() {
+    return new InfoWindowAdapterFactory<BindableMarker<ExampleModel>>() {
+      @Override
+      public CustomInfoWindowAdapter<BindableMarker<ExampleModel>> createInfoWindowAdapter(
+          final Context context) {
+        return new CustomInfoWindowAdapter<BindableMarker<ExampleModel>>() {
+          @Override
+          public View getInfoWindow(BindableMarker<ExampleModel> bindableMarker) {
+            return null;
+          }
+
+          @Override
+          public View getInfoContents(BindableMarker<ExampleModel> bindableMarker) {
+            View view = LayoutInflater.from(context).inflate(R.layout.info_window, null);
+
+            TextView title = (TextView) view.findViewById(R.id.tv_title);
+            TextView description = (TextView) view.findViewById(R.id.tv_description);
+
+            title.setText(bindableMarker.getObject().getTitle());
+            description.setText(bindableMarker.getObject().getDescription());
+            return view;
+          }
+        };
+      }
+    };
+  }
+```
+Then add proper attribute in xml view.
+```
+  <agency.tango.viking.bindings.map.GoogleMapView
+      android:id="@+id/map"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      bind:gmv_infoWindowAdapter="@{viewModel.infoWindowAdapter}"
+      />
+```
+
 ## Available Bindings
 - [Camera Bindings]:
+
 ```
   - gmv_cameraMoveStartedListener
   - gmv_cameraMoveCanceledListener
@@ -36,11 +144,13 @@ Example based on [Viking ViewModel]:
   - gmv_cameraMoveListener
 ```
 - [Circle Bindings]:
+
 ```
   - gmv_circles
   - gmv_circleClickListener
 ```
 - [Cluster Bindings]:
+
 ```
   - gmv_clusterItems
   - gmv_rendererFactory
@@ -53,6 +163,7 @@ Example based on [Viking ViewModel]:
   - gmv_onClusterItemInfoWindowClickListener
 ```
 - [Map Bindings]:
+
 ```
   - gmv_radius
   - gmv_radiusChanged
@@ -70,8 +181,9 @@ Example based on [Viking ViewModel]:
   - gmv_snapshotReadyCallback
 ```
 - [Markers Bindings]:
+
 ```
-  - gmv_mapItems
+  - gmv_markers
   - gmv_markerClickListener
   - gmv_infoWindowAdapter
   - gmv_infoWindowClickListener
@@ -80,17 +192,20 @@ Example based on [Viking ViewModel]:
   - gmv_markerDragListener
 ```
 - [Overlays Bindings]:
+
 ```
   - gmv_groundOverlays
   - gmv_groundOverlayClickListener
 ```
 - [Polygons Bindings]:
+
 ```
   - gmv_polygons
   - gmv_polygonClickListener
 ```
 - [Map Bindings]:
-```java
+
+```
   - gmv_polylines
   - gmv_polylineClickListener
 ```

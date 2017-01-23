@@ -6,9 +6,9 @@ Viking Map Bindings is a library for using Google MapView with Android Data Bind
 ### Step 1:
 Enable Data Binding in your project [Android Data Binding Setup]
 ### Step 2:
-Make your Activity extend  [MapAwareActivityView](for Fragment use [MapAwareFragmentView])
+Make your Activity extend  [MapAwareActivityView] (for Fragment use [MapAwareFragmentView])
 ```java
-public class MapActivity extends MapAwareActivityView<ViewModel, Binding>
+public class MapActivity extends MapAwareActivityView<VM extends ViewModel, VD extends ViewDataBinding>
 ```
 ### Step 3:
 Add to your [xml] [GoogleMapView]
@@ -33,10 +33,10 @@ Example based on [Viking ViewModel]:
 
 #### Binding markers
 If you want to bind list of markers you need to create ObservableList in your ViewModel.
+With this library you are allowed to bind any model you want to the specific marker.
 ```java
 private ObservableList<BindableMarker<ExampleModel>> models = new ObservableArrayList<>();
 ```
-With this library you are allowed to bind any model you want to the specific marker.
 Secondly you need to add items to list.
 ```java
     models.add(new BindableMarker<>(
@@ -149,7 +149,7 @@ Then add proper attribute in xml view.
   - gmv_circles
   - gmv_circleClickListener
 ```
-- [Cluster Bindings] (for clustering please implement your model with ClusterMapItem):
+- [Cluster Bindings]  (for clustering please implement your model with ClusterMapItem):
 
 ```
   - gmv_clusterItems

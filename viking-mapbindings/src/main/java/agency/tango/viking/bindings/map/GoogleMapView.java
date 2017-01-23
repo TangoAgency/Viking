@@ -510,13 +510,30 @@ public class GoogleMapView<T> extends MapView {
   }
 
   private void init() {
+    initializeManagers();
+    initializeListeners();
+
+    getMapAsync(googleMap -> {
+      setListenersToGoogleMap(googleMap);
+
+      onCameraIdleListener.addOnCameraIdleListener(() -> {
+        latLng.setValue(getLatLng(googleMap));
+        zoom.setValue(googleMap.getCameraPosition().zoom);
+        radius.setValue(currentRadius(googleMap));
+      });
+    });
+  }
+
+  private void initializeManagers() {
     markerManager = new MarkerManager<>(this::getMapAsync);
     polylineManager = new PolylineManager(this::getMapAsync);
     overlayManager = new OverlayManager(this::getMapAsync);
     circleManager = new CircleManager(this::getMapAsync);
     polygonManager = new PolygonManager(this::getMapAsync);
     customClusterManager = new CustomClusterManager<>(getContext(), this::getMapAsync);
+  }
 
+  private void initializeListeners() {
     onCameraIdleListener = new CompositeOnCameraIdleListener();
     infoWindowAdapter = new CompositeInfoWindowAdapter();
     markerClickListener = new CompositeMarkerClickListener();
@@ -525,23 +542,17 @@ public class GoogleMapView<T> extends MapView {
     overlayClickListener = new OverlayClickListener(overlayManager);
     circleClickListener = new CircleClickListener(circleManager);
     polygonClickListener = new PolygonClickListener(polygonManager);
+  }
 
-    getMapAsync(googleMap -> {
-      googleMap.setOnCameraIdleListener(onCameraIdleListener);
-      googleMap.setInfoWindowAdapter(infoWindowAdapter);
-      googleMap.setOnMarkerClickListener(markerClickListener);
-      googleMap.setOnInfoWindowClickListener(infoWindowClickListener);
-      googleMap.setOnPolylineClickListener(polylineClickListener);
-      googleMap.setOnGroundOverlayClickListener(overlayClickListener);
-      googleMap.setOnCircleClickListener(circleClickListener);
-      googleMap.setOnPolygonClickListener(polygonClickListener);
-
-      onCameraIdleListener.addOnCameraIdleListener(() -> {
-        latLng.setValue(getLatLng(googleMap));
-        zoom.setValue(googleMap.getCameraPosition().zoom);
-        radius.setValue(currentRadius(googleMap));
-      });
-    });
+  private void setListenersToGoogleMap(GoogleMap googleMap) {
+    googleMap.setInfoWindowAdapter(infoWindowAdapter);
+    googleMap.setOnCameraIdleListener(onCameraIdleListener);
+    googleMap.setOnMarkerClickListener(markerClickListener);
+    googleMap.setOnInfoWindowClickListener(infoWindowClickListener);
+    googleMap.setOnPolylineClickListener(polylineClickListener);
+    googleMap.setOnGroundOverlayClickListener(overlayClickListener);
+    googleMap.setOnCircleClickListener(circleClickListener);
+    googleMap.setOnPolygonClickListener(polygonClickListener);
   }
 
   private LatLng getLatLng(GoogleMap googleMap) {

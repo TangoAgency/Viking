@@ -149,7 +149,7 @@ Then add proper attribute in xml view.
   - gmv_circles
   - gmv_circleClickListener
 ```
-- [Cluster Bindings]:
+- [Cluster Bindings] (for clustering please implement your model with ClusterMapItem):
 
 ```
   - gmv_clusterItems

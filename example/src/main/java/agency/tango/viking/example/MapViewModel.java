@@ -4,6 +4,7 @@ import android.content.Context;
 import android.databinding.Bindable;
 import android.databinding.ObservableArrayList;
 import android.databinding.ObservableList;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
@@ -25,10 +26,10 @@ import com.google.maps.android.heatmaps.HeatmapTileProvider;
 
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
+import agency.tango.viking.bindings.map.ClusterMapItem;
 import agency.tango.viking.bindings.map.InfoWindowAdapterFactory;
 import agency.tango.viking.bindings.map.RendererFactory;
 import agency.tango.viking.bindings.map.adapters.CustomInfoWindowAdapter;
@@ -40,12 +41,9 @@ import agency.tango.viking.bindings.map.models.BindableOverlay;
 import agency.tango.viking.bindings.map.models.BindablePolygon;
 import agency.tango.viking.bindings.map.models.BindablePolyline;
 import agency.tango.viking.mvvm.ViewModel;
-import agency.tango.viking.rx.util.SchedulerProvider;
-import io.reactivex.Observable;
-import io.reactivex.functions.Consumer;
 
 public class MapViewModel extends ViewModel {
-  private static final float DEFAULT_ZOOM = 15;
+  private static final float DEFAULT_ZOOM = 12;
 
   private final ObservableList<BindableMarker<ExampleModel>> models = new ObservableArrayList<>();
   private final ObservableList<BindablePolyline> polylines = new ObservableArrayList<>();
@@ -67,78 +65,50 @@ public class MapViewModel extends ViewModel {
   public void start() {
     super.start();
 
-    clusterItems.add(new ClusterModel(0, new LatLng(1.101110, 0.000000)));
-    clusterItems.add(new ClusterModel(1, new LatLng(2.202222, 0.000002)));
-    clusterItems.add(new ClusterModel(2, new LatLng(3.303334, 0.000004)));
-    clusterItems.add(new ClusterModel(3, new LatLng(4.404446, 0.000006)));
-    clusterItems.add(new ClusterModel(4, new LatLng(5.505558, 0.000008)));
-    clusterItems.add(new ClusterModel(5, new LatLng(6.606660, 0.000010)));
+    clusterItems.add(new ClusterModel(0, new LatLng(0, 11.101110)));
+    clusterItems.add(new ClusterModel(1, new LatLng(0, 12.202222)));
+    clusterItems.add(new ClusterModel(2, new LatLng(0, 13.303334)));
+    clusterItems.add(new ClusterModel(3, new LatLng(3, 11.101110)));
+    clusterItems.add(new ClusterModel(4, new LatLng(3, 12.202222)));
+    clusterItems.add(new ClusterModel(5, new LatLng(3, 13.303334)));
 
     circles.add(new BindableCircle(0, new CircleOptions()
-        .radius(5000)
+        .radius(100000)
         .clickable(true)
-        .center(new LatLng(0, 0))));
-
-    polygons.add(new BindablePolygon(0, new PolygonOptions()
-        .clickable(true)
-        .add(new LatLng(0, 50))
-        .add(new LatLng(50, 50))
-        .add(new LatLng(50, 0))
-        .add(new LatLng(0, 0))));
+        .center(new LatLng(0, 5))));
 
     models.add(new BindableMarker<>(
         new ExampleModel("Hello", "World"),
         0,
         new MarkerOptions()
             .title("marker")
-            .position(new LatLng(3, 3))));
+            .position(new LatLng(0, -10))));
 
     polylines.add(new BindablePolyline(0,
         new PolylineOptions()
             .clickable(true)
-            .add(new LatLng(0, 0))
-            .add(new LatLng(50, 50))));
+            .add(new LatLng(0, 25))
+            .add(new LatLng(0, 30))));
+
+    polygons.add(new BindablePolygon(0, new PolygonOptions()
+        .clickable(true)
+        .strokeColor(Color.rgb(255, 0, 0))
+        .add(new LatLng(0, 0))
+        .add(new LatLng(0, 1))
+        .add(new LatLng(1, 1))
+        .add(new LatLng(1, 0))));
 
     overlays.add(new BindableOverlay(0,
         new GroundOverlayOptions()
-            .image(BitmapDescriptorFactory.fromResource(R.drawable.amu_bubble_mask))
-            .positionFromBounds(new LatLngBounds(new LatLng(0, 0), new LatLng(5, 5)))));
+            .image(BitmapDescriptorFactory.fromResource(R.drawable.heart))
+            .positionFromBounds(new LatLngBounds(new LatLng(0, -4), new LatLng(1, -3)))));
 
     heatmapTileProvider = new HeatmapTileProvider.Builder()
-        .data(Arrays.asList(new LatLng(0, 0),
-            new LatLng(1, 1),
-            new LatLng(2, 2)))
+        .data(Arrays.asList(new LatLng(0, 20),
+            new LatLng(0, 21),
+            new LatLng(0, 22)))
         .radius(50)
         .build();
-
-    Observable.just(1).delay(4, TimeUnit.SECONDS, SchedulerProvider.getInstance()
-        .computation())
-        .observeOn(SchedulerProvider.getInstance().ui())
-        .subscribe(new Consumer<Integer>() {
-          @Override
-          public void accept(Integer integer) throws Exception {
-
-            polylines.set(0, new BindablePolyline(0,
-                new PolylineOptions()
-                    .clickable(true)
-                    .add(new LatLng(25, 14))
-                    .add(new LatLng(25, 50))));
-
-            overlays.set(0, new BindableOverlay(0,
-                new GroundOverlayOptions()
-                    .clickable(true)
-                    .image(BitmapDescriptorFactory.fromResource(R.drawable.amu_bubble_mask))
-                    .positionFromBounds(new LatLngBounds(new LatLng(5, 10), new LatLng(10, 15)))));
-
-            heatmapTileProvider = new HeatmapTileProvider.Builder()
-                .data(Arrays.asList(new LatLng(18, 18),
-                    new LatLng(19, 19),
-                    new LatLng(20, 20)))
-                .radius(50)
-                .build();
-            notifyPropertyChanged(BR.heatMap);
-          }
-        });
   }
 
   @Bindable
@@ -170,6 +140,14 @@ public class MapViewModel extends ViewModel {
   }
 
   @Bindable
+  public String getLocation() {
+    if (latLng != null) {
+      return latLng.toString();
+    }
+    return "";
+  }
+
+  @Bindable
   public LatLng getLatLng() {
     return this.latLng;
   }
@@ -177,6 +155,7 @@ public class MapViewModel extends ViewModel {
   public void setLatLng(LatLng latLng) {
     this.latLng = latLng;
     this.notifyPropertyChanged(BR.latLng);
+    this.notifyPropertyChanged(BR.location);
   }
 
   @Bindable
@@ -194,7 +173,6 @@ public class MapViewModel extends ViewModel {
     return new OnMarkerClickListener<BindableMarker<ExampleModel>>() {
       @Override
       public boolean onClick(BindableMarker<ExampleModel> item) {
-        item.getMarker().setPosition(new LatLng(20, 20));
         item.getMarker().showInfoWindow();
         return true;
       }
@@ -206,7 +184,6 @@ public class MapViewModel extends ViewModel {
     return new ItemClickListener<BindableMarker<ExampleModel>>() {
       @Override
       public void onClick(BindableMarker<ExampleModel> item) {
-        item.getMarker().setPosition(new LatLng(-20, -20));
         item.getMarker().hideInfoWindow();
       }
     };
@@ -273,6 +250,34 @@ public class MapViewModel extends ViewModel {
 
             title.setText(bindableMarker.getObject().getTitle());
             description.setText(bindableMarker.getObject().getDescription());
+            return view;
+          }
+        };
+      }
+    };
+  }
+
+  @Bindable
+  public InfoWindowAdapterFactory<ClusterMapItem> getClusterItemInfoWindowAdapter() {
+    return new InfoWindowAdapterFactory<ClusterMapItem>() {
+      @Override
+      public CustomInfoWindowAdapter<ClusterMapItem> createInfoWindowAdapter(
+          final Context context) {
+        return new CustomInfoWindowAdapter<ClusterMapItem>() {
+          @Override
+          public View getInfoWindow(ClusterMapItem clusterMapItem) {
+            return null;
+          }
+
+          @Override
+          public View getInfoContents(ClusterMapItem clusterMapItem) {
+            View view = LayoutInflater.from(context).inflate(R.layout.info_window, null);
+
+            TextView title = (TextView) view.findViewById(R.id.tv_title);
+            TextView description = (TextView) view.findViewById(R.id.tv_description);
+
+            title.setText(String.format("LatLng: %s", clusterMapItem.getPosition().toString()));
+            description.setText(String.format("ID: %d", clusterMapItem.getId()));
             return view;
           }
         };

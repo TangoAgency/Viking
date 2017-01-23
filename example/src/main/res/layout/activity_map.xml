@@ -11,37 +11,48 @@
       />
   </data>
 
-  <FrameLayout
+  <LinearLayout
     android:id="@+id/activity_map"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="agency.tango.viking.example.MapActivity"
     >
 
     <agency.tango.viking.bindings.map.GoogleMapView
       android:id="@+id/map"
       android:layout_width="match_parent"
-      android:layout_height="match_parent"
-      bind:gmv_clusterItems="@{viewModel.clusterItems}"
+      android:layout_height="0dp"
+      android:layout_weight="1"
+      bind:gmv_circleClickListener="@{viewModel.circleClickListener}"
+      bind:gmv_circles="@{viewModel.circles}"
       bind:gmv_clusterClickListener="@{viewModel.clusterClickListener}"
       bind:gmv_clusterInfoWindowAdapter="@{viewModel.clusterInfoWindowAdapter}"
-      bind:gmv_circles="@{viewModel.circles}"
-      bind:gmv_circleClickListener="@{viewModel.circleClickListener}"
+      bind:gmv_clusterItemInfoWindowAdapter="@{viewModel.clusterItemInfoWindowAdapter}"
+      bind:gmv_clusterItems="@{viewModel.clusterItems}"
+      bind:gmv_groundOverlayClickListener="@{viewModel.overlayClickListener}"
       bind:gmv_groundOverlays="@{viewModel.overlays}"
       bind:gmv_heatMap="@{viewModel.heatMap}"
-      bind:gmv_groundOverlayClickListener="@{viewModel.overlayClickListener}"
       bind:gmv_infoWindowAdapter="@{viewModel.infoWindowAdapter}"
       bind:gmv_infoWindowClickListener="@{viewModel.infoWindowClickListener}"
       bind:gmv_latLng="@={viewModel.latLng}"
       bind:gmv_markerClickListener="@{viewModel.markerClickListener}"
       bind:gmv_markers="@{viewModel.models}"
-      bind:gmv_polygons="@{viewModel.polygons}"
       bind:gmv_polygonClickListener="@{viewModel.polygonClickListener}"
+      bind:gmv_polygons="@{viewModel.polygons}"
       bind:gmv_polylineClickListener="@{viewModel.polylineClickListener}"
       bind:gmv_polylines="@{viewModel.polylines}"
       bind:gmv_rendererFactory="@{viewModel.rendererFactory}"
       bind:gmv_zoom="@={viewModel.zoom}"
       />
 
-  </FrameLayout>
+    <TextView
+      android:id="@+id/tv_location"
+      android:layout_width="match_parent"
+      android:layout_height="48dp"
+      android:text="@{viewModel.location}"
+      android:gravity="center"
+      tools:text="Location: 15.2015, 51.2012"
+      />
+  </LinearLayout>
 </layout>

@@ -17,13 +17,13 @@ public class MarkerBindings {
   private MarkerBindings() {
   }
 
-  @BindingAdapter("gmv_mapItems")
+  @BindingAdapter("gmv_markers")
   public static <T> void mapItems(GoogleMapView<T> googleMapView,
-      Collection<BindableMarker<T>> items) {
-    if (items == null) {
+      Collection<BindableMarker<T>> markers) {
+    if (markers == null) {
       return;
     }
-    googleMapView.markers(items);
+    googleMapView.markers(markers);
   }
 
   @BindingAdapter("gmv_markerClickListener")

@@ -34,7 +34,7 @@
       bind:gmv_infoWindowClickListener="@{viewModel.infoWindowClickListener}"
       bind:gmv_latLng="@={viewModel.latLng}"
       bind:gmv_markerClickListener="@{viewModel.markerClickListener}"
-      bind:gmv_mapItems="@{viewModel.models}"
+      bind:gmv_markers="@{viewModel.models}"
       bind:gmv_polygons="@{viewModel.polygons}"
       bind:gmv_polygonClickListener="@{viewModel.polygonClickListener}"
       bind:gmv_polylineClickListener="@{viewModel.polylineClickListener}"

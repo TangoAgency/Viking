@@ -37,7 +37,7 @@
     <attr name="gmv_poiClickListener" format="reference"/>
     <attr name="gmv_snapshotReadyCallback" format="reference"/>
 
-    <attr name="gmv_mapItems" format="reference"/>
+    <attr name="gmv_markers" format="reference"/>
     <attr name="gmv_markerClickListener" format="reference"/>
     <attr name="gmv_infoWindowAdapter" format="reference"/>
     <attr name="gmv_infoWindowClickListener" format="reference"/>

@@ -1,27 +1,23 @@
 package agency.tango.viking.bindings.map.models;
 
+import android.support.annotation.Nullable;
+
 import com.google.android.gms.maps.model.Polygon;
 import com.google.android.gms.maps.model.PolygonOptions;
 
-public class BindablePolygon implements MapEntity {
+public class BindablePolygon {
   private PolygonOptions polygonOptions;
   private Polygon polygon;
-  private final long id;
 
-  public BindablePolygon(long id, PolygonOptions polygonOptions) {
-    this.id = id;
+  public BindablePolygon(PolygonOptions polygonOptions) {
     this.polygonOptions = polygonOptions;
-  }
-
-  @Override
-  public long getId() {
-    return id;
   }
 
   public PolygonOptions getPolygonOptions() {
     return polygonOptions;
   }
 
+  @Nullable
   public Polygon getPolygon() {
     return polygon;
   }

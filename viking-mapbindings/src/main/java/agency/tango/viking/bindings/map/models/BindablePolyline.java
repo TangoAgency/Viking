@@ -1,27 +1,23 @@
 package agency.tango.viking.bindings.map.models;
 
+import android.support.annotation.Nullable;
+
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 
-public class BindablePolyline implements MapEntity {
-  private final long id;
+public class BindablePolyline {
   private final PolylineOptions polylineOptions;
   private Polyline polyline;
 
-  public BindablePolyline(long id, PolylineOptions polylineOptions) {
-    this.id = id;
+  public BindablePolyline(PolylineOptions polylineOptions) {
     this.polylineOptions = polylineOptions;
-  }
-
-  @Override
-  public long getId() {
-    return id;
   }
 
   public PolylineOptions getPolylineOptions() {
     return polylineOptions;
   }
 
+  @Nullable
   public Polyline getPolyline() {
     return polyline;
   }

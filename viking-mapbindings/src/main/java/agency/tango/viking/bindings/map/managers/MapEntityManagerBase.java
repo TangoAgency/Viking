@@ -8,11 +8,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import agency.tango.viking.bindings.map.models.MapEntity;
-
 import static agency.tango.viking.bindings.map.CollectionUtils.moveRange;
 
-public abstract class MapEntityManagerBase<T extends MapEntity> implements IMapEntityManager<T> {
+public abstract class MapEntityManagerBase<T> implements IMapEntityManager<T> {
 
   private final MapResolver mapResolver;
   private ObservableList.OnListChangedCallback<ObservableList<T>> itemsListener;

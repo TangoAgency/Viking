@@ -16,6 +16,6 @@ public class CustomClusterRenderer extends DefaultClusterRenderer<ClusterModel> 
 
   @Override
   protected void onBeforeClusterItemRendered(ClusterModel item, MarkerOptions markerOptions) {
-    markerOptions.title(String.format("Cluster nr: %d", item.getId()));
+    markerOptions.title(String.format("Cluster pos: %s", item.getPosition().toString()));
   }
 }

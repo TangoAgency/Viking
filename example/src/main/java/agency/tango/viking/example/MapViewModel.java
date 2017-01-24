@@ -19,6 +19,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolygonOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.maps.android.clustering.Cluster;
+import com.google.maps.android.clustering.ClusterItem;
 import com.google.maps.android.clustering.ClusterManager;
 import com.google.maps.android.clustering.algo.StaticCluster;
 import com.google.maps.android.clustering.view.ClusterRenderer;
@@ -29,7 +30,6 @@ import java.util.Collection;
 
 import javax.inject.Inject;
 
-import agency.tango.viking.bindings.map.ClusterMapItem;
 import agency.tango.viking.bindings.map.InfoWindowAdapterFactory;
 import agency.tango.viking.bindings.map.RendererFactory;
 import agency.tango.viking.bindings.map.adapters.CustomInfoWindowAdapter;
@@ -65,33 +65,32 @@ public class MapViewModel extends ViewModel {
   public void start() {
     super.start();
 
-    clusterItems.add(new ClusterModel(0, new LatLng(0, 11.101110)));
-    clusterItems.add(new ClusterModel(1, new LatLng(0, 12.202222)));
-    clusterItems.add(new ClusterModel(2, new LatLng(0, 13.303334)));
-    clusterItems.add(new ClusterModel(3, new LatLng(3, 11.101110)));
-    clusterItems.add(new ClusterModel(4, new LatLng(3, 12.202222)));
-    clusterItems.add(new ClusterModel(5, new LatLng(3, 13.303334)));
+    clusterItems.add(new ClusterModel(new LatLng(0, 11.101110)));
+    clusterItems.add(new ClusterModel(new LatLng(0, 12.202222)));
+    clusterItems.add(new ClusterModel(new LatLng(0, 13.303334)));
+    clusterItems.add(new ClusterModel(new LatLng(3, 11.101110)));
+    clusterItems.add(new ClusterModel(new LatLng(3, 12.202222)));
+    clusterItems.add(new ClusterModel(new LatLng(3, 13.303334)));
 
-    circles.add(new BindableCircle(0, new CircleOptions()
+    circles.add(new BindableCircle(new CircleOptions()
         .radius(100000)
         .clickable(true)
         .center(new LatLng(0, 5))));
 
     ExampleModel exampleModel = new ExampleModel("Hello", "World");
     models.add(new BindableMarker<>(
-        0,
         exampleModel,
         new MarkerOptions()
             .title("marker")
             .position(new LatLng(0, -10))));
 
-    polylines.add(new BindablePolyline(0,
+    polylines.add(new BindablePolyline(
         new PolylineOptions()
             .clickable(true)
             .add(new LatLng(0, 25))
             .add(new LatLng(0, 30))));
 
-    polygons.add(new ExamplePolygon(0, new PolygonOptions()
+    polygons.add(new ExamplePolygon(new PolygonOptions()
         .clickable(true)
         .strokeColor(Color.rgb(255, 0, 0))
         .add(new LatLng(0, 0))
@@ -100,7 +99,7 @@ public class MapViewModel extends ViewModel {
         .add(new LatLng(1, 0))
         , exampleModel));
 
-    overlays.add(new BindableOverlay(0,
+    overlays.add(new BindableOverlay(
         new GroundOverlayOptions()
             .image(BitmapDescriptorFactory.fromResource(R.drawable.heart))
             .positionFromBounds(new LatLngBounds(new LatLng(0, -4), new LatLng(1, -3)))));
@@ -260,26 +259,25 @@ public class MapViewModel extends ViewModel {
   }
 
   @Bindable
-  public InfoWindowAdapterFactory<ClusterMapItem> getClusterItemInfoWindowAdapter() {
-    return new InfoWindowAdapterFactory<ClusterMapItem>() {
+  public InfoWindowAdapterFactory<ClusterItem> getClusterItemInfoWindowAdapter() {
+    return new InfoWindowAdapterFactory<ClusterItem>() {
       @Override
-      public CustomInfoWindowAdapter<ClusterMapItem> createInfoWindowAdapter(
+      public CustomInfoWindowAdapter<ClusterItem> createInfoWindowAdapter(
           final Context context) {
-        return new CustomInfoWindowAdapter<ClusterMapItem>() {
+        return new CustomInfoWindowAdapter<ClusterItem>() {
           @Override
-          public View getInfoWindow(ClusterMapItem clusterMapItem) {
+          public View getInfoWindow(ClusterItem clusterItem) {
             return null;
           }
 
           @Override
-          public View getInfoContents(ClusterMapItem clusterMapItem) {
+          public View getInfoContents(ClusterItem clusterItem) {
             View view = LayoutInflater.from(context).inflate(R.layout.info_window, null);
 
             TextView title = (TextView) view.findViewById(R.id.tv_title);
             TextView description = (TextView) view.findViewById(R.id.tv_description);
 
-            title.setText(String.format("LatLng: %s", clusterMapItem.getPosition().toString()));
-            description.setText(String.format("ID: %d", clusterMapItem.getId()));
+            title.setText(String.format("LatLng: %s", clusterItem.getPosition().toString()));
             return view;
           }
         };

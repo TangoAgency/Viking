@@ -11,6 +11,7 @@ import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.TileOverlay;
 import com.google.android.gms.maps.model.TileOverlayOptions;
 import com.google.maps.android.SphericalUtil;
+import com.google.maps.android.clustering.ClusterItem;
 import com.google.maps.android.clustering.ClusterManager;
 import com.google.maps.android.clustering.algo.Algorithm;
 import com.google.maps.android.heatmaps.HeatmapTileProvider;
@@ -58,8 +59,8 @@ public class GoogleMapView<T> extends MapView {
   private CircleManager circleManager;
   private PolygonManager polygonManager;
 
-  private CustomClusterManager<ClusterMapItem> customClusterManager;
-  private ClusterItemManager<ClusterMapItem> clusterItemManager;
+  private CustomClusterManager<ClusterItem> customClusterManager;
+  private ClusterItemManager<ClusterItem> clusterItemManager;
 
   private TileOverlay heatMapTileOverlay;
 
@@ -242,7 +243,7 @@ public class GoogleMapView<T> extends MapView {
    * @param clusterClickListener {@link ClusterManager.OnClusterClickListener} to set
    */
   public void setOnClusterClickListener(
-      ClusterManager.OnClusterClickListener<ClusterMapItem> clusterClickListener) {
+      ClusterManager.OnClusterClickListener<ClusterItem> clusterClickListener) {
     customClusterManager.onClusterManagerReady(
         clusterManager -> clusterManager.setOnClusterClickListener(clusterClickListener));
   }
@@ -253,7 +254,7 @@ public class GoogleMapView<T> extends MapView {
    * @param clusterItemClickListener {@link ClusterManager.OnClusterItemClickListener} to set
    */
   public void setOnClusterItemClickListener(
-      ClusterManager.OnClusterItemClickListener<ClusterMapItem> clusterItemClickListener) {
+      ClusterManager.OnClusterItemClickListener<ClusterItem> clusterItemClickListener) {
     customClusterManager.onClusterManagerReady(
         clusterManager -> clusterManager.setOnClusterItemClickListener(clusterItemClickListener));
   }
@@ -265,7 +266,7 @@ public class GoogleMapView<T> extends MapView {
    * to set
    */
   public void setOnClusterInfoWindowClickListener(
-      ClusterManager.OnClusterInfoWindowClickListener<ClusterMapItem> clusterInfoWindowClickListener) {
+      ClusterManager.OnClusterInfoWindowClickListener<ClusterItem> clusterInfoWindowClickListener) {
     customClusterManager.onClusterManagerReady(clusterManager ->
         clusterManager.setOnClusterInfoWindowClickListener(clusterInfoWindowClickListener));
   }
@@ -277,7 +278,7 @@ public class GoogleMapView<T> extends MapView {
    * to set
    */
   public void setOnClusterItemInfoWindowClickListener(
-      ClusterManager.OnClusterItemInfoWindowClickListener<ClusterMapItem> clusterItemInfoWindowClickListener) {
+      ClusterManager.OnClusterItemInfoWindowClickListener<ClusterItem> clusterItemInfoWindowClickListener) {
     customClusterManager.onClusterManagerReady(clusterManager ->
         clusterManager.setOnClusterItemInfoWindowClickListener(clusterItemInfoWindowClickListener));
   }
@@ -287,7 +288,7 @@ public class GoogleMapView<T> extends MapView {
    *
    * @param algorithm {@link Algorithm} to set
    */
-  public void setAlgorithm(Algorithm<ClusterMapItem> algorithm) {
+  public void setAlgorithm(Algorithm<ClusterItem> algorithm) {
     customClusterManager.onClusterManagerReady(clusterManager ->
         clusterManager.setAlgorithm(algorithm));
   }
@@ -298,9 +299,9 @@ public class GoogleMapView<T> extends MapView {
    * @param infoWindowAdapterFactory {@link InfoWindowAdapterFactory} to set
    */
   public void setClusterItemInfoWindowAdapter(
-      InfoWindowAdapterFactory<ClusterMapItem> infoWindowAdapterFactory) {
+      InfoWindowAdapterFactory<ClusterItem> infoWindowAdapterFactory) {
     customClusterManager.onClusterManagerReady(clusterManager -> {
-      ClusterItemWindowInfoAdapter<ClusterMapItem> adapter = new ClusterItemWindowInfoAdapter<>(
+      ClusterItemWindowInfoAdapter<ClusterItem> adapter = new ClusterItemWindowInfoAdapter<>(
           infoWindowAdapterFactory.createInfoWindowAdapter(getContext()), clusterManager);
 
       clusterManager.getClusterMarkerCollection().setOnInfoWindowAdapter(adapter);
@@ -329,7 +330,7 @@ public class GoogleMapView<T> extends MapView {
    *
    * @param rendererFactory {@link RendererFactory} to set
    */
-  public void setRendererFactory(RendererFactory<ClusterMapItem> rendererFactory) {
+  public void setRendererFactory(RendererFactory<ClusterItem> rendererFactory) {
     getMapAsync(googleMap -> customClusterManager.onClusterManagerReady(
         clusterManager -> clusterManager.setRenderer(
             rendererFactory.createRenderer(getContext(), googleMap, clusterManager))));
@@ -338,9 +339,9 @@ public class GoogleMapView<T> extends MapView {
   /**
    * Set cluster items to be displayed on map view
    *
-   * @param clusterItems Collection of {@link ClusterMapItem} to set
+   * @param clusterItems Collection of {@link ClusterItem} to set
    */
-  public void clusterItems(Collection<ClusterMapItem> clusterItems) {
+  public void clusterItems(Collection<ClusterItem> clusterItems) {
     getMapAsync(googleMap -> customClusterManager.onClusterManagerReady(clusterManager -> {
       clusterItemManager = new ClusterItemManager<>(this::getMapAsync, clusterManager);
       onCameraIdleListener.addOnCameraIdleListener(clusterManager);

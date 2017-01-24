@@ -7,8 +7,8 @@ import agency.tango.viking.bindings.map.models.BindablePolygon;
 public class ExamplePolygon extends BindablePolygon {
   private final ExampleModel model;
 
-  public ExamplePolygon(long id, PolygonOptions polygonOptions, ExampleModel model) {
-    super(id, polygonOptions);
+  public ExamplePolygon(PolygonOptions polygonOptions, ExampleModel model) {
+    super(polygonOptions);
     this.model = model;
   }
 }

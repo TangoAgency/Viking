@@ -1,11 +1,10 @@
 package agency.tango.viking.bindings.map.managers;
 
 import com.google.android.gms.maps.GoogleMap;
+import com.google.maps.android.clustering.ClusterItem;
 import com.google.maps.android.clustering.ClusterManager;
 
-import agency.tango.viking.bindings.map.ClusterMapItem;
-
-public class ClusterItemManager<T extends ClusterMapItem>
+public class ClusterItemManager<T extends ClusterItem>
     extends MapEntityManagerBase<T> {
 
   private ClusterManager<T> clusterManager;

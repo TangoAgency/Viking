@@ -1,27 +1,23 @@
 package agency.tango.viking.bindings.map.models;
 
+import android.support.annotation.Nullable;
+
 import com.google.android.gms.maps.model.GroundOverlay;
 import com.google.android.gms.maps.model.GroundOverlayOptions;
 
-public class BindableOverlay implements MapEntity {
-  private final long id;
+public class BindableOverlay {
   private final GroundOverlayOptions groundOverlayOptions;
   private GroundOverlay groundOverlay;
 
-  public BindableOverlay(long id, GroundOverlayOptions groundOverlayOptions) {
-    this.id = id;
+  public BindableOverlay(GroundOverlayOptions groundOverlayOptions) {
     this.groundOverlayOptions = groundOverlayOptions;
-  }
-
-  @Override
-  public long getId() {
-    return id;
   }
 
   public GroundOverlayOptions getGroundOverlayOptions() {
     return groundOverlayOptions;
   }
 
+  @Nullable
   public GroundOverlay getGroundOverlay() {
     return groundOverlay;
   }

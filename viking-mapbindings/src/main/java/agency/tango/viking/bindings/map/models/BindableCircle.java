@@ -1,27 +1,24 @@
 package agency.tango.viking.bindings.map.models;
 
+import android.support.annotation.Nullable;
+
 import com.google.android.gms.maps.model.Circle;
 import com.google.android.gms.maps.model.CircleOptions;
 
-public class BindableCircle implements MapEntity {
-  private final long id;
+public class BindableCircle {
+
   private CircleOptions circleOptions;
   private Circle circle;
 
-  public BindableCircle(long id, CircleOptions circleOptions) {
-    this.id = id;
+  public BindableCircle(CircleOptions circleOptions) {
     this.circleOptions = circleOptions;
-  }
-
-  @Override
-  public long getId() {
-    return id;
   }
 
   public CircleOptions getCircleOptions() {
     return circleOptions;
   }
 
+  @Nullable
   public Circle getCircle() {
     return circle;
   }

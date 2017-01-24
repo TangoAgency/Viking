@@ -5,21 +5,14 @@ import android.support.annotation.Nullable;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-public class BindableMarker<T> implements MapEntity {
+public class BindableMarker<T> {
   private final T object;
-  private final long id;
   private final MarkerOptions markerOptions;
   private Marker marker;
 
-  public BindableMarker(long id, T object, MarkerOptions markerOptions) {
+  public BindableMarker(T object, MarkerOptions markerOptions) {
     this.object = object;
-    this.id = id;
     this.markerOptions = markerOptions;
-  }
-
-  @Override
-  public long getId() {
-    return id;
   }
 
   public T getObject() {

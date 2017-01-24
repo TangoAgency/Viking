@@ -4,10 +4,9 @@ import android.content.Context;
 
 import com.google.android.gms.maps.MapView;
 
-import net.droidlabs.vikingmap.views.MapAwareActivityView;
-
 import agency.tango.viking.annotations.AutoModule;
 import agency.tango.viking.example.databinding.ActivityMapBinding;
+import agency.tango.vikingmap.views.MapAwareActivityView;
 
 @AutoModule
 public class MapActivity extends MapAwareActivityView<MapViewModel, ActivityMapBinding> {

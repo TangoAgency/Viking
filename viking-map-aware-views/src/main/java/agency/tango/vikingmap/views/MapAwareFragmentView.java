@@ -1,4 +1,4 @@
-package net.droidlabs.vikingmap.views;
+package agency.tango.vikingmap.views;
 
 import android.databinding.ViewDataBinding;
 import android.os.Bundle;

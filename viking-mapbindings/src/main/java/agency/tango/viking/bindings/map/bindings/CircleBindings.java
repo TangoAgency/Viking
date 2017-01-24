@@ -14,7 +14,7 @@ public class CircleBindings {
 
   @BindingAdapter("gmv_circles")
   public static void circles(GoogleMapView googleMapView,
-      Collection<BindableCircle> circles) {
+      Collection<? extends BindableCircle> circles) {
     if (circles == null) {
       return;
     }

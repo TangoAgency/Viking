@@ -77,9 +77,10 @@ public class MapViewModel extends ViewModel {
         .clickable(true)
         .center(new LatLng(0, 5))));
 
+    ExampleModel exampleModel = new ExampleModel("Hello", "World");
     models.add(new BindableMarker<>(
-        new ExampleModel("Hello", "World"),
         0,
+        exampleModel,
         new MarkerOptions()
             .title("marker")
             .position(new LatLng(0, -10))));
@@ -90,13 +91,14 @@ public class MapViewModel extends ViewModel {
             .add(new LatLng(0, 25))
             .add(new LatLng(0, 30))));
 
-    polygons.add(new BindablePolygon(0, new PolygonOptions()
+    polygons.add(new ExamplePolygon(0, new PolygonOptions()
         .clickable(true)
         .strokeColor(Color.rgb(255, 0, 0))
         .add(new LatLng(0, 0))
         .add(new LatLng(0, 1))
         .add(new LatLng(1, 1))
-        .add(new LatLng(1, 0))));
+        .add(new LatLng(1, 0))
+        , exampleModel));
 
     overlays.add(new BindableOverlay(0,
         new GroundOverlayOptions()

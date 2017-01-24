@@ -2,7 +2,6 @@ package agency.tango.viking.bindings.map.managers;
 
 import android.databinding.ObservableList;
 
-import com.android.annotations.NonNull;
 import com.google.android.gms.maps.GoogleMap;
 
 import java.util.ArrayList;
@@ -81,28 +80,6 @@ public abstract class MapEntityManagerBase<T extends MapEntity> implements IMapE
     }
 
     addItems(items);
-  }
-
-  @Override
-  public void remove(GoogleMap googleMap, @NonNull T item) {
-    for (T entity : entities) {
-      if (entity.getId() == item.getId()) {
-        entities.remove(entity);
-        removeFromMap(entity, googleMap);
-      }
-    }
-  }
-
-  @Override
-  public void removeAll(GoogleMap googleMap, Collection<T> items) {
-    for (T entity : entities) {
-      for (T item : items) {
-        if (entity.getId() == item.getId()) {
-          removeFromMap(entity, googleMap);
-          entities.remove(entity);
-        }
-      }
-    }
   }
 
   private void addItems(Collection<T> items) {

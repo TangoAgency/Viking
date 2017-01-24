@@ -11,7 +11,7 @@ public class BindableMarker<T> implements MapEntity {
   private final MarkerOptions markerOptions;
   private Marker marker;
 
-  public BindableMarker(T object, long id, MarkerOptions markerOptions) {
+  public BindableMarker(long id, T object, MarkerOptions markerOptions) {
     this.object = object;
     this.id = id;
     this.markerOptions = markerOptions;

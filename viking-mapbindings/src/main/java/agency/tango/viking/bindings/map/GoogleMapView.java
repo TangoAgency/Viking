@@ -111,7 +111,7 @@ public class GoogleMapView<T> extends MapView {
    *
    * @param onCameraIdleListener {@link GoogleMap.OnCameraIdleListener} to add
    */
-  public void setOnCameraIdleListener(GoogleMap.OnCameraIdleListener onCameraIdleListener) {
+  public void addOnCameraIdleListener(GoogleMap.OnCameraIdleListener onCameraIdleListener) {
     this.onCameraIdleListener.addOnCameraIdleListener(onCameraIdleListener);
   }
 
@@ -201,15 +201,6 @@ public class GoogleMapView<T> extends MapView {
    */
   public void setOnMapLongClickListener(GoogleMap.OnMapLongClickListener onMapLongClickListener) {
     getMapAsync(googleMap -> googleMap.setOnMapLongClickListener(onMapLongClickListener));
-  }
-
-  /**
-   * Set on marker drag listener
-   *
-   * @param onMarkerDragListener {@link GoogleMap.OnMarkerDragListener} to set
-   */
-  public void setOnMarkerDragListener(GoogleMap.OnMarkerDragListener onMarkerDragListener) {
-    getMapAsync(googleMap -> googleMap.setOnMarkerDragListener(onMarkerDragListener));
   }
 
   /**
@@ -384,6 +375,15 @@ public class GoogleMapView<T> extends MapView {
   }
 
   /**
+   * Set on marker drag listener
+   *
+   * @param onMarkerDragListener {@link GoogleMap.OnMarkerDragListener} to set
+   */
+  public void setOnMarkerDragListener(GoogleMap.OnMarkerDragListener onMarkerDragListener) {
+    getMapAsync(googleMap -> googleMap.setOnMarkerDragListener(onMarkerDragListener));
+  }
+
+  /**
    * Set info window adapter for markers
    *
    * @param infoWindowAdapterFactory {@link InfoWindowAdapterFactory} to set
@@ -417,7 +417,7 @@ public class GoogleMapView<T> extends MapView {
    *
    * @param polylines Collection of {@link BindablePolyline} to set
    */
-  public void polylines(Collection<BindablePolyline> polylines) {
+  public void polylines(Collection<? extends BindablePolyline> polylines) {
     getMapAsync(googleMap -> polylineManager.addItems(googleMap, polylines));
   }
 
@@ -438,7 +438,7 @@ public class GoogleMapView<T> extends MapView {
    *
    * @param overlays Collection of {@link BindableOverlay} to set
    */
-  public void groundOverlays(Collection<BindableOverlay> overlays) {
+  public void groundOverlays(Collection<? extends BindableOverlay> overlays) {
     getMapAsync(googleMap -> overlayManager.addItems(googleMap, overlays));
   }
 
@@ -460,7 +460,7 @@ public class GoogleMapView<T> extends MapView {
    *
    * @param circles Collection of {@link BindableCircle} to set
    */
-  public void circles(Collection<BindableCircle> circles) {
+  public void circles(Collection<? extends BindableCircle> circles) {
     getMapAsync(googleMap -> circleManager.addItems(googleMap, circles));
   }
 
@@ -481,7 +481,7 @@ public class GoogleMapView<T> extends MapView {
    *
    * @param polygons Collection of {@link BindablePolygon} to set
    */
-  public void polygons(Collection<BindablePolygon> polygons) {
+  public void polygons(Collection<? extends BindablePolygon> polygons) {
     getMapAsync(googleMap -> polygonManager.addItems(googleMap, polygons));
   }
 

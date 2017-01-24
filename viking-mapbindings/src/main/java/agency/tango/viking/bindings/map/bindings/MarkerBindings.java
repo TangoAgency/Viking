@@ -18,7 +18,7 @@ public class MarkerBindings {
   }
 
   @BindingAdapter("gmv_markers")
-  public static <T> void mapItems(GoogleMapView<T> googleMapView,
+  public static <T> void markers(GoogleMapView<T> googleMapView,
       Collection<BindableMarker<T>> markers) {
     if (markers == null) {
       return;

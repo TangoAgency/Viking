@@ -15,7 +15,7 @@ public class OverlaysBindings {
 
   @BindingAdapter("gmv_groundOverlays")
   public static void setGroundOverlays(GoogleMapView googleMapView,
-      Collection<BindableOverlay> groundOverlay) {
+      Collection<? extends BindableOverlay> groundOverlay) {
     if (groundOverlay == null) {
       return;
     }

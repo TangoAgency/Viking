@@ -8,25 +8,25 @@ import com.google.android.gms.maps.model.PolygonOptions;
 
 import agency.tango.viking.bindings.map.models.BindablePolygon;
 
-public class PolygonManager extends MapEntityManagerBase<BindablePolygon> {
+public class PolygonManager<T extends BindablePolygon> extends MapEntityManagerBase<T> {
 
   public PolygonManager(MapResolver mapResolver) {
     super(mapResolver);
   }
 
   @Override
-  BindablePolygon addToMap(BindablePolygon item, GoogleMap googleMap) {
+  T addToMap(T item, GoogleMap googleMap) {
     item.setPolygon(googleMap.addPolygon(item.getPolygonOptions()));
     return item;
   }
 
   @Override
-  void removeFromMap(BindablePolygon entity, GoogleMap googleMap) {
+  void removeFromMap(T entity, GoogleMap googleMap) {
     entity.getPolygon().remove();
   }
 
   @Override
-  void updateOnMap(BindablePolygon entity, BindablePolygon item, GoogleMap googleMap) {
+  void updateOnMap(T entity, T item, GoogleMap googleMap) {
     Polygon polygon = entity.getPolygon();
     PolygonOptions polygonOptions = item.getPolygonOptions();
 
@@ -42,8 +42,8 @@ public class PolygonManager extends MapEntityManagerBase<BindablePolygon> {
   }
 
   @Nullable
-  public BindablePolygon retrieveBindablePolygon(Polygon polygon) {
-    for (BindablePolygon bindablePolygon : entities) {
+  public T retrieveBindablePolygon(Polygon polygon) {
+    for (T bindablePolygon : entities) {
       if (bindablePolygon.getPolygon().equals(polygon)) {
         return bindablePolygon;
       }

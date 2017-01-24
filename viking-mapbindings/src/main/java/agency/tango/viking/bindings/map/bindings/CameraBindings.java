@@ -26,7 +26,7 @@ public class CameraBindings {
   @BindingAdapter("gmv_cameraIdleListener")
   public static void cameraIdleListener(GoogleMapView googleMapView,
       GoogleMap.OnCameraIdleListener cameraIdleListener) {
-    googleMapView.setOnCameraIdleListener(cameraIdleListener);
+    googleMapView.addOnCameraIdleListener(cameraIdleListener);
   }
 
   @BindingAdapter("gmv_cameraMoveListener")

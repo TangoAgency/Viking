@@ -24,7 +24,7 @@ public class PolygonBindings {
 
   @BindingAdapter("gmv_polygonClickListener")
   public static void polygonClickListener(GoogleMapView googleMapView,
-      ItemClickListener<BindablePolygon> itemClickListener) {
+      ItemClickListener<? extends BindablePolygon> itemClickListener) {
     googleMapView.setOnPolygonClickListener(itemClickListener);
   }
 }

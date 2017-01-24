@@ -8,24 +8,24 @@ import com.google.android.gms.maps.model.CircleOptions;
 
 import agency.tango.viking.bindings.map.models.BindableCircle;
 
-public class CircleManager extends MapEntityManagerBase<BindableCircle> {
+public class CircleManager<T extends BindableCircle> extends MapEntityManagerBase<T> {
   public CircleManager(MapResolver mapResolver) {
     super(mapResolver);
   }
 
   @Override
-  BindableCircle addToMap(BindableCircle item, GoogleMap googleMap) {
+  T addToMap(T item, GoogleMap googleMap) {
     item.setCircle(googleMap.addCircle(item.getCircleOptions()));
     return item;
   }
 
   @Override
-  void removeFromMap(BindableCircle entity, GoogleMap googleMap) {
+  void removeFromMap(T entity, GoogleMap googleMap) {
     entity.getCircle().remove();
   }
 
   @Override
-  void updateOnMap(BindableCircle entity, BindableCircle item, GoogleMap googleMap) {
+  void updateOnMap(T entity, T item, GoogleMap googleMap) {
     Circle circle = entity.getCircle();
     CircleOptions circleOptions = item.getCircleOptions();
 
@@ -40,8 +40,8 @@ public class CircleManager extends MapEntityManagerBase<BindableCircle> {
   }
 
   @Nullable
-  public BindableCircle retrieveBindableCircle(Circle circle) {
-    for (BindableCircle bindableCircle : entities) {
+  public T retrieveBindableCircle(Circle circle) {
+    for (T bindableCircle : entities) {
       if (bindableCircle.getCircle().equals(circle)) {
         return bindableCircle;
       }

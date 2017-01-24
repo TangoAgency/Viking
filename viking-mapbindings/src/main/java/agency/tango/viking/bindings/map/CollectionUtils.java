@@ -12,7 +12,7 @@ public class CollectionUtils {
     }
   }
 
-  public static <T> void move(List<T> list, int fromPosition, int toPosition) {
+  private static <T> void move(List<T> list, int fromPosition, int toPosition) {
     T fromValue = list.get(fromPosition);
     int delta = fromPosition < toPosition ? 1 : -1;
     for (int i = fromPosition; i != toPosition; i += delta) {

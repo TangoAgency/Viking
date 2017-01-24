@@ -14,7 +14,7 @@ public class PolylineBindings {
 
   @BindingAdapter("gmv_polylines")
   public static void setPolylines(GoogleMapView googleMapView,
-      Collection<BindablePolyline> polylines) {
+      Collection<? extends BindablePolyline> polylines) {
     if (polylines == null) {
       return;
     }

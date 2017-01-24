@@ -8,26 +8,26 @@ import com.google.android.gms.maps.model.PolylineOptions;
 
 import agency.tango.viking.bindings.map.models.BindablePolyline;
 
-public class PolylineManager extends MapEntityManagerBase<BindablePolyline>
-    implements IMapEntityManager<BindablePolyline> {
+public class PolylineManager<T extends BindablePolyline> extends MapEntityManagerBase<T>
+    implements IMapEntityManager<T> {
 
   public PolylineManager(MapResolver mapResolver) {
     super(mapResolver);
   }
 
   @Override
-  BindablePolyline addToMap(BindablePolyline item, GoogleMap googleMap) {
+  T addToMap(T item, GoogleMap googleMap) {
     item.setPolyline(googleMap.addPolyline(item.getPolylineOptions()));
     return item;
   }
 
   @Override
-  void removeFromMap(BindablePolyline entity, GoogleMap googleMap) {
+  void removeFromMap(T entity, GoogleMap googleMap) {
     entity.getPolyline().remove();
   }
 
   @Override
-  void updateOnMap(BindablePolyline entity, BindablePolyline item, GoogleMap googleMap) {
+  void updateOnMap(T entity, T item, GoogleMap googleMap) {
     Polyline polyline = entity.getPolyline();
     PolylineOptions polylineOptions = item.getPolylineOptions();
 
@@ -41,8 +41,8 @@ public class PolylineManager extends MapEntityManagerBase<BindablePolyline>
   }
 
   @Nullable
-  public BindablePolyline retrieveBindablePolyline(Polyline polyline) {
-    for (BindablePolyline bindablePolyline : entities) {
+  public T retrieveBindablePolyline(Polyline polyline) {
+    for (T bindablePolyline : entities) {
       if (bindablePolyline.getPolyline().equals(polyline)) {
         return bindablePolyline;
       }

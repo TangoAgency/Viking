@@ -44,5 +44,6 @@ dependencies {
     compile deps.supportCompat
 
     compile 'com.android.support:appcompat-v7:25.1.0'
-    testCompile 'junit:junit:4.12'
+    testCompile deps.junit
+    testCompile deps.mockito
 }

@@ -65,7 +65,6 @@ ext {
 def androidToolsVersion = '25.2.0'
 def supportLibraryVersion = '25.1.0'
 def googlePlayServicesVersion = '10.0.1'
-
 ext.deps = [
     // Android
     android: 'com.google.android:android:4.1.1.4',
@@ -99,6 +98,7 @@ ext.deps = [
 
     // Test dependencies
     junit: 'junit:junit:4.12',
+    mockito: 'org.mockito:mockito-core:2.6.8',
     truth: 'com.google.truth:truth:0.28',
     robolectric: 'org.robolectric:robolectric:3.1.2',
     compiletesting: 'com.google.testing.compile:compile-testing:0.9',

@@ -5,6 +5,11 @@ import android.support.annotation.Nullable;
 import com.google.android.gms.maps.model.GroundOverlay;
 import com.google.android.gms.maps.model.GroundOverlayOptions;
 
+/**
+ * BindableOverlay is a Viking class which connects GroundOverlayOptions with GroundOverlay in
+ * order
+ * to be aware which groundOverlay have you created from GroundOverlayOptions.
+ */
 public class BindableOverlay {
   private final GroundOverlayOptions groundOverlayOptions;
   private GroundOverlay groundOverlay;

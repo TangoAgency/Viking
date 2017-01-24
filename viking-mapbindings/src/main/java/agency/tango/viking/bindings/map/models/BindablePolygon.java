@@ -5,6 +5,10 @@ import android.support.annotation.Nullable;
 import com.google.android.gms.maps.model.Polygon;
 import com.google.android.gms.maps.model.PolygonOptions;
 
+/**
+ * BindablePolygon is a Viking class which connects PolygonOptions with Polygon in order to be
+ * aware which polygon have you created from PolygonOptions.
+ */
 public class BindablePolygon {
   private PolygonOptions polygonOptions;
   private Polygon polygon;

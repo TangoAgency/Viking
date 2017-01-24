@@ -5,6 +5,10 @@ import android.support.annotation.Nullable;
 import com.google.android.gms.maps.model.Circle;
 import com.google.android.gms.maps.model.CircleOptions;
 
+/**
+ * BindableCircle is a Viking class which connects CircleOptions with Circle in order to be aware
+ * which circle have you created from CircleOptions.
+ */
 public class BindableCircle {
 
   private CircleOptions circleOptions;

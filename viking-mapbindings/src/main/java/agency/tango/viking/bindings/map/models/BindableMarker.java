@@ -5,6 +5,11 @@ import android.support.annotation.Nullable;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+/**
+ * BindableMarker is a Viking class which connects MarkerOptions with Marker in order to be aware
+ * which marker have you created from MarkerOptions. It also holds some model that is provided in
+ * constructor.
+ */
 public class BindableMarker<T> {
   private final T object;
   private final MarkerOptions markerOptions;

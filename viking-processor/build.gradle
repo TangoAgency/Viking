@@ -21,8 +21,6 @@ dependencies {
   compile deps.autocommon
   compile deps.javapoet
 
-  //compileOnly deps.android
-  //compileOnly deps.supportAnnotations
   compileOnly deps.dagger
 
   compileOnly files(org.gradle.internal.jvm.Jvm.current().getToolsJar())
@@ -31,6 +29,9 @@ dependencies {
   testCompile files(org.gradle.internal.jvm.Jvm.current().getToolsJar())
   testCompile deps.junit
   testCompile deps.truth
+
+  testCompile deps.dagger
+  testCompile deps.android
 }
 
 

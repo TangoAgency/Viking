@@ -15,11 +15,6 @@ dependencies {
 
     compileOnly deps.android
     compileOnly deps.dagger
-
-    //compile deps.supportAnnotations
-
-    //compile fileTree(dir: 'libs', include: ['*.jar'])
-    //compile 'javax.inject:javax.inject:1'
 }
 
 

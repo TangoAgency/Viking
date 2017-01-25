@@ -14,7 +14,8 @@ public class StaticStringUtilProcessorTest {
 
   @Test
   public void generatesTypeAdapterFactory() {
-    JavaFileObject source1 = JavaFileObjects.forSourceString("test.CheckinsFragment",
+
+    JavaFileObject checkingFragment = JavaFileObjects.forSourceString("test.CheckinsFragment",
         "package test;\n"
             + "import agency.tango.viking.annotations.AutoModule;\n"
             + "\n"
@@ -23,7 +24,7 @@ public class StaticStringUtilProcessorTest {
             + "    \n"
             + "}");
 
-    JavaFileObject expected = JavaFileObjects.forSourceString("test.CheckinsFragment_Module",
+    JavaFileObject expectedCheckinsFragmentModule = JavaFileObjects.forSourceString("test.CheckinsFragment_Module",
         "package test;\n"
             + "\n"
             + "import agency.tango.viking.di.ScreenModule;\n"
@@ -40,11 +41,11 @@ public class StaticStringUtilProcessorTest {
             + "}");
 
     assertAbout(javaSources())
-        .that(ImmutableSet.of(source1))
+        .that(ImmutableSet.of(checkingFragment))
         .processedWith(new StaticStringUtilProcessor())
         .compilesWithoutError()
         .and()
-        .generatesSources(expected);
+        .generatesSources(expectedCheckinsFragmentModule);
   }
 
   @Test
@@ -60,7 +61,7 @@ public class StaticStringUtilProcessorTest {
             + "}"
     );
 
-    JavaFileObject source1 = JavaFileObjects.forSourceString("test.CheckinsFragment",
+    JavaFileObject checkingFragment = JavaFileObjects.forSourceString("test.CheckinsFragment",
         "package test;\n"
             + "import agency.tango.viking.annotations.AutoModule;\n"
             + "import test.BaseModule;\n"
@@ -70,7 +71,7 @@ public class StaticStringUtilProcessorTest {
             + "    \n"
             + "}");
 
-    JavaFileObject expected = JavaFileObjects.forSourceString("test.CheckinsFragment_Module",
+    JavaFileObject expectedCheckinsFragmentModule = JavaFileObjects.forSourceString("test.CheckinsFragment_Module",
         "package test;\n"
             + "\n"
             + "import dagger.Module;\n"
@@ -86,11 +87,10 @@ public class StaticStringUtilProcessorTest {
             + "}");
 
     assertAbout(javaSources())
-        .that(ImmutableSet.of(baseModule, source1))
+        .that(ImmutableSet.of(baseModule, checkingFragment))
         .processedWith(new StaticStringUtilProcessor())
         .compilesWithoutError()
         .and()
-        .generatesSources(expected);
+        .generatesSources(expectedCheckinsFragmentModule);
   }
-
 }

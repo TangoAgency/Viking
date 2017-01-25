@@ -22,6 +22,7 @@ cache:
   directories:
     - $HOME/.m2
     - $HOME/.gradle
+    - $HOME/.android/build-cache
 
 before_install:
   - chmod +x gradlew

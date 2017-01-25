@@ -395,7 +395,7 @@ public final class Util {
    * which a dagger-annotated type depends.
    */
   final static class CodeGenerationIncompleteException extends IllegalStateException {
-    public CodeGenerationIncompleteException(String s) {
+    CodeGenerationIncompleteException(String s) {
       super(s);
     }
   }

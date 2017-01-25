@@ -7,4 +7,6 @@ import static java.lang.annotation.ElementType.TYPE;
 @Target(value = TYPE)
 public @interface AutoModule {
   Class<?>[] includes() default {};
+
+  Class<?> superClass() default Object.class;
 }

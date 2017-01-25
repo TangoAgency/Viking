@@ -1,6 +1,5 @@
 package agency.tango.viking.mvp;
 
-public interface StartupAction
-    {
-        void execute();
-    }
+public interface StartupAction {
+  void execute();
+}

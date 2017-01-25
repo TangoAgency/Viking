@@ -66,10 +66,6 @@ public abstract class FragmentView<VM extends ViewModel, VD extends ViewDataBind
 
   protected abstract void bind(VD binding);
 
-  protected VD binding() {
-    return binding;
-  }
-
   public VM viewModel() {
     return viewModel;
   }

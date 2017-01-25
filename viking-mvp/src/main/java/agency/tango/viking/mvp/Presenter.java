@@ -35,7 +35,7 @@ public abstract class Presenter<TView> implements IPresenter {
   }
 
   private boolean isFirstRun() {
-    return started == false;
+    return !started;
   }
 
   @Override

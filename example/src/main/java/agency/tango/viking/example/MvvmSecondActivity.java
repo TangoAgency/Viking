@@ -1,21 +1,25 @@
 package agency.tango.viking.example;
 
-import agency.tango.viking.annotations.AutoModule;
-import agency.tango.viking.example.databinding.ActMvvmdemoBinding;
-import agency.tango.viking.mvvm.ActivityView;
 import android.content.Context;
 
-@AutoModule
-public class MvvmDemo extends ActivityView<DemoViewModel, ActMvvmdemoBinding> {
+import agency.tango.viking.annotations.AutoModule;
+import agency.tango.viking.example.databinding.ActMvvmdemoBinding;
+import agency.tango.viking.example.viewmodels.SecondViewModel;
+import agency.tango.viking.mvvm.ActivityView;
 
-  public MvvmDemo() {
+@AutoModule
+public class MvvmSecondActivity extends ActivityView<SecondViewModel, ActMvvmdemoBinding> {
+
+  public MvvmSecondActivity() {
     super(R.layout.act_mvvmdemo);
   }
 
   @Override
   protected void inject(Context context) {
     App.get(context)
-        .getActivityComponentBuilder(MvvmDemo.class, MvvmDemo_Component.Builder.class)
+        .getActivityComponentBuilder(MvvmSecondActivity.class,
+            MvvmSecondActivity_Component.Builder.class)
+        .screenModule(new MvvmSecondActivity_Module(context, this))
         .build()
         .injectMembers(this);
   }

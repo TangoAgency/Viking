@@ -10,14 +10,13 @@ subprojects { project ->
 
     apply plugin: 'checkstyle'
 
-    task checkstyle(type: Checkstyle) {
-        configFile rootProject.file('checkstyle.xml')
-        source 'src/main/java'
-        ignoreFailures false
-        showViolations true
-        include '**/*.java'
 
-        classpath = files()
+    checkstyle {
+        configFile = rootProject.file('checkstyle.xml')
+        toolVersion = "7.3"
+    }
+
+    task checkstyle(type: Checkstyle) {
     }
 
     afterEvaluate {
@@ -57,7 +56,7 @@ ext {
     minSdkVersion = 9
     targetSdkVersion = 25
     compileSdkVersion = 25
-    buildToolsVersion = '25.0.3'
+    buildToolsVersion = '25.0.2'
     sourceCompatibilityVersion = JavaVersion.VERSION_1_7
     targetCompatibilityVersion = JavaVersion.VERSION_1_7
 }
@@ -69,6 +68,8 @@ ext.deps = [
     // Android
     android: 'com.google.android:android:4.1.1.4',
     supportCompat: "com.android.support:support-compat:$supportLibraryVersion",
+    supportFragment: "com.android.support:support-fragment:$supportLibraryVersion",
+    appCompat: "com.android.support:appcompat-v7:$supportLibraryVersion",
     supportAnnotations: "com.android.support:support-annotations:$supportLibraryVersion",
     supportTestRunner: 'com.android.support.test:runner:0.5',
     androidGradle: 'com.android.tools.build:gradle:2.2.0',
@@ -95,6 +96,7 @@ ext.deps = [
 
     // Third Party
     javaparser: 'com.github.javaparser:javaparser-core:2.4.0',
+    javax: 'javax.inject:javax.inject:1',
 
     // Test dependencies
     junit: 'junit:junit:4.12',

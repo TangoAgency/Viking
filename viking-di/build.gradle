@@ -1,0 +1,27 @@
+apply plugin: 'java'
+
+
+def logger = new com.android.build.gradle.internal.LoggerWrapper(project.logger)
+def sdkHandler = new com.android.build.gradle.internal.SdkHandler(project, logger)
+for (File file : sdkHandler.sdkLoader.repositories) {
+  repositories.maven {
+    url = file.toURI()
+  }
+}
+
+sourceCompatibility = rootProject.ext.sourceCompatibilityVersion
+targetCompatibility = rootProject.ext.targetCompatibilityVersion
+
+dependencies {
+
+  compile project(':viking-annotations')
+
+  compileOnly deps.dagger
+  compileOnly deps.daggerCompiler
+  compileOnly deps.android
+
+  compileOnly files(org.gradle.internal.jvm.Jvm.current().getToolsJar())
+
+  testCompile files(org.gradle.internal.jvm.Jvm.current().getToolsJar())
+}
+

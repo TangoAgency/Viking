@@ -1,12 +1,12 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion "25.0.2"
+    compileSdkVersion rootProject.ext.compileSdkVersion
+    buildToolsVersion rootProject.ext.buildToolsVersion
     defaultConfig {
         applicationId "agency.tango.viking.example"
-        minSdkVersion 15
-        targetSdkVersion 25
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -35,13 +35,13 @@ android {
     dataBinding {
         enabled = true
     }
-
 }
 
 dependencies {
 
     annotationProcessor project(":viking-processor")
     compile project(":viking-annotations")
+    compile project (":viking-di")
     compile project(":viking-mvp")
     compile project(":viking-mvvm")
     compile project(":viking-reactive")
@@ -50,15 +50,13 @@ dependencies {
 
     compile deps.rxJava
     compile deps.rxAndroid
+    compile deps.dagger
+    compile deps.appCompat
 
     annotationProcessor deps.daggerCompiler
-    compile deps.dagger
-
-    compile deps.supportCompat
 
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    compile 'com.android.support:appcompat-v7:25.1.0'
-    testCompile 'junit:junit:4.12'
+    testCompile deps.junit
 }

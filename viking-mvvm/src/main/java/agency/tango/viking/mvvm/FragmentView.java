@@ -14,72 +14,63 @@ import android.view.ViewGroup;
 import javax.inject.Inject;
 
 public abstract class FragmentView<VM extends ViewModel, VD extends ViewDataBinding> extends
-    Fragment
-{
-    private VD binding;
-    private int layoutIdRes;
+    Fragment {
+  private VD binding;
+  private int layoutIdRes;
 
-    @Inject
-    VM viewModel;
+  @Inject
+  VM viewModel;
 
-    public FragmentView(@LayoutRes int layoutIdRes)
-    {
-        this.layoutIdRes = layoutIdRes;
+  public FragmentView(@LayoutRes int layoutIdRes) {
+    this.layoutIdRes = layoutIdRes;
+  }
+
+  @Nullable
+  @Override
+  public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable
+      Bundle savedInstanceState) {
+    View view = inflater.inflate(layoutIdRes, container, false);
+
+    inject(getContext());
+
+    binding = DataBindingUtil.bind(view);
+
+    bind(binding);
+
+    if (savedInstanceState != null) {
+      viewModel.restoreState(savedInstanceState);
     }
 
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable
-        Bundle savedInstanceState)
-    {
-        View view = inflater.inflate(layoutIdRes, container, false);
+    return view;
+  }
 
-        inject(getContext());
+  @Override
+  public void onStart() {
+    super.onStart();
+    viewModel.start();
+  }
 
-        binding = DataBindingUtil.bind(view);
+  @Override
+  public void onStop() {
+    viewModel.stop();
+    super.onStop();
+  }
 
-        bind(binding);
+  @Override
+  public void onSaveInstanceState(Bundle outState) {
+    super.onSaveInstanceState(outState);
+    viewModel.saveState(outState);
+  }
 
-        if (savedInstanceState != null)
-        {
-            viewModel.restoreState(savedInstanceState);
-        }
+  protected abstract void inject(Context screen);
 
-        return view;
-    }
+  protected abstract void bind(VD binding);
 
-    @Override
-    public void onStart()
-    {
-        super.onStart();
-        viewModel.start();
-    }
+  public VM viewModel() {
+    return viewModel;
+  }
 
-    @Override
-    public void onStop()
-    {
-        viewModel.stop();
-        super.onStop();
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState)
-    {
-        super.onSaveInstanceState(outState);
-        viewModel.saveState(outState);
-    }
-
-    protected abstract void inject(Context screen);
-
-    protected abstract void bind(VD binding);
-
-    public VM viewModel()
-    {
-        return viewModel;
-    }
-
-    private String resolveScreenName()
-    {
-        return getClass().getSimpleName();
-    }
+  private String resolveScreenName() {
+    return getClass().getSimpleName();
+  }
 }

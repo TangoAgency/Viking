@@ -3,6 +3,6 @@ package agency.tango.viking.annotations;
 import dagger.MapKey;
 
 @MapKey
-public @interface ActivityKey {
+public @interface ScreenKey {
   Class<?> value();
 }

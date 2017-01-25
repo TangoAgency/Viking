@@ -47,7 +47,7 @@ public abstract class ViewModel extends BaseObservable {
 
   @CallSuper
   public void registerChildViewModel(ViewModel viewModel) {
-    if (childViewModels.contains(viewModel) == false) {
+    if (!childViewModels.contains(viewModel)) {
       childViewModels.add(viewModel);
     }
   }
@@ -93,9 +93,8 @@ public abstract class ViewModel extends BaseObservable {
     return stateWasRestored;
   }
 
-  @SuppressWarnings("PointlessBooleanExpression")
   private boolean isFirstRun() {
-    return started == false;
+    return !started;
   }
 
   private boolean wasAlreadyStarted() {

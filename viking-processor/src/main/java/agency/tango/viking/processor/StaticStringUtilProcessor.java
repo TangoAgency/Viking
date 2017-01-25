@@ -32,17 +32,18 @@ import static javax.tools.Diagnostic.Kind.ERROR;
 
 @AutoService(Processor.class)
 public class StaticStringUtilProcessor extends AbstractProcessor {
+  private static final String ANNOTATION = "@" + AutoModule.class.getSimpleName();
+  private ProcessingEnvironment processingEnvironment;
+  private Messager messager;
+
   public StaticStringUtilProcessor() {
     super();
   }
 
-  private static final String ANNOTATION = "@" + AutoModule.class.getSimpleName();
-
-  private Messager messager;
-
   @Override
   public synchronized void init(ProcessingEnvironment processingEnv) {
     super.init(processingEnv);
+    processingEnvironment = processingEnv;
     messager = processingEnv.getMessager();
   }
 
@@ -123,18 +124,18 @@ public class StaticStringUtilProcessor extends AbstractProcessor {
       TypeSpec componentTypeSpec = new ComponentCodeBuilder().buildTypeSpec(annotatedClassClass);
       JavaFile componentFile = builder(annotatedClassClass.getPackage(),
           componentTypeSpec).build();
-      componentFile.writeTo(processingEnv.getFiler());
+      componentFile.writeTo(processingEnvironment.getFiler());
 
-      TypeSpec moduleTypeSpec = new ModuleCodeGenerator().buildTypeSpec(annotatedClassClass);
+      TypeSpec moduleTypeSpec = new ModuleCodeGenerator(processingEnvironment).buildTypeSpec(
+          annotatedClassClass);
       JavaFile moduleFile = builder(annotatedClassClass.getPackage(), moduleTypeSpec).build();
-      moduleFile.writeTo(processingEnv.getFiler());
+      moduleFile.writeTo(processingEnvironment.getFiler());
 
     }
 
     JavaFile javaFile = builder("agency.tango.viking.di",
         new ScreenBindingsModuleBuilder().buildTypeSpec(annotatedClasses)).build();
-    javaFile.writeTo(processingEnv.getFiler());
-
+    javaFile.writeTo(processingEnvironment.getFiler());
   }
 }
 

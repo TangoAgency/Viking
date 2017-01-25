@@ -1,6 +1,5 @@
 package agency.tango.viking.processor.module;
 
-import android.support.annotation.NonNull;
 
 import com.squareup.javapoet.AnnotationSpec;
 import com.squareup.javapoet.ClassName;
@@ -12,8 +11,8 @@ import java.util.List;
 
 import javax.lang.model.element.Modifier;
 
-import agency.tango.viking.annotations.ActivityComponentBuilder;
-import agency.tango.viking.annotations.ActivityKey;
+import agency.tango.viking.di.ScreenComponentBuilder;
+import agency.tango.viking.annotations.ScreenKey;
 import agency.tango.viking.processor.AnnotatedClass;
 import dagger.Binds;
 import dagger.Module;
@@ -42,11 +41,11 @@ public class ScreenBindingsModuleBuilder {
           .addModifiers(Modifier.ABSTRACT, Modifier.PUBLIC)
           .addAnnotation(Binds.class)
           .addAnnotation(IntoMap.class)
-          .addAnnotation(AnnotationSpec.builder(ClassName.get(ActivityKey.class))
+          .addAnnotation(AnnotationSpec.builder(ClassName.get(ScreenKey.class))
               .addMember("value", "$T.class", ClassName.get(annotatedClass.getPackage(),
                   annotatedClass.getClassName()))
               .build())
-          .returns(ClassName.get(ActivityComponentBuilder.class))
+          .returns(ClassName.get(ScreenComponentBuilder.class))
           .addParameter(ParameterSpec.builder(
               getBuilderClassName(annotatedClass), "builder").build())
           .build());
@@ -55,14 +54,14 @@ public class ScreenBindingsModuleBuilder {
     return builder.build();
   }
 
-  @NonNull
+
   private ClassName getBuilderClassName(AnnotatedClass annotatedClass) {
 
     return ClassName.get(annotatedClass.getPackage(),
         annotatedClass.getClassName() + "_Component", "Builder");
   }
 
-  @NonNull
+
   private ClassName getComponentClassName(AnnotatedClass annotatedClass) {
     return ClassName.get(annotatedClass.getPackage(),
         annotatedClass.getClassName() + "_Component");

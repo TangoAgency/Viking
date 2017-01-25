@@ -7,6 +7,5 @@ import javax.inject.Qualifier;
 
 @Qualifier
 @Retention(RetentionPolicy.RUNTIME)
-public @interface NetworkInterceptor
-{
+public @interface NetworkInterceptor {
 }

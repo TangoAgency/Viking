@@ -8,6 +8,8 @@ import com.squareup.javapoet.ParameterizedTypeName;
 import com.squareup.javapoet.TypeName;
 import com.squareup.javapoet.TypeSpec;
 
+import net.droidlabs.dagger.annotations.ActivityScope;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -15,9 +17,9 @@ import java.util.Map;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.type.TypeMirror;
 
-import agency.tango.viking.annotations.ActivityComponent;
-import agency.tango.viking.annotations.ActivityComponentBuilder;
 import agency.tango.viking.annotations.AutoModule;
+import agency.tango.viking.di.ScreenComponent;
+import agency.tango.viking.di.ScreenComponentBuilder;
 import agency.tango.viking.processor.AnnotatedClass;
 import agency.tango.viking.processor.CodeBuilder;
 import dagger.Subcomponent;
@@ -34,7 +36,7 @@ public class ComponentCodeBuilder implements CodeBuilder {
     TypeSpec.Builder builder = interfaceBuilder(
         annotatedClass.getClassName() + "_Component")
         .addModifiers(PUBLIC)
-        .addSuperinterface(ParameterizedTypeName.get(get(ActivityComponent.class),
+        .addSuperinterface(ParameterizedTypeName.get(get(ScreenComponent.class),
             get(annotatedClass.getTypeElement())));
 
     Map<String, Object> parsedAnnotation = getAnnotation(AutoModule.class,
@@ -50,7 +52,7 @@ public class ComponentCodeBuilder implements CodeBuilder {
     }
 
     builder.addAnnotation(
-        AnnotationSpec.builder(get("net.droidlabs.dagger.annotations", "ActivityScope")).build());
+        AnnotationSpec.builder(get(ActivityScope.class)).build());
 
     builder.addAnnotation(AnnotationSpec.builder(get(Subcomponent.class))
         .addMember("modules", String.format("{%s,%s}", module, Joiner.on(",").join(types)))
@@ -60,7 +62,7 @@ public class ComponentCodeBuilder implements CodeBuilder {
         .addModifiers(Modifier.PUBLIC, Modifier.STATIC)
         .addAnnotation(Subcomponent.Builder.class)
         .addSuperinterface(
-            ParameterizedTypeName.get(ClassName.get(ActivityComponentBuilder.class),
+            ParameterizedTypeName.get(ClassName.get(ScreenComponentBuilder.class),
                 get(annotatedClass.getPackage(),
                     annotatedClass.getClassName() + "_Module"),
                 get(annotatedClass.getPackage(),

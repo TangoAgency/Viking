@@ -15,12 +15,16 @@ targetCompatibility = rootProject.ext.targetCompatibilityVersion
 dependencies {
 
   compile project(':viking-annotations')
+  compile project(':viking-di')
 
   compile deps.autoservice
   compile deps.autocommon
   compile deps.javapoet
 
+  //compileOnly deps.android
+  //compileOnly deps.supportAnnotations
   compileOnly deps.dagger
+
   compileOnly files(org.gradle.internal.jvm.Jvm.current().getToolsJar())
 
   testCompile 'com.google.testing.compile:compile-testing:0.9'

@@ -1,1 +1,1 @@
-include ':example', ':viking-mvvm', ':viking-mvp', ':viking-processor', ':viking-annotations', ':viking', ':viking-mapbindings', ':viking-reactive'
+include ':example', ':viking-mvvm', ':viking-mvp', ':viking-processor', ':viking-annotations', ':viking', ':viking-mapbindings', ':viking-reactive', ':viking-di'

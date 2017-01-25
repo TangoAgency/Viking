@@ -26,7 +26,8 @@ android {
 dependencies {
 
     annotationProcessor project (":viking-processor")
-    compile project (":viking-annotations")
+    provided project (":viking-annotations")
+    compile project (":viking-di")
     compile project (":viking-mvp")
     compile project (":viking-mvvm")
     compile project (":viking-reactive")
@@ -34,11 +35,10 @@ dependencies {
 
     compile deps.rxJava
     compile deps.rxAndroid
+    compile deps.dagger
+    compile deps.supportCompat
 
     annotationProcessor deps.daggerCompiler
-    compile deps.dagger
-
-    compile deps.supportCompat
 
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'

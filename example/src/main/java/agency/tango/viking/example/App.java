@@ -7,22 +7,23 @@ import java.util.Map;
 
 import javax.inject.Inject;
 
-import agency.tango.viking.annotations.ActivityComponentBuilder;
-import agency.tango.viking.annotations.HasActivitySubcomponentBuilders;
+import agency.tango.viking.di.ScreenComponentBuilder;
+import agency.tango.viking.di.HasScreenSubcomponentBuilders;
+import agency.tango.viking.example.di.DiComponent;
 
-public class App extends Application implements HasActivitySubcomponentBuilders {
+public class App extends Application implements HasScreenSubcomponentBuilders {
 
   private DiComponent component;
 
   @Inject
-  Map<Class<?>, ActivityComponentBuilder> activityComponentBuilders;
+  Map<Class<?>, ScreenComponentBuilder> activityComponentBuilders;
 
   public static DiComponent component(Context context) {
     return ((App) context.getApplicationContext()).component;
   }
 
-  public static HasActivitySubcomponentBuilders get(Context context) {
-    return ((HasActivitySubcomponentBuilders) context.getApplicationContext());
+  public static HasScreenSubcomponentBuilders get(Context context) {
+    return ((HasScreenSubcomponentBuilders) context.getApplicationContext());
   }
 
   public void setComponent(DiComponent diComponent) {
@@ -31,7 +32,7 @@ public class App extends Application implements HasActivitySubcomponentBuilders 
   }
   @SuppressWarnings("unchecked")
   @Override
-  public <T extends ActivityComponentBuilder> T getActivityComponentBuilder(Class<?> activityClass,
+  public <T extends ScreenComponentBuilder> T getActivityComponentBuilder(Class<?> activityClass,
       Class<T> compotentBuilderType) {
     return (T) activityComponentBuilders.get(activityClass);
   }

@@ -21,7 +21,6 @@ public class RxViewModel extends ViewModel {
   @Override
   public void stop() {
     super.stop();
-
     disposables.clear();
   }
 }

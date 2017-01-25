@@ -1,9 +1,10 @@
-package agency.tango.viking.example;
+package agency.tango.viking.example.di;
 
 import net.droidlabs.dagger.annotations.AppScope;
 
-import dagger.Component;
 import agency.tango.viking.di.ScreenBindingsModule;
+import agency.tango.viking.example.App;
+import dagger.Component;
 
 @AppScope
 @Component(modules = {

@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
     // Context of the app under test.
     Context appContext = InstrumentationRegistry.getTargetContext();
 
-    assertEquals("agency.tango.viking.viewmodel.test", appContext.getPackageName());
+    assertEquals("agency.tango.viking.mvvm.test", appContext.getPackageName());
   }
 }

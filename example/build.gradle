@@ -41,7 +41,7 @@ dependencies {
 
     annotationProcessor project(":viking-processor")
     compile project(":viking-annotations")
-    compile project (":viking-di")
+    compile project(":viking-di")
     compile project(":viking-mvp")
     compile project(":viking-mvvm")
     compile project(":viking-reactive")

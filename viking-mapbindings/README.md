@@ -2,8 +2,10 @@
 Viking Map Bindings is a library for using Google MapView with Android Data Binding with many API improvements.
 
 ### To use this library, please read this: [Android Data Binding]
-## Usage in project
+## Usage 
+
 ### Step 1:
+
 Enable Data Binding in your project [Android Data Binding Setup]
 ### Step 2:
 Make your Activity extend  [MapAwareActivityView] (for Fragment use [MapAwareFragmentView])
@@ -11,8 +13,8 @@ Make your Activity extend  [MapAwareActivityView] (for Fragment use [MapAwareFra
 public class MapActivity extends MapAwareActivityView<VM extends ViewModel, VD extends ViewDataBinding>
 ```
 ### Step 3:
-Add to your [xml] [GoogleMapView]
-```
+Add to your [xml][GoogleMapView]
+```xml
  <agency.tango.viking.bindings.map.GoogleMapView
       android:id="@+id/map"
       android:layout_width="match_parent"
@@ -22,18 +24,17 @@ Add to your [xml] [GoogleMapView]
 ### Step 4:
 Bind EVERYTHING!!!
 
-
-### Binding examples
+##Binding examples
 This section will introduce you how to bind objects to [GoogleMapView]
 #### Complex example
 Example based on [Viking ViewModel]:
-  - [MapViewModel]
-  - [MapActivity]
-  - [activity_map.xml]
+- [MapViewModel]
+- [MapActivity]
+- [activity_map.xml]
 
 #### Binding markers
-If you want to bind list of markers you need to create ObservableList in your ViewModel.
-With this library you are allowed to bind any model you want to the specific marker.
+If you want to bind list of markers you need to create List in your ViewModel. With this library you are allowed to bind any model you want to the specific marker. Please keep in mind that using ObservableList is recommended if you are using mutable list of objects which will be binded (updating, creating new objects and removing old one will be automaticaly handled by this library)
+
 ```java
 private ObservableList<BindableMarker<ExampleModel>> models = new ObservableArrayList<>();
 ```
@@ -41,7 +42,6 @@ Secondly you need to add items to list.
 ```java
     models.add(new BindableMarker<>(
         new ExampleModel("Hello", "World"),
-        0,
         new MarkerOptions()
             .title("marker")
             .position(new LatLng(3, 3))));
@@ -54,7 +54,7 @@ Before last step you need to make ObservableList bindable.
   }
 ```
 Now just bind list in your xml view
-```
+```xml
   <agency.tango.viking.bindings.map.GoogleMapView
       android:id="@+id/map"
       android:layout_width="match_parent"
@@ -81,7 +81,7 @@ First you need to add proper ```@Bindable``` method to your class
   }
 ```
 And the second step is binding listener in xml view
-```
+```xml
   <agency.tango.viking.bindings.map.GoogleMapView
       android:id="@+id/map"
       android:layout_width="match_parent"
@@ -91,8 +91,7 @@ And the second step is binding listener in xml view
 ```
 
 #### Binding window info adapters
-With this library you are allowed to use WindowInfoAdapterFactory which returns binded data for given marker or cluster item.
-This example will present how to user WindowInfoAdapterFactory for markers.
+With this library you are allowed to use WindowInfoAdapterFactory which returns binded data for given marker or cluster item. This example will present how to user WindowInfoAdapterFactory for markers.
 
 First add ```@Bindable``` method in your class
 ```java
@@ -125,7 +124,7 @@ First add ```@Bindable``` method in your class
   }
 ```
 Then add proper attribute in xml view.
-```
+```xml
   <agency.tango.viking.bindings.map.GoogleMapView
       android:id="@+id/map"
       android:layout_width="match_parent"

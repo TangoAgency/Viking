@@ -1,6 +1,7 @@
 include ':example',
     ':viking-mvvm',
     ':viking-mvp',
+    ':viking-di',
     ':viking-processor',
     ':viking-annotations',
     ':viking',

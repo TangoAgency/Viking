@@ -18,7 +18,6 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-
     }
 
     dataBinding {
@@ -46,4 +45,5 @@ dependencies {
 
     testCompile deps.junit
     testCompile deps.mockito
+    testCompile deps.robolectric
 }

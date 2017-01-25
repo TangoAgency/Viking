@@ -10,7 +10,7 @@ import javax.tools.JavaFileObject;
 import static com.google.common.truth.Truth.assertAbout;
 import static com.google.testing.compile.JavaSourcesSubjectFactory.javaSources;
 
-public class StaticStringUtilProcessorTest {
+public class VikingCodeProcessorTest {
 
   @Test
   public void generatesTypeAdapterFactory() {
@@ -24,7 +24,8 @@ public class StaticStringUtilProcessorTest {
             + "    \n"
             + "}");
 
-    JavaFileObject expectedCheckinsFragmentModule = JavaFileObjects.forSourceString("test.CheckinsFragment_Module",
+    JavaFileObject expectedCheckinsFragmentModule = JavaFileObjects.forSourceString(
+        "test.CheckinsFragment_Module",
         "package test;\n"
             + "\n"
             + "import agency.tango.viking.di.ScreenModule;\n"
@@ -42,7 +43,7 @@ public class StaticStringUtilProcessorTest {
 
     assertAbout(javaSources())
         .that(ImmutableSet.of(checkingFragment))
-        .processedWith(new StaticStringUtilProcessor())
+        .processedWith(new VikingCodeProcessor())
         .compilesWithoutError()
         .and()
         .generatesSources(expectedCheckinsFragmentModule);
@@ -71,7 +72,8 @@ public class StaticStringUtilProcessorTest {
             + "    \n"
             + "}");
 
-    JavaFileObject expectedCheckinsFragmentModule = JavaFileObjects.forSourceString("test.CheckinsFragment_Module",
+    JavaFileObject expectedCheckinsFragmentModule = JavaFileObjects.forSourceString(
+        "test.CheckinsFragment_Module",
         "package test;\n"
             + "\n"
             + "import dagger.Module;\n"
@@ -88,7 +90,7 @@ public class StaticStringUtilProcessorTest {
 
     assertAbout(javaSources())
         .that(ImmutableSet.of(baseModule, checkingFragment))
-        .processedWith(new StaticStringUtilProcessor())
+        .processedWith(new VikingCodeProcessor())
         .compilesWithoutError()
         .and()
         .generatesSources(expectedCheckinsFragmentModule);

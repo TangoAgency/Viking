@@ -4,7 +4,7 @@ android {
     compileSdkVersion rootProject.ext.compileSdkVersion
     buildToolsVersion rootProject.ext.buildToolsVersion
     defaultConfig {
-        applicationId "agency.tango.viking.examp"
+        applicationId "agency.tango.viking.example"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
@@ -31,7 +31,6 @@ dependencies {
     compile project (":viking-mvp")
     compile project (":viking-mvvm")
     compile project (":viking-reactive")
-
 
     compile deps.rxJava
     compile deps.rxAndroid

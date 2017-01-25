@@ -2,9 +2,8 @@ package agency.tango.viking.example;
 
 import android.content.Context;
 
-import agency.tango.viking.R;
 import agency.tango.viking.annotations.AutoModule;
-import agency.tango.viking.databinding.ActMvvmdemoBinding;
+import agency.tango.viking.example.databinding.ActMvvmdemoBinding;
 import agency.tango.viking.example.viewmodels.MainViewModel;
 import agency.tango.viking.mvvm.ActivityView;
 

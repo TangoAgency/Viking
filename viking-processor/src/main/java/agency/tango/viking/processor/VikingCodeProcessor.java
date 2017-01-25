@@ -31,12 +31,12 @@ import static javax.lang.model.SourceVersion.latestSupported;
 import static javax.tools.Diagnostic.Kind.ERROR;
 
 @AutoService(Processor.class)
-public class StaticStringUtilProcessor extends AbstractProcessor {
+public class VikingCodeProcessor extends AbstractProcessor {
   private static final String ANNOTATION = "@" + AutoModule.class.getSimpleName();
   private ProcessingEnvironment processingEnvironment;
   private Messager messager;
 
-  public StaticStringUtilProcessor() {
+  public VikingCodeProcessor() {
     super();
   }
 

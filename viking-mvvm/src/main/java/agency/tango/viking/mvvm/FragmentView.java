@@ -4,6 +4,7 @@ import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
 import android.os.Bundle;
+import android.support.annotation.IdRes;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -60,6 +61,16 @@ public abstract class FragmentView<VM extends ViewModel, VD extends ViewDataBind
   public void onSaveInstanceState(Bundle outState) {
     super.onSaveInstanceState(outState);
     viewModel.saveState(outState);
+  }
+
+  @SuppressWarnings("unchecked")
+  protected <T extends FragmentView> T resolveFragment(@IdRes int id) {
+    return (T) getChildFragmentManager().findFragmentById(id);
+  }
+
+  @SuppressWarnings("unchecked")
+  protected <T extends ViewModel> T resolveChildViewModel(@IdRes int id) {
+    return (T) resolveFragment(id).viewModel();
   }
 
   protected abstract void inject(Context screen);

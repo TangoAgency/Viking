@@ -1,4 +1,5 @@
 apply plugin: 'com.android.library'
+apply plugin: 'com.novoda.bintray-release'
 
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
@@ -29,4 +30,13 @@ dependencies {
 
     compile deps.dagger
     testCompile deps.junit
+}
+
+publish {
+    userOrg = 'tangoagency'
+    groupId = 'agency.tango.android.viking'
+    artifactId = 'viking'
+    publishVersion = '0.0.1'
+    desc = ''
+    website = 'https://github.com/TangoAgency/Viking'
 }

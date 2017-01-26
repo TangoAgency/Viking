@@ -1,4 +1,5 @@
 apply plugin: 'com.android.library'
+apply plugin: 'com.novoda.bintray-release'
 apply plugin: 'me.tatarka.retrolambda'
 
 android {
@@ -46,4 +47,13 @@ dependencies {
     testCompile deps.junit
     testCompile deps.mockito
     testCompile deps.robolectric
+}
+
+publish {
+    userOrg = 'tangoagency'
+    groupId = 'agency.tango.android.viking'
+    artifactId = 'viking-mapbindings'
+    publishVersion = '0.0.1'
+    desc = ''
+    website = 'https://github.com/TangoAgency/Viking'
 }

@@ -1,4 +1,5 @@
 apply plugin: 'java'
+apply plugin: 'com.novoda.bintray-release'
 
 def logger = new com.android.build.gradle.internal.LoggerWrapper(project.logger)
 def sdkHandler = new com.android.build.gradle.internal.SdkHandler(project, logger)
@@ -15,6 +16,15 @@ dependencies {
 
     compileOnly deps.android
     compileOnly deps.dagger
+}
+
+publish {
+    userOrg = 'tangoagency'
+    groupId = 'agency.tango.android.viking'
+    artifactId = 'viking-annotations'
+    publishVersion = '0.0.1'
+    desc = ''
+    website = 'https://github.com/TangoAgency/Viking'
 }
 
 

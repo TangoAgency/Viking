@@ -132,7 +132,7 @@ Then add to your XML
 
 #### - **```gmv_infoWindowClickListener  ```** Set on info window click listener.
 
-If you want to add on info window click listener add ```@Bindable``` method in your java class which will return ItemClickListener<BindableMarker<YourModel>>.  
+If you want to add on info window click listener add a ```@Bindable``` method in your java class which will return ItemClickListener<BindableMarker<YourModel>>.  
 
 ```java
   @Bindable
@@ -155,7 +155,7 @@ Then add to your XML
 
 #### - **```gmv_infoWindowCloseListener```** Set on info window closed listener
 
-  To set OnInfoWindowCloseListener you need to create ```@Bindable``` method in your java class which will return OnInfoWindowCloseListener
+  To set OnInfoWindowCloseListener you need to create a ```@Bindable``` method in your java class which will return OnInfoWindowCloseListener
 
 ```java
   @Bindable
@@ -179,7 +179,7 @@ Then add to your XML
 #### - **```gmv_infoWindowLongClickListener```** Set on info window long click listener
 
 
-To set OnInfoWindowLongClickListener you need to create ```@Bindable``` method which will return OnInfoWindowLongClickListener
+To set OnInfoWindowLongClickListener you need to create a ```@Bindable``` method which will return OnInfoWindowLongClickListener
 
 ```java
   @Bindable
@@ -202,7 +202,7 @@ Then add to your XML
 
 #### - **```gmv_markerDragListener```** Set on marker drag listener
 
-To set on marker drag listener you need to create ```@Bindable``` method in your java class which will return OnMarkerDragListener
+To set on marker drag listener you need to create a ```@Bindable``` method in your java class which will return OnMarkerDragListener
 
 ```java
   @Bindable
@@ -233,7 +233,7 @@ Then add to your XML
 ## Camera Bindings
 
 #### - **```gmv_cameraMoveStartedListener```** Set on camera move started listener
-To set on camera move started listener you need to create ```@Bindable``` method in your java class which will return OnCameraMoveStartedListener
+To set on camera move started listener you need to create a ```@Bindable``` method in your java class which will return OnCameraMoveStartedListener
 
 ``` java
   @Bindable
@@ -254,7 +254,7 @@ Then add to your XML
 #### - **```gmv_cameraMoveCanceledListener```** Set on camera move cancelled listener
 
 
-To set on camera move canceled listener you need to create ```@Bindable``` method in your java class which will return OnCameraMoveCanceledListener
+To set on camera move cancelled listener you need to create a ```@Bindable``` method in your java class which will return OnCameraMoveCanceledListener
 
 ```java
   @Bindable
@@ -273,7 +273,7 @@ To set on camera move canceled listener you need to create ```@Bindable``` metho
 
 #### - **```gmv_cameraIdleListener```** Add on camera idle listener
 
-To add on camera idle listener you need to create ```@Bindable``` method in your java class which will return OnCameraIdleListener
+To add on camera idle listener you need to create a ```@Bindable``` method in your java class which will return OnCameraIdleListener
 
 ```java
   @Bindable
@@ -293,7 +293,7 @@ To add on camera idle listener you need to create ```@Bindable``` method in your
 
 #### - **```gmv_cameraMoveListener```** Set on camera move listener
 
-To add on camera move listener you need to create ```@Bindable``` method in your java class which will return OnCameraMoveListener
+To add on camera move listener you need to create a ```@Bindable``` method in your java class which will return OnCameraMoveListener
 
 ```java
   @Bindable
@@ -317,7 +317,7 @@ To add on camera move listener you need to create ```@Bindable``` method in your
 #### - **```gmv_circles```** - Binding list of circles to the map
 To bind a list of circles you need to create a List in your ViewModel.
 
-#####Please keep in mind that using ObservableList is recommended if you are using mutable list of objects which will be binded (updating, creating new objects and removing old one will be automaticallyhandled by this library)
+#####Please keep in mind that using ObservableList is recommended if you are using mutable list of objects which will be binded (updating, creating new objects and removing old one will be automatically handled by this library)
 
 ```java
 private ObservableList<BindableCircle> circles = new ObservableArrayList<>();
@@ -510,7 +510,7 @@ Now just bind list in your XML view
 
 #### - **```gmv_polylineClickListener```** Bind on click listener to polyline.
 
-####To bind OnClickListener to the polyline first you need to create ```@Bindable``` method in your java class which will return ```ItemClickListener<BindablePolyline>```.
+####To bind OnClickListener to the polyline first you need to create a ```@Bindable``` method in your java class which will return ```ItemClickListener<BindablePolyline>```.
 
 ```java
  @Bindable
@@ -560,7 +560,7 @@ Now just bind list in your XML view
 
 - **```gmv_rendererFactory```** Bind renderer factory for customizing markers via clustering
 
-To bind custom renderer to the cluster item you need to create ```@Bindable``` method in your java class which will return ```RendererFactory<YourClusterModel>```.
+To bind custom renderer to the cluster item you need to create a ```@Bindable``` method in your java class which will return ```RendererFactory<YourClusterModel>```.
 
 ```java
   @Bindable
@@ -586,7 +586,7 @@ Then add to your XML
 - **```gmv_algorithm```** Bind algorithm for clustering items
 
 
-To bind custom algorithm you need to create ```@Bindable``` method in your java class which will return an ```Algorithm``` object
+To bind custom algorithm you need to create a ```@Bindable``` method in your java class which will return an ```Algorithm``` object
 
 ```java
   @Bindable
@@ -605,7 +605,7 @@ Then add to your XML
 
 #### - **```gmv_clusterItemInfoWindowAdapter```** Bind InfoWindowAdapter to cluster item.
 
-  To bind InfoWindowAdapter to the cluster item you need to create ```@Bindable``` method in your java class which will return InfoWindowAdapterFactory<BindableMarker<YourClusterItem>> which returns CustomInfoWindowAdapter. 
+  To bind InfoWindowAdapter to the cluster item you need to create a ```@Bindable``` method in your java class which will return InfoWindowAdapterFactory<BindableMarker<YourClusterItem>> which returns CustomInfoWindowAdapter. 
 
 ```java
     @Bindable
@@ -645,7 +645,7 @@ Then add to your XML
 #### - **```gmv_clusterInfoWindowAdapter```** Bind InfoWindowAdapter to cluster.
 
 
-  To bind InfoWindowAdapter to the cluster you need to create ```@Bindable``` method in your java class which will return InfoWindowAdapterFactory<BindableMarker<Cluster>> which returns CustomInfoWindowAdapter. 
+  To bind InfoWindowAdapter to the cluster you need to create a ```@Bindable``` method in your java class which will return InfoWindowAdapterFactory<BindableMarker<Cluster>> which returns CustomInfoWindowAdapter. 
 
 ```java
   @Bindable
@@ -685,7 +685,7 @@ Then add to your XML
 ```
 
 #### - **```gmv_clusterClickListener```** Bind on cluster click listener
-To bind OnClusterClickListener you need to create ```@Bindable``` method which will return OnClusterClickListener
+To bind OnClusterClickListener you need to create a ```@Bindable``` method which will return OnClusterClickListener
 
 ```java
   @Bindable
@@ -709,7 +709,7 @@ Then add to your XML
 
 #### - **```gmv_clusterItemClickListener```** Bind on cluster item click listener
 
-  To bind OnClusterItemClickListener you need to create ```@Bindable``` method which will return OnClusterItemClickListener.
+  To bind OnClusterItemClickListener you need to create a ```@Bindable``` method which will return OnClusterItemClickListener.
 
 ```java
     @Bindable
@@ -734,7 +734,7 @@ Then add to your XML
 
 #### - **```gmv_clusterInfoWindowClickListener```** Bind on cluster info window click listener
 
-  To bind OnClusterInfoWindowClickListener you need to create ```@Bindable``` method which will return OnClusterInfoWindowClickListener
+  To bind OnClusterInfoWindowClickListener you need to create a ```@Bindable``` method which will return OnClusterInfoWindowClickListener
 
 ```java
 @Bindable	
@@ -757,7 +757,7 @@ Then add to your XML
 
 #### - **```gmv_clusterItemInfoWindowClickListener```** Bind on cluster item info window click listener
 
-To bind OnClusterItemInfoWindowClickListener you need to create ```@Bindable``` method which will return OnClusterItemInfoWindowClickListener
+To bind OnClusterItemInfoWindowClickListener you need to create a ```@Bindable``` method which will return OnClusterItemInfoWindowClickListener
 
 ```java
 @Bindable
@@ -790,7 +790,7 @@ First, add field in java class
 private float zoom;
 ```
 
-For retrieving zoom add ```@Bindable``` method in your java class
+For retrieving zoom add a ```@Bindable``` method in your java class
 
 ```java
 @Bindable
@@ -823,7 +823,7 @@ First, add field in java class
 private int radius;
 ```
 
-For retrieving radius add ```@Bindable``` method in your java class
+For retrieving radius add a ```@Bindable``` method in your java class
 
 ```java
 @Bindable
@@ -855,7 +855,7 @@ First, add field in java class
 private LatLng latLng;
 ```
 
-For retrieving radius add ```@Bindable``` method in your java class
+For retrieving radius add a ```@Bindable``` method in your java class
 
 ```java
 @Bindable
@@ -882,7 +882,7 @@ Then add to your XML
 
 #### - **```gmv_heatMap```** Bind heat map to GoogleMapView.
 
-To bind HeatMap you need to create ```@Bindable``` method which will return ```HeatmapTileProvider```
+To bind HeatMap you need to create a ```@Bindable``` method which will return ```HeatmapTileProvider```
 
 ```java
 public HeatmapTileProvider getHeatMap(){
@@ -903,7 +903,7 @@ Then add to your XML
 
 #### - **```gmv_mapClickListener```** Bind on map click listener.
 
-To bind ```OnMapClickListener``` you need to create ```@Bindable``` method which will return ```OnMapClickListener```
+To bind ```OnMapClickListener``` you need to create a ```@Bindable``` method which will return ```OnMapClickListener```
 
 ```java
 @Bindable
@@ -927,7 +927,7 @@ Then add to your XML
 
 #### - **```gmv_mapLoadedCallback```** Bind on map loaded callback
 
-  To bind ```OnMapLoadedCallback``` you need to create ```@Bindable``` method which will return ```OnMapLoadedCallback```
+  To bind ```OnMapLoadedCallback``` you need to create a ```@Bindable``` method which will return ```OnMapLoadedCallback```
 
 ```java
 @Bindable
@@ -951,7 +951,7 @@ Then add to your XML
 
 #### - **```gmv_mapLongClickListener```** Bind on map long click listener.
 
-To bind ```OnMapLongClickListener``` you need to create ```@Bindable``` method which will return ```OnMapLongClickListener```
+To bind ```OnMapLongClickListener``` you need to create a ```@Bindable``` method which will return ```OnMapLongClickListener```
 
 ```java
 @Bindable
@@ -975,7 +975,7 @@ Then add to your XML
 
 #### - **```gmv_myLocationButtonClickListener```** Bind on my location button click listener.
 
-To bind ```OnMyLocationButtonClickListener``` you need to create ```@Bindable``` method which will return ```OnMyLocationButtonClickListener```
+To bind ```OnMyLocationButtonClickListener``` you need to create a ```@Bindable``` method which will return ```OnMyLocationButtonClickListener```
 
 ```java
 @Bindable
@@ -1000,7 +1000,7 @@ Then add to your XML
 
 #### - **```gmv_indoorStateChangeListener```** Bind on indoor state change listener.
 
-To bind ```OnIndoorStateChangeListener``` you need to create ```@Bindable``` method which will return ```OnIndoorStateChangeListener```
+To bind ```OnIndoorStateChangeListener``` you need to create a ```@Bindable``` method which will return ```OnIndoorStateChangeListener```
 
 ```java
 @Bindable
@@ -1028,7 +1028,7 @@ Then add to your XML
 
 #### - **```gmv_poiClickListener```** Bind on poi click listener.
 
-To bind ```OnPoiClickListener``` you need to create @Bindable method which will return ```OnPoiClickListener```
+To bind ```OnPoiClickListener``` you need to create a @Bindable method which will return ```OnPoiClickListener```
 
 ```java
 @Bindable
@@ -1050,7 +1050,7 @@ Then add to your XML
 ```
 #### - **```gmv_snapshotReadyCallback```** Bind on snapshot ready callback.
 
-  To bind ```SnapshotReadyCallback``` you need to create @Bindable method which will return ```SnapshotReadyCallback```
+  To bind ```SnapshotReadyCallback``` you need to create a @Bindable method which will return ```SnapshotReadyCallback```
 
 ```java
   @Bindable

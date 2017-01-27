@@ -72,7 +72,7 @@ public class ClusterBindings {
     googleMapView.setOnClusterInfoWindowClickListener(onClusterInfoWindowClickListener);
   }
 
-  @BindingAdapter("gmv_onClusterItemInfoWindowClickListener")
+  @BindingAdapter("gmv_clusterItemInfoWindowClickListener")
   public static <T extends ClusterItem> void onClusterItemInfoWindowClickListener(
       GoogleMapView googleMapView,
       ClusterManager.OnClusterItemInfoWindowClickListener<T> onClusterItemInfoWindowClickListener) {

@@ -130,7 +130,7 @@ Then add to your xml
       bind:gmv_infoWindowAdapter="@{viewModel.infoWindowAdapter}" />
 ```
 
-- #### **```gmv_infoWindowClickListener  ```** Set on info window click listener. 
+- ####**```gmv_infoWindowClickListener  ```** Set on info window click listener. 
 
 If you want to add on info window click listener add ```@Bindable``` method in your java class which will return ItemClickListener<BindableMarker<YourModel>>.  
 
@@ -565,6 +565,265 @@ Now just bind list in your xml view
       bind:gmv_clusterItems="@{viewModel.clusterItems}"/>
 ```
 
+- **```gmv_rendererFactory```** Bind renderer factory for customizing markers via clustering
+
+To bind custom renderer to the cluster item you need to create ```@Bindable``` method in your java class which will return ```RendererFactory<YourClusterModel>```.
+
+```java
+  @Bindable
+  public RendererFactory<ClusterModel> getRendererFactory() {
+    return new RendererFactory<ClusterModel>() {
+      @Override
+      public ClusterRenderer<ClusterModel> createRenderer(Context context, GoogleMap googleMap,
+          ClusterManager<ClusterModel> clusterManager) {
+        return new CustomClusterRenderer(context, googleMap, clusterManager);
+      }
+    };
+  }
+```
+
+Note that ```CustomClusterRenderer``` need to implement ```ClusterRenderer<T>``` or extend ```DefaultClusterRenderer```.
+Then add to your xml 
+
+```xml
+<agency.tango.viking.bindings.map.GoogleMapView						                                   bind:gmv_rendererFactory="@{viewModel.rendererFactory }"	/>
+```
+
+- **```gmv_algorithm```** Bind algorithm for clustering items
+
+  To bind custom algorithm you need to create ```@Bindable``` method in your java class which will return an ```Algorithm``` object
+
+  ```java
+    @Bindable
+    public Algorithm<ClusterModel> getAlgorithm()
+    {
+      return new NonHierarchicalDistanceBasedAlgorithm<>();
+    }
+  ```
+
+  Then add to your xml 
+
+  ```xml
+  <agency.tango.viking.bindings.map.GoogleMapView						                                   bind:gmv_algorithm="@{viewModel.algorithm }"	/>
+  ```
+
+  - ####**```gmv_clusterItemInfoWindowAdapter```** Bind InfoWindowAdapter to cluster item.
+
+
+  To bind InfoWindowAdapter to the cluster item you need to create ```@Bindable``` method in your java class which will return InfoWindowAdapterFactory<BindableMarker<YourClusterItem>> which returns CustomInfoWindowAdapter. 
+
+```java
+    @Bindable
+    public InfoWindowAdapterFactory<ClusterItem> getClusterItemInfoWindowAdapter() {
+      return new InfoWindowAdapterFactory<ClusterItem>() {
+        @Override
+        public CustomInfoWindowAdapter<ClusterItem> createInfoWindowAdapter(
+            final Context context) {
+          return new CustomInfoWindowAdapter<ClusterItem>() {
+            @Override
+            public View getInfoWindow(ClusterItem clusterItem) {
+              return null;
+            }
+
+            @Override
+            public View getInfoContents(ClusterItem clusterItem) {
+              View view = LayoutInflater.from(context).inflate(R.layout.info_window, null);
+              TextView title = (TextView) view.findViewById(R.id.tv_title);
+
+              title.setText(String.format("LatLng: %s", clusterItem.getPosition().toString()));
+              return view;
+            }
+          };
+        }
+      };
+    }
+
+```
+
+  Then add to your xml 	
+
+```xml
+  <agency.tango.viking.bindings.map.GoogleMapView
+        bind:gmv_clusterItemInfoWindowAdapter="@{viewModel.clusterItemInfoWindowAdapter}" />
+```
+
+-   ####**```gmv_clusterInfoWindowAdapter```** Bind InfoWindowAdapter to cluster.
+
+
+  To bind InfoWindowAdapter to the cluster you need to create ```@Bindable``` method in your java class which will return InfoWindowAdapterFactory<BindableMarker<Cluster>> which returns CustomInfoWindowAdapter. 
+
+```java
+  @Bindable
+  public InfoWindowAdapterFactory<StaticCluster> getClusterInfoWindowAdapter() {
+    return new InfoWindowAdapterFactory<StaticCluster>() {
+      @Override
+      public CustomInfoWindowAdapter<StaticCluster> createInfoWindowAdapter(final Context context) {
+        return new CustomInfoWindowAdapter<StaticCluster>() {
+          @Override
+          public View getInfoWindow(StaticCluster cluster) {
+            return null;
+          }
+
+          @Override
+          public View getInfoContents(StaticCluster cluster) {
+            View view = LayoutInflater.from(context).inflate(R.layout.info_window, null);
+
+            TextView title = (TextView) view.findViewById(R.id.tv_title);
+            TextView description = (TextView) view.findViewById(R.id.tv_description);
+
+            title.setText(String.format("SIZE: %d", cluster.getItems().size()));
+            description.setText(String.format("LatLng: %f %f", cluster.getPosition().latitude,
+                cluster.getPosition().longitude));
+            return view;
+          }
+        };
+      }
+    };
+  }
+```
+
+  Then add to your xml 	
+
+```xml
+  <agency.tango.viking.bindings.map.GoogleMapView
+        bind:gmv_clusterInfoWindowAdapter="@{viewModel.clusterInfoWindowAdapter}" />
+```
+
+- **```gmv_clusterClickListener```** Bind on cluster click listener
+
+  To bind OnClusterClickListener you need to create ```@Bindable``` method which will return OnClusterClickListener
+
+  ```java
+    @Bindable
+    public ClusterManager.OnClusterClickListener getClusterClickListener() {
+      return new ClusterManager.OnClusterClickListener() {
+        @Override
+        public boolean onClusterClick(Cluster cluster) {
+          setLatLng(cluster.getPosition());
+          return false;
+        }
+      };
+    }
+  ```
+
+  Then add to your xml
+
+  ```xml
+    <agency.tango.viking.bindings.map.GoogleMapView
+          bind:gmv_clusterClickListener="@{viewModel.clusterClickListener}" />
+  ```
+
+- **```gmv_clusterItemClickListener```** Bind on cluster item click listener 
+
+  To bind OnClusterItemClickListener you need to create ```@Bindable``` method which will return OnClusterItemClickListener.
+
+  ```java
+    @Bindable
+    public ClusterManager.OnClusterItemClickListener<ClusterItem> getOnClusterItemClickListener()
+    {
+      return  new ClusterManager.OnClusterItemClickListener<ClusterItem>() {
+        @Override
+        public boolean onClusterItemClick(ClusterItem clusterItem) {
+          Toast.makeText(getContext(), clusterItem.getPosition(), Toast.LENGTH_SHORT);  
+          return false;
+        }
+      };
+    }
+  ```
+
+  Then add to your xml
+
+  ```xml
+  <agency.tango.viking.bindings.map.GoogleMapView    					   					        	bind:gmv_clusterItemClickListener ="@{viewModel.clusterItemClickListener }" />
+  ```
+
+- **```gmv_clusterInfoWindowClickListener```** Bind on cluster info window click listener 
+
+  To bind OnClusterInfoWindowClickListener you need to create ```@Bindable``` method which will return OnClusterInfoWindowClickListener
+
+```java
+@Bindable	
+public ClusterManager.OnClusterInfoWindowClickListener<ClusterItem> 								getOnClusterInfoWindowClickListener()  {
+  return new ClusterManager.OnClusterInfoWindowClickListener<ClusterItem>() {
+    @Override
+    public void onClusterInfoWindowClick(Cluster<ClusterItem> cluster) {
+      cluster.getItems().clear();
+    }
+  };
+}
+```
+
+Then add to your xml
+
+```xml
+<agency.tango.viking.bindings.map.GoogleMapView   					   					        	bind:gmv_clusterInfoWindowClickListener="@{viewModel.clusterInfoWindowClickListener}" />
+```
+
+- **```gmv_clusterItemInfoWindowClickListener```** Bind on cluster item info window click listener 
+
+To bind OnClusterItemInfoWindowClickListener you need to create ```@Bindable``` method which will return OnClusterItemInfoWindowClickListener
+
+```java
+@Bindable
+public ClusterManager.OnClusterItemInfoWindowClickListener<ClusterItem> 							getOnClusterItemInfoWindowClickListener() {
+  return new ClusterManager.OnClusterItemInfoWindowClickListener<ClusterItem>() {
+    @Override
+    public void onClusterItemInfoWindowClick(ClusterItem clusterItem) {
+      Toast.makeText(getContext(), clusterItem.getPosition(), Toast.LENGTH_SHORT);
+    }
+  };
+}
+```
+
+Then add to your xml
+
+```xml
+<agency.tango.viking.bindings.map.GoogleMapView   					   					        	bind:gmv_clusterInfoWindowClickListener="@{viewModel.clusterInfoWindowClickListener}" />
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -672,5 +931,3 @@ Thanks in advance.
 [MapActivity]: <https://github.com/TangoAgency/Viking/blob/feature/map-bindings/example/src/main/java/agency/tango/viking/example/MapActivity.java>
 [activity_map.xml]: <https://github.com/TangoAgency/Viking/blob/feature/map-bindings/example/src/main/res/layout/activity_map.xml>
 [Viking ViewModel]: <https://github.com/TangoAgency/Viking/tree/master/viking-viewmodel>
-​````
-

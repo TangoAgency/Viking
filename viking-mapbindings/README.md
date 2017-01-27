@@ -815,7 +815,7 @@ Then add to your XML
     bind:gmv_zoom="@{viewModel.zoom}" />
 ```
 
-#### - **```gmv_radius```** Two-way data binding for radius. With this binding, you can set and retrieve current map radius (This means that you get max width or max height of GoogleMap depending on device orientation).
+#### - **```gmv_radius```** Two-way data binding for the radius. With this binding, you can set and retrieve current map radius (This means that you get max width or max height of GoogleMap depending on device orientation).
 
 First, add field in java class
 

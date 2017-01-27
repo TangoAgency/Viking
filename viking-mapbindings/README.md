@@ -38,7 +38,7 @@ Example based on [Viking ViewModel][Viking ViewModel]:
 
 To bind list of markers you need to create a List in your java class. With this library you are allowed to bind any model you want to the specific marker.
 
-### Please keep in mind that using ObservableList is recommended if you are using mutable list of objects which will be binded (updating, creating new objects and removing old one will be automaticaly handled with this library)
+#####Please keep in mind that using ObservableList is recommended if you are using mutable list of objects which will be binded (updating, creating new objects and removing old one will be automaticaly handled with this library)
 
 ```java
 private ObservableList<BindableMarker<ExampleModel>> models = new ObservableArrayList<>();
@@ -317,7 +317,7 @@ To add on camera move listener you need to create ```@Bindable``` method in your
 #### - **```gmv_circles```** - Binding list of circles to the map
 To bind list of circles you need to create a List in your ViewModel.
 
-##### Please keep in mind that using ObservableList is recommended if you are using mutable list of objects which will be binded (updating, creating new objects and removing old one will be automaticaly handled with this library)
+#####Please keep in mind that using ObservableList is recommended if you are using mutable list of objects which will be binded (updating, creating new objects and removing old one will be automaticaly handled with this library)
 
 ```java
 private ObservableList<BindableCircle> circles = new ObservableArrayList<>();
@@ -369,9 +369,9 @@ To bind OnClickListener to the circle first you need to create ```@Bindable``` m
 
 #### - **```gmv_groundOverlays```** - Binding list of groundOverlays to the map
 
-  To bind list of groundOverlays you need to create a List in your java class.
+To bind list of groundOverlays you need to create a List in your java class.
 
-  ##### Please keep in mind that using ObservableList is recommended if you are using mutable list of objects which will be binded (updating, creating new objects and removing old one will be automaticaly handled with this library)
+#####Please keep in mind that using ObservableList is recommended if you are using mutable list of objects which will be binded (updating, creating new objects and removing old one will be automaticaly handled with this library)
 
 ```java
 private ObservableList<BindableOverlay> groundOverlays = new ObservableArrayList<>();
@@ -423,9 +423,9 @@ To bind OnClickListener to the ground overlay first you need to create ```@Binda
 
 #### - **```gmv_polygons```** - Binding list of polygons to the map
 
-  To bind list of polygons you need to create a List in your java class.
+To bind list of polygons you need to create a List in your java class.
 
-  ### Please keep in mind that using ObservableList is recommended if you are using mutable list of objects which will be binded (updating, creating new objects and removing old one will be automaticaly handled with this library)
+#####Please keep in mind that using ObservableList is recommended if you are using mutable list of objects which will be binded (updating, creating new objects and removing old one will be automaticaly handled with this library)
 
 ```java
 private ObservableList<BindablePolygon> polygons = new ObservableArrayList<>();
@@ -480,9 +480,9 @@ To bind OnClickListener to the polygon first you need to create ```@Bindable``` 
 
 #### - **```gmv_polylines```** - Binding list of polylines to the map
 
-  To bind list of polylines you need to create a List in your java class.
+To bind list of polylines you need to create a List in your java class.
 
-  ### Please keep in mind that using ObservableList is recommended if you are using mutable list of objects which will be binded (updating, creating new objects and removing old one will be automaticaly handled with this library)
+#####Please keep in mind that using ObservableList is recommended if you are using mutable list of objects which will be binded (updating, creating new objects and removing old one will be automaticaly handled with this library)
 
 ```java
 private ObservableList<BindablePolyline> polylines = new ObservableArrayList<>();
@@ -538,9 +538,9 @@ Now just bind list in your xml view
 
 - **```gmv_clusterItems```** Bind list of the cluster items to the map
 
-  To bind list of cluster item you need to create a ```List<T extends ClusterItem>``` in your java class.
+To bind list of cluster item you need to create a ```List<T extends ClusterItem>``` in your java class.
 
-  ### Please keep in mind that using ObservableList is recommended if you are using mutable list of objects which will be binded (updating, creating new objects and removing old one will be automaticaly handled with this library)
+#####Please keep in mind that using ObservableList is recommended if you are using mutable list of objects which will be binded (updating, creating new objects and removing old one will be automaticaly handled with this library)
 
 ```java
 private final ObservableList<ClusterModel> clusterItems = new ObservableArrayList<>();

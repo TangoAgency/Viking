@@ -36,9 +36,9 @@ Example based on [Viking ViewModel][Viking ViewModel]:
 ## Marker Bindings
 #### - **```gmv_markers```** - Binding list of markers to the map
 
-To bind list of markers you need to create a List in your java class. With this library you are allowed to bind any model you want to the specific marker.
+To bind the list of markers you need to create a List in your java class. With this library, you are allowed to bind any model you want to the specific marker.
 
-#####Please keep in mind that using ObservableList is recommended if you are using mutable list of objects which will be binded (updating, creating new objects and removing old one will be automaticaly handled with this library)
+#####Please keep in mind that using ObservableList is recommended if you are using mutable list of objects which will be binded (updating, creating new objects and removing old one will be automatically handled by this library)
 
 ```java
 private ObservableList<BindableMarker<ExampleModel>> models = new ObservableArrayList<>();
@@ -58,7 +58,7 @@ Before last step you need to make List bindable.
     return models;
   }
 ```
-Now just bind list in your xml view
+Now just bind list in your XML view
 ```xml
   <agency.tango.viking.bindings.map.GoogleMapView
       bind:gmv_markers="@{viewModel.models}"/>
@@ -67,7 +67,7 @@ Now just bind list in your xml view
 #### - **```gmv_markerClickListener```** Bind on click listener to marker.
 
 
-To bind OnClickListener to the marker first you need to create ```@Bindable``` method in your java class which will return OnMarkerClickListener ```<BindableMarker<YourModel>>```. With OnMarkerClickListener you have easy access to model assigned to marker.
+To bind OnClickListener to the marker first you need to create a ```@Bindable``` method in your java class which will return OnMarkerClickListener ```<BindableMarker<YourModel>>```. With OnMarkerClickListener you have easy access to model assigned to the marker.
 
 ```java
 @Bindable
@@ -81,7 +81,7 @@ public OnMarkerClickListener<BindableMarker<ExampleModel>> getMarkerClickListene
   };
 }
 ```
-  Now you need to bind that in xml
+  Now you need to bind that in XML
 
 ```xml
    <agency.tango.viking.bindings.map.GoogleMapView
@@ -91,7 +91,7 @@ public OnMarkerClickListener<BindableMarker<ExampleModel>> getMarkerClickListene
 #### - **```gmv_infoWindowAdapter```** Bind InfoWindowAdapter to markers.
 
 
-To bind InfoWindowAdapter to the markers you need to create ```@Bindable``` method in your java class which will return InfoWindowAdapterFactory<BindableMarker<YourModel>> which returns CustomInfoWindowAdapter. 
+To bind InfoWindowAdapter to the markers you need to create a ```@Bindable``` method in your java class which will return InfoWindowAdapterFactory<BindableMarker<YourModel>> which returns CustomInfoWindowAdapter. 
 
 ```java
 @Bindable
@@ -123,7 +123,7 @@ public InfoWindowAdapterFactory<BindableMarker<ExampleModel>> getInfoWindowAdapt
 }
 ```
 
-Then add to your xml 	
+Then add to your XML
 
 ```xml
 <agency.tango.viking.bindings.map.GoogleMapView
@@ -146,7 +146,7 @@ If you want to add on info window click listener add ```@Bindable``` method in y
   }
 ```
 
-Then add to your xml
+Then add to your XML
 
 ```xml
      <agency.tango.viking.bindings.map.GoogleMapView
@@ -169,7 +169,7 @@ Then add to your xml
   }
 ```
 
-Then add to your xml 
+Then add to your XML
 
 ```xml
  <agency.tango.viking.bindings.map.GoogleMapView
@@ -193,7 +193,7 @@ To set OnInfoWindowLongClickListener you need to create ```@Bindable``` method w
   }
 ```
 
-Then add to your xml
+Then add to your XML
 
 ```xml
 <agency.tango.viking.bindings.map.GoogleMapView
@@ -223,7 +223,7 @@ To set on marker drag listener you need to create ```@Bindable``` method in your
   }
 ```
 
-Then add to your xml
+Then add to your XML
 
 ```xml
 <agency.tango.viking.bindings.map.GoogleMapView
@@ -244,14 +244,14 @@ To set on camera move started listener you need to create ```@Bindable``` method
   }
 ```
 
-Then add to your xml 
+Then add to your XML
 
 ```xml
 <agency.tango.viking.bindings.map.GoogleMapView
  		bind:gmv_cameraMoveStartedListener="@{viewModel.cameraMoveStartedListener}" />
 ```
 
-#### - **```gmv_cameraMoveCanceledListener```** Set on camera move canceled listener
+#### - **```gmv_cameraMoveCanceledListener```** Set on camera move cancelled listener
 
 
 To set on camera move canceled listener you need to create ```@Bindable``` method in your java class which will return OnCameraMoveCanceledListener
@@ -264,7 +264,7 @@ To set on camera move canceled listener you need to create ```@Bindable``` metho
   	}
   }
 ```
- Then add to your xml 
+ Then add to your XML
 
 ```xml
 <agency.tango.viking.bindings.map.GoogleMapView
@@ -284,7 +284,7 @@ To add on camera idle listener you need to create ```@Bindable``` method in your
   }
 ```
 
- Then add to your xml 
+ Then add to your XML
 
 ```xml
 <agency.tango.viking.bindings.map.GoogleMapView
@@ -304,7 +304,7 @@ To add on camera move listener you need to create ```@Bindable``` method in your
   }
 ```
 
- Then add to your xml 
+ Then add to your XML
 
 ```xml
 <agency.tango.viking.bindings.map.GoogleMapView
@@ -315,9 +315,9 @@ To add on camera move listener you need to create ```@Bindable``` method in your
 ## Circle Bindings 
 
 #### - **```gmv_circles```** - Binding list of circles to the map
-To bind list of circles you need to create a List in your ViewModel.
+To bind a list of circles you need to create a List in your ViewModel.
 
-#####Please keep in mind that using ObservableList is recommended if you are using mutable list of objects which will be binded (updating, creating new objects and removing old one will be automaticaly handled with this library)
+#####Please keep in mind that using ObservableList is recommended if you are using mutable list of objects which will be binded (updating, creating new objects and removing old one will be automaticallyhandled by this library)
 
 ```java
 private ObservableList<BindableCircle> circles = new ObservableArrayList<>();
@@ -336,7 +336,7 @@ Before last step you need to make List bindable.
     return circles;
   }
 ```
-Now just bind list in your xml view
+Now just bind list in your XML view
 ```xml
   <agency.tango.viking.bindings.map.GoogleMapView
       bind:gmv_circles="@{viewModel.circles}"/>
@@ -345,7 +345,7 @@ Now just bind list in your xml view
 #### - **```gmv_circleClickListener```** Bind on click listener to circle.
 
 
-To bind OnClickListener to the circle first you need to create ```@Bindable``` method in your java class which will return ```ItemClickListener<BindableCircle>```.
+To bind OnClickListener to the circle first you need to create a ```@Bindable``` method in your java class which will return ```ItemClickListener<BindableCircle>```.
 
 ```java
  @Bindable
@@ -358,7 +358,7 @@ To bind OnClickListener to the circle first you need to create ```@Bindable``` m
     };
   }
 ```
-  Now you need to bind that in xml
+  Now you need to bind that in XML
 
 ```xml
    <agency.tango.viking.bindings.map.GoogleMapView
@@ -369,9 +369,9 @@ To bind OnClickListener to the circle first you need to create ```@Bindable``` m
 
 #### - **```gmv_groundOverlays```** - Binding list of groundOverlays to the map
 
-To bind list of groundOverlays you need to create a List in your java class.
+To bind a list of groundOverlays you need to create a List in your java class.
 
-#####Please keep in mind that using ObservableList is recommended if you are using mutable list of objects which will be binded (updating, creating new objects and removing old one will be automaticaly handled with this library)
+#####Please keep in mind that using ObservableList is recommended if you are using mutable list of objects which will be binded (updating, creating new objects and removing old one will be automatically handled by this library)
 
 ```java
 private ObservableList<BindableOverlay> groundOverlays = new ObservableArrayList<>();
@@ -390,7 +390,7 @@ Before last step you need to make List bindable.
     return groundOverlays;
   }
 ```
-Now just bind list in your xml view
+Now just bind list in your XML view
 ```xml
   <agency.tango.viking.bindings.map.GoogleMapView
       bind:gmv_groundOverlays="@{viewModel.groundOverlays}"/>
@@ -399,7 +399,7 @@ Now just bind list in your xml view
 #### - **```gmv_groundOverlayClickListener```** Bind on click listener to ground overlay.
 
 
-To bind OnClickListener to the ground overlay first you need to create ```@Bindable``` method in your java class which will return ```ItemClickListener<BindableCircle>```.
+To bind OnClickListener to the ground overlay first you need to create a ```@Bindable``` method in your java class which will return ```ItemClickListener<BindableCircle>```.
 
 ```java
  @Bindable
@@ -412,7 +412,7 @@ To bind OnClickListener to the ground overlay first you need to create ```@Binda
     };
   }
 ```
-  Now you need to bind that in xml
+  Now you need to bind that in XML
 
 ```xml
    <agency.tango.viking.bindings.map.GoogleMapView
@@ -423,9 +423,9 @@ To bind OnClickListener to the ground overlay first you need to create ```@Binda
 
 #### - **```gmv_polygons```** - Binding list of polygons to the map
 
-To bind list of polygons you need to create a List in your java class.
+To bind a list of polygons you need to create a List in your java class.
 
-#####Please keep in mind that using ObservableList is recommended if you are using mutable list of objects which will be binded (updating, creating new objects and removing old one will be automaticaly handled with this library)
+#####Please keep in mind that using ObservableList is recommended if you are using mutable list of objects which will be binded (updating, creating new objects and removing old one will be automatically handled by this library)
 
 ```java
 private ObservableList<BindablePolygon> polygons = new ObservableArrayList<>();
@@ -447,7 +447,7 @@ Before last step you need to make List bindable.
     return polygons;
   }
 ```
-Now just bind list in your xml view
+Now just bind list in your XML view
 ```xml
   <agency.tango.viking.bindings.map.GoogleMapView
       bind:gmv_polygons="@{viewModel.polygons}"/>
@@ -456,7 +456,7 @@ Now just bind list in your xml view
 #### - **```gmv_polygonClickListener```** Bind on click listener to polygony.
 
 
-To bind OnClickListener to the polygon first you need to create ```@Bindable``` method in your java class which will return ```ItemClickListener<BindablePolygon>```.
+To bind OnClickListener to the polygon first you need to create a ```@Bindable``` method in your java class which will return ```ItemClickListener<BindablePolygon>```.
 
 ```java
  @Bindable
@@ -469,7 +469,7 @@ To bind OnClickListener to the polygon first you need to create ```@Bindable``` 
     };
   }
 ```
-  Now you need to bind that in xml
+  Now you need to bind that in XML
 
 ```xml
    <agency.tango.viking.bindings.map.GoogleMapView
@@ -480,9 +480,9 @@ To bind OnClickListener to the polygon first you need to create ```@Bindable``` 
 
 #### - **```gmv_polylines```** - Binding list of polylines to the map
 
-To bind list of polylines you need to create a List in your java class.
+To bind a list of polylines you need to create a List in your java class.
 
-#####Please keep in mind that using ObservableList is recommended if you are using mutable list of objects which will be binded (updating, creating new objects and removing old one will be automaticaly handled with this library)
+#####Please keep in mind that using ObservableList is recommended if you are using mutable list of objects which will be binded (updating, creating new objects and removing old one will be automatically handled by this library)
 
 ```java
 private ObservableList<BindablePolyline> polylines = new ObservableArrayList<>();
@@ -502,15 +502,13 @@ Before last step you need to make List bindable.
     return polylines;
   }
 ```
-Now just bind list in your xml view
+Now just bind list in your XML view
 ```xml
   <agency.tango.viking.bindings.map.GoogleMapView
       bind:gmv_polylines="@{viewModel.polylines}"/>
 ```
 
 #### - **```gmv_polylineClickListener```** Bind on click listener to polyline.
-
-
 
 ####To bind OnClickListener to the polyline first you need to create ```@Bindable``` method in your java class which will return ```ItemClickListener<BindablePolyline>```.
 
@@ -525,27 +523,25 @@ Now just bind list in your xml view
     };
   }
 ```
-  Now you need to bind that in xml
+  Now you need to bind that in XML
 
 ```xml
    <agency.tango.viking.bindings.map.GoogleMapView
             bind:gmv_polylineClickListener="@{viewModel.polylineClickListener}"/>
 ```
 
-
-
 ## Cluster bindings
 
-- **```gmv_clusterItems```** Bind list of the cluster items to the map
+- **```gmv_clusterItems```** Bind a list of the cluster items to the map
 
-To bind list of cluster item you need to create a ```List<T extends ClusterItem>``` in your java class.
+To bind a list of cluster item you need to create a ```List<T extends ClusterItem>``` in your java class.
 
-#####Please keep in mind that using ObservableList is recommended if you are using mutable list of objects which will be binded (updating, creating new objects and removing old one will be automaticaly handled with this library)
+#####Please keep in mind that using ObservableList is recommended if you are using mutable list of objects which will be binded (updating, creating new objects and removing old one will be automatically handled by this library)
 
 ```java
 private final ObservableList<ClusterModel> clusterItems = new ObservableArrayList<>();
 ```
-Then you need to add items to list.
+Then you need to add items to the list.
 ```java
 clusterItems.add(new ClusterModel(new LatLng(0, 12.202222)));
 ```
@@ -556,7 +552,7 @@ Before last step you need to make List bindable.
     return clusterItems;
   }
 ```
-Now just bind list in your xml view
+Now just bind list in your XML view
 ```xml
   <agency.tango.viking.bindings.map.GoogleMapView
       bind:gmv_clusterItems="@{viewModel.clusterItems}"/>
@@ -580,7 +576,7 @@ To bind custom renderer to the cluster item you need to create ```@Bindable``` m
 ```
 
 Note that ```CustomClusterRenderer``` need to implement ```ClusterRenderer<T>``` or extend ```DefaultClusterRenderer```.
-Then add to your xml 
+Then add to your XML
 
 ```xml
 <agency.tango.viking.bindings.map.GoogleMapView
@@ -600,7 +596,7 @@ To bind custom algorithm you need to create ```@Bindable``` method in your java 
   }
 ```
 
-Then add to your xml 
+Then add to your XML
 
 ```xml
 <agency.tango.viking.bindings.map.GoogleMapView
@@ -639,7 +635,7 @@ Then add to your xml
 
 ```
 
-  Then add to your xml 	
+  Then add to your XML
 
 ```xml
   <agency.tango.viking.bindings.map.GoogleMapView
@@ -681,7 +677,7 @@ Then add to your xml
   }
 ```
 
-  Then add to your xml 	
+  Then add to your XML
 
 ```xml
   <agency.tango.viking.bindings.map.GoogleMapView
@@ -704,7 +700,7 @@ To bind OnClusterClickListener you need to create ```@Bindable``` method which w
   }
 ```
 
-Then add to your xml
+Then add to your XML
 
 ```xml
   <agency.tango.viking.bindings.map.GoogleMapView
@@ -715,7 +711,7 @@ Then add to your xml
 
   To bind OnClusterItemClickListener you need to create ```@Bindable``` method which will return OnClusterItemClickListener.
 
-  ```java
+```java
     @Bindable
     public ClusterManager.OnClusterItemClickListener<ClusterItem> getOnClusterItemClickListener()
     {
@@ -727,14 +723,14 @@ Then add to your xml
         }
       };
     }
-  ```
+```
 
-  Then add to your xml
+  Then add to your XML
 
-  ```xml
+```xml
   <agency.tango.viking.bindings.map.GoogleMapView
       bind:gmv_clusterItemClickListener ="@{viewModel.clusterItemClickListener }" />
-  ```
+```
 
 #### - **```gmv_clusterInfoWindowClickListener```** Bind on cluster info window click listener
 
@@ -752,7 +748,7 @@ public ClusterManager.OnClusterInfoWindowClickListener<ClusterItem> 								getO
 }
 ```
 
-Then add to your xml
+Then add to your XML
 
 ```xml
 <agency.tango.viking.bindings.map.GoogleMapView
@@ -775,7 +771,7 @@ public ClusterManager.OnClusterItemInfoWindowClickListener<ClusterItem> 							g
 }
 ```
 
-Then add to your xml
+Then add to your XML
 
 ```xml
 <agency.tango.viking.bindings.map.GoogleMapView
@@ -786,9 +782,9 @@ Then add to your xml
 
 ## Map Bindings
 
-#### - **```gmv_zoom```** Two way data binding for zoom. With this binding you can set and retrieve current map zoom.
+#### - **```gmv_zoom```** Two-way data binding for zoom. With this binding, you can set and retrieve current map zoom.
 
-First add field in java class
+First, add field in java class
 
 ```java
 private float zoom;
@@ -812,16 +808,16 @@ public void setZoom(float zoom) {
 }
 ```
 
-Then add to your xml
+Then add to your XML
 
 ```xml
 <agency.tango.viking.bindings.map.GoogleMapView
     bind:gmv_zoom="@{viewModel.zoom}" />
 ```
 
-#### - **```gmv_radius```** Two way data binding for radius. With this binding you can set and retrieve current map radius (This means that you get max width or max height of GoogleMap depending on device orientation).
+#### - **```gmv_radius```** Two-way data binding for radius. With this binding, you can set and retrieve current map radius (This means that you get max width or max height of GoogleMap depending on device orientation).
 
-First add field in java class
+First, add field in java class
 
 ```java
 private int radius;
@@ -845,15 +841,15 @@ public void setRadius(int radius) {
 }
 ```
 
-Then add to your xml
+Then add to your XML
 
 ```xml
 <agency.tango.viking.bindings.map.GoogleMapView   					   					        	bind:gmv_radius="@{viewModel.radius}" />
 ```
 
-#### - **```gmv_latLng```** Two way data binding for latLng. With this binding you can set and retrieve center of the map.
+#### - **```gmv_latLng ```**Two-way data binding for latLng. With this binding, you can set and retrieve center of the map.
 
-First add field in java class
+First, add field in java class
 
 ```java
 private LatLng latLng;
@@ -877,7 +873,7 @@ public void setLatLng(LatLng latLng) {
 }
 ```
 
-Then add to your xml
+Then add to your XML
 
 ```xml
 <agency.tango.viking.bindings.map.GoogleMapView
@@ -898,7 +894,7 @@ public HeatmapTileProvider getHeatMap(){
 }
 ```
 
-Then add to your xml
+Then add to your XML
 
 ```xml
 <agency.tango.viking.bindings.map.GoogleMapView
@@ -922,7 +918,7 @@ public GoogleMap.OnMapClickListener getMapClickListener()
 }
 ```
 
-Then add to your xml
+Then add to your XML
 
 ```xml
 <agency.tango.viking.bindings.map.GoogleMapView
@@ -946,7 +942,7 @@ public GoogleMap.OnMapLoadedCallback getMapLoadedCallback()
 }
 ```
 
-Then add to your xml
+Then add to your XML
 
 ```xml
 <agency.tango.viking.bindings.map.GoogleMapView
@@ -970,7 +966,7 @@ public GoogleMap.OnMapLongClickListener getMapLongClickListener()
 }
 ```
 
-Then add to your xml
+Then add to your XML
 
 ```xml
 <agency.tango.viking.bindings.map.GoogleMapView
@@ -995,7 +991,7 @@ public GoogleMap.OnMyLocationButtonClickListener getMyLocationButtonClickListene
 }
 ```
 
-Then add to your xml
+Then add to your XML
 
 ```xml
 <agency.tango.viking.bindings.map.GoogleMapView
@@ -1023,7 +1019,7 @@ To bind ```OnIndoorStateChangeListener``` you need to create ```@Bindable``` met
   }
 ```
 
-Then add to your xml
+Then add to your XML
 
 ```xml
 <agency.tango.viking.bindings.map.GoogleMapView
@@ -1046,7 +1042,7 @@ public GoogleMap.OnPoiClickListener getPoiClickListener(){
 }
 ```
 
-Then add to your xml
+Then add to your XML
 
 ```xml
 <agency.tango.viking.bindings.map.GoogleMapView
@@ -1068,7 +1064,7 @@ Then add to your xml
   }
 ```
 
-Then add to your xml
+Then add to your XML
 
 ```xml
 <agency.tango.viking.bindings.map.GoogleMapView

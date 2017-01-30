@@ -112,7 +112,9 @@ public class MapViewModel extends ViewModel {
   }
 
   @Bindable
-  public Collection<ClusterModel> getClusterItems() {return clusterItems;}
+  public Collection<ClusterModel> getClusterItems() {
+    return clusterItems;
+  }
 
   @Bindable
   public Collection<BindableMarker<ExampleModel>> getModels() {
@@ -125,13 +127,19 @@ public class MapViewModel extends ViewModel {
   }
 
   @Bindable
-  public Collection<BindableOverlay> getOverlays() {return overlays;}
+  public Collection<BindableOverlay> getOverlays() {
+    return overlays;
+  }
 
   @Bindable
-  public Collection<BindableCircle> getCircles() {return circles;}
+  public Collection<BindableCircle> getCircles() {
+    return circles;
+  }
 
   @Bindable
-  public Collection<BindablePolygon> getPolygons() {return polygons;}
+  public Collection<BindablePolygon> getPolygons() {
+    return polygons;
+  }
 
   @Bindable
   public HeatmapTileProvider getHeatMap() {

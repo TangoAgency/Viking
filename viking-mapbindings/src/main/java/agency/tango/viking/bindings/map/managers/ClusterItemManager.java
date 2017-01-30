@@ -15,18 +15,18 @@ public class ClusterItemManager<T extends ClusterItem>
   }
 
   @Override
-  T addToMap(T item, GoogleMap googleMap) {
+  protected T addToMap(T item, GoogleMap googleMap) {
     clusterManager.addItem(item);
     return item;
   }
 
   @Override
-  void removeFromMap(T entity, GoogleMap googleMap) {
+  protected void removeFromMap(T entity, GoogleMap googleMap) {
     clusterManager.removeItem(entity);
   }
 
   @Override
-  void updateOnMap(T entity, T item, GoogleMap googleMap) {
+  protected void updateOnMap(T entity, T item, GoogleMap googleMap) {
     clusterManager.removeItem(entity);
     clusterManager.addItem(item);
   }

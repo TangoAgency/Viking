@@ -15,18 +15,18 @@ public class PolygonManager<T extends BindablePolygon> extends MapEntityManagerB
   }
 
   @Override
-  T addToMap(T item, GoogleMap googleMap) {
+  protected T addToMap(T item, GoogleMap googleMap) {
     item.setPolygon(googleMap.addPolygon(item.getPolygonOptions()));
     return item;
   }
 
   @Override
-  void removeFromMap(T entity, GoogleMap googleMap) {
+  protected void removeFromMap(T entity, GoogleMap googleMap) {
     entity.getPolygon().remove();
   }
 
   @Override
-  void updateOnMap(T entity, T item, GoogleMap googleMap) {
+  protected void updateOnMap(T entity, T item, GoogleMap googleMap) {
     Polygon polygon = entity.getPolygon();
     PolygonOptions polygonOptions = item.getPolygonOptions();
 

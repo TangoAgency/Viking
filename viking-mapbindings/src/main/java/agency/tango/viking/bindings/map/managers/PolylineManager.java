@@ -16,18 +16,18 @@ public class PolylineManager<T extends BindablePolyline> extends MapEntityManage
   }
 
   @Override
-  T addToMap(T item, GoogleMap googleMap) {
+  protected T addToMap(T item, GoogleMap googleMap) {
     item.setPolyline(googleMap.addPolyline(item.getPolylineOptions()));
     return item;
   }
 
   @Override
-  void removeFromMap(T entity, GoogleMap googleMap) {
+  protected void removeFromMap(T entity, GoogleMap googleMap) {
     entity.getPolyline().remove();
   }
 
   @Override
-  void updateOnMap(T entity, T item, GoogleMap googleMap) {
+  protected void updateOnMap(T entity, T item, GoogleMap googleMap) {
     Polyline polyline = entity.getPolyline();
     PolylineOptions polylineOptions = item.getPolylineOptions();
 

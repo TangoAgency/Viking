@@ -93,9 +93,9 @@ public abstract class MapEntityManagerBase<T> implements IMapEntityManager<T> {
     });
   }
 
-  abstract T addToMap(T item, GoogleMap googleMap);
+  protected abstract T addToMap(T item, GoogleMap googleMap);
 
-  abstract void removeFromMap(T entity, GoogleMap googleMap);
+  protected abstract void removeFromMap(T entity, GoogleMap googleMap);
 
-  abstract void updateOnMap(T entity, T item, GoogleMap googleMap);
+  protected abstract void updateOnMap(T entity, T item, GoogleMap googleMap);
 }

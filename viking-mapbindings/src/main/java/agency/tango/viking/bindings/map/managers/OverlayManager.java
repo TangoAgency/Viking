@@ -16,18 +16,18 @@ public class OverlayManager<T extends BindableOverlay> extends MapEntityManagerB
   }
 
   @Override
-  T addToMap(T item, GoogleMap googleMap) {
+  protected T addToMap(T item, GoogleMap googleMap) {
     item.setGroundOverlay(googleMap.addGroundOverlay(item.getGroundOverlayOptions()));
     return item;
   }
 
   @Override
-  void removeFromMap(T entity, GoogleMap googleMap) {
+  protected void removeFromMap(T entity, GoogleMap googleMap) {
     entity.getGroundOverlay().remove();
   }
 
   @Override
-  void updateOnMap(T entity, T item, GoogleMap googleMap) {
+  protected void updateOnMap(T entity, T item, GoogleMap googleMap) {
     GroundOverlay groundOverlay = entity.getGroundOverlay();
     GroundOverlayOptions groundOverlayOptions = item.getGroundOverlayOptions();
 

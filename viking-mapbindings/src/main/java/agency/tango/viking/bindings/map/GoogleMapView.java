@@ -62,7 +62,6 @@ public class GoogleMapView<T> extends MapView {
   private PolygonManager polygonManager;
 
   private CustomClusterManager<ClusterItem> customClusterManager;
-  private ClusterItemManager<ClusterItem> clusterItemManager;
 
   private TileOverlay heatMapTileOverlay;
 
@@ -346,7 +345,8 @@ public class GoogleMapView<T> extends MapView {
    */
   public void clusterItems(Collection<ClusterItem> clusterItems) {
     getMapAsync(googleMap -> customClusterManager.onClusterManagerReady(clusterManager -> {
-      clusterItemManager = new ClusterItemManager<>(this::getMapAsync, clusterManager);
+      ClusterItemManager<ClusterItem> clusterItemManager = new ClusterItemManager<>(
+          this::getMapAsync, clusterManager);
       onCameraIdleListener.addOnCameraIdleListener(clusterManager);
       markerClickListener.addOnMarkerClickListener(clusterManager);
       infoWindowClickListener.addOnInfoWindowClickListener(clusterManager);

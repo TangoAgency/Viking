@@ -16,18 +16,19 @@ public class MarkerManager<T> extends MapEntityManagerBase<BindableMarker<T>>
   }
 
   @Override
-  BindableMarker<T> addToMap(BindableMarker<T> item, GoogleMap googleMap) {
+  protected BindableMarker<T> addToMap(BindableMarker<T> item, GoogleMap googleMap) {
     item.setMarker(googleMap.addMarker(item.getMarkerOptions()));
     return item;
   }
 
   @Override
-  void removeFromMap(BindableMarker<T> entity, GoogleMap googleMap) {
+  protected void removeFromMap(BindableMarker<T> entity, GoogleMap googleMap) {
     entity.getMarker().remove();
   }
 
   @Override
-  void updateOnMap(BindableMarker<T> entity, BindableMarker<T> item, GoogleMap googleMap) {
+  protected void updateOnMap(BindableMarker<T> entity, BindableMarker<T> item,
+      GoogleMap googleMap) {
     Marker marker = entity.getMarker();
     MarkerOptions markerOptions = item.getMarkerOptions();
 

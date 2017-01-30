@@ -58,7 +58,7 @@ public class MapViewModel extends ViewModel {
   private float zoom = DEFAULT_ZOOM;
 
   @Inject
-  public MapViewModel() {
+  MapViewModel() {
   }
 
   @Override
@@ -90,14 +90,13 @@ public class MapViewModel extends ViewModel {
             .add(new LatLng(0, 25))
             .add(new LatLng(0, 30))));
 
-    polygons.add(new ExamplePolygon(new PolygonOptions()
+    polygons.add(new BindablePolygon(new PolygonOptions()
         .clickable(true)
         .strokeColor(Color.rgb(255, 0, 0))
         .add(new LatLng(0, 0))
         .add(new LatLng(0, 1))
         .add(new LatLng(1, 1))
-        .add(new LatLng(1, 0))
-        , exampleModel));
+        .add(new LatLng(1, 0))));
 
     overlays.add(new BindableOverlay(
         new GroundOverlayOptions()
@@ -136,7 +135,6 @@ public class MapViewModel extends ViewModel {
 
   @Bindable
   public HeatmapTileProvider getHeatMap() {
-
     return heatmapTileProvider;
   }
 

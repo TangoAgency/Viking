@@ -14,18 +14,18 @@ public class CircleManager<T extends BindableCircle> extends MapEntityManagerBas
   }
 
   @Override
-  T addToMap(T item, GoogleMap googleMap) {
+  protected T addToMap(T item, GoogleMap googleMap) {
     item.setCircle(googleMap.addCircle(item.getCircleOptions()));
     return item;
   }
 
   @Override
-  void removeFromMap(T entity, GoogleMap googleMap) {
+  protected void removeFromMap(T entity, GoogleMap googleMap) {
     entity.getCircle().remove();
   }
 
   @Override
-  void updateOnMap(T entity, T item, GoogleMap googleMap) {
+  protected void updateOnMap(T entity, T item, GoogleMap googleMap) {
     Circle circle = entity.getCircle();
     CircleOptions circleOptions = item.getCircleOptions();
 

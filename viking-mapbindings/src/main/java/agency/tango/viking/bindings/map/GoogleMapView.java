@@ -8,6 +8,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.TileOverlay;
 import com.google.android.gms.maps.model.TileOverlayOptions;
 import com.google.maps.android.SphericalUtil;
@@ -29,6 +30,7 @@ import agency.tango.viking.bindings.map.listeners.CompositeOnCameraIdleListener;
 import agency.tango.viking.bindings.map.listeners.ItemClickListener;
 import agency.tango.viking.bindings.map.listeners.MarkerClickListener;
 import agency.tango.viking.bindings.map.listeners.OnMarkerClickListener;
+import agency.tango.viking.bindings.map.listeners.MarkerDragListener;
 import agency.tango.viking.bindings.map.listeners.OverlayClickListener;
 import agency.tango.viking.bindings.map.listeners.PolygonClickListener;
 import agency.tango.viking.bindings.map.listeners.PolylineClickListener;
@@ -159,22 +161,23 @@ public class GoogleMapView<T> extends MapView {
   /**
    * Set on info window close listener
    *
-   * @param onInfoWindowCloseListener {@link GoogleMap.OnInfoWindowCloseListener} to set
+   * @param itemClickListener {@link ItemClickListener} to set
    */
   public void setOnInfoWindowCloseListener(
-      GoogleMap.OnInfoWindowCloseListener onInfoWindowCloseListener) {
-    getMapAsync(googleMap -> googleMap.setOnInfoWindowCloseListener(onInfoWindowCloseListener));
+      ItemClickListener<BindableMarker<T>> itemClickListener) {
+    getMapAsync(googleMap -> googleMap.setOnInfoWindowCloseListener(
+        marker -> itemClickListener.onClick(markerManager.retrieveBindableMarker(marker))));
   }
 
   /**
    * Set on info window long click listener
    *
-   * @param onInfoWindowLongClickListener {@link GoogleMap.OnInfoWindowLongClickListener} to set
+   * @param itemClickListener {@link ItemClickListener} to set
    */
   public void setOnInfoWindowLongClickListener(
-      GoogleMap.OnInfoWindowLongClickListener onInfoWindowLongClickListener) {
-    getMapAsync(
-        googleMap -> googleMap.setOnInfoWindowLongClickListener(onInfoWindowLongClickListener));
+      ItemClickListener<BindableMarker<T>> itemClickListener) {
+    getMapAsync(googleMap -> googleMap.setOnInfoWindowLongClickListener(
+        marker -> itemClickListener.onClick(markerManager.retrieveBindableMarker(marker))));
   }
 
   /**
@@ -378,10 +381,27 @@ public class GoogleMapView<T> extends MapView {
   /**
    * Set on marker drag listener
    *
-   * @param onMarkerDragListener {@link GoogleMap.OnMarkerDragListener} to set
+   * @param markerDragListener {@link MarkerDragListener} to set
    */
-  public void setOnMarkerDragListener(GoogleMap.OnMarkerDragListener onMarkerDragListener) {
-    getMapAsync(googleMap -> googleMap.setOnMarkerDragListener(onMarkerDragListener));
+  public void setMarkerDragListener(MarkerDragListener<T> markerDragListener) {
+    getMapAsync(googleMap -> googleMap.setOnMarkerDragListener(
+        new GoogleMap.OnMarkerDragListener() {
+          @Override
+          public void onMarkerDragStart(Marker marker) {
+            markerDragListener.onMarkerDragStart(markerManager.retrieveBindableMarker(marker));
+          }
+
+          @Override
+          public void onMarkerDrag(Marker marker) {
+            markerDragListener.onMarkerDrag(markerManager.retrieveBindableMarker(marker));
+
+          }
+
+          @Override
+          public void onMarkerDragEnd(Marker marker) {
+            markerDragListener.onMarkerDragEnd(markerManager.retrieveBindableMarker(marker));
+          }
+        }));
   }
 
   /**

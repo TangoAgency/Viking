@@ -155,18 +155,19 @@ Then add to your XML
 
 #### - **```gmv_infoWindowCloseListener```** Set on info window closed listener
 
-  To set OnInfoWindowCloseListener you need to create a ```@Bindable``` method in your java class which will return OnInfoWindowCloseListener
+  To set ```ItemClickListener``` you need to create a ```@Bindable``` method in your java class which will return ```ItemClickListener```
 
 ```java
-  @Bindable
-  public GoogleMap.OnInfoWindowCloseListener getInfoWindowCloseListener() {
-    return new GoogleMap.OnInfoWindowCloseListener() {
-      @Override
-      public void onInfoWindowClose(Marker marker) {
-        marker.setPosition(new LatLng(0, 0));
-      }
-    };
-  }
+@Bindable
+public ItemClickListener<ExampleModel> getInfoWindowCloseListener()
+{
+  return new ItemClickListener<ExampleModel>() {
+    @Override
+    public void onClick(ExampleModel item) {
+      ...
+    }
+  };
+}
 ```
 
 Then add to your XML
@@ -179,18 +180,19 @@ Then add to your XML
 #### - **```gmv_infoWindowLongClickListener```** Set on info window long click listener
 
 
-To set OnInfoWindowLongClickListener you need to create a ```@Bindable``` method which will return OnInfoWindowLongClickListener
+To set ```ItemClickListener```you need to create a ```@Bindable``` method which will return ```ItemClickListener```
 
 ```java
   @Bindable
-  public GoogleMap.OnInfoWindowLongClickListener getOnInfoWindowLongClickListener() {
-    return new GoogleMap.OnInfoWindowLongClickListener() {
-      @Override
-      public void onInfoWindowLongClick(Marker marker) {
-        marker.setPosition(new LatLng(0, 0));
-      }
-    };
-  }
+public ItemClickListener<ExampleModel> getInfoWindowLongClickListener()
+{
+  return new ItemClickListener<ExampleModel>() {
+    @Override
+    public void onClick(ExampleModel item) {
+      ...
+    }
+  };
+}
 ```
 
 Then add to your XML
@@ -200,26 +202,30 @@ Then add to your XML
  		bind:gmv_infoWindowLongClickListener="@{viewModel.infoWindowLongClickListener}" />
 ```
 
-#### - **```gmv_markerDragListener```** Set on marker drag listener
+#### - **```gmv_markerDragListener```** Set marker drag listener
 
-To set on marker drag listener you need to create a ```@Bindable``` method in your java class which will return OnMarkerDragListener
+To set on marker drag listener you need to create a ```@Bindable``` method in your java class which will return ```MarkerDragListener```
 
 ```java
-  @Bindable
-  public GoogleMap.OnMarkerDragListener getOnMarkerDragListener() {
-    return  new GoogleMap.OnMarkerDragListener() {
+@Bindable
+  public MarkerDragListener<ExampleModel> getMarkerDragListener()
+  {
+    return new MarkerDragListener<ExampleModel>() {
       @Override
-      public void onMarkerDragStart(Marker marker) {
+      public void onMarkerDragStart(BindableMarker<ExampleModel> marker) {
+        
       }
 
       @Override
-      public void onMarkerDrag(Marker marker) {
+      public void onMarkerDrag(BindableMarker<ExampleModel> marker) {
+
       }
 
       @Override
-      public void onMarkerDragEnd(Marker marker) {
+      public void onMarkerDragEnd(BindableMarker<ExampleModel> marker) {
+
       }
-    }; 
+    };
   }
 ```
 

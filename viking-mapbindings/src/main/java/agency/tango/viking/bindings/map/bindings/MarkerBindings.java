@@ -2,14 +2,13 @@ package agency.tango.viking.bindings.map.bindings;
 
 import android.databinding.BindingAdapter;
 
-import com.google.android.gms.maps.GoogleMap;
-
 import java.util.Collection;
 
 import agency.tango.viking.bindings.map.GoogleMapView;
 import agency.tango.viking.bindings.map.InfoWindowAdapterFactory;
 import agency.tango.viking.bindings.map.listeners.ItemClickListener;
 import agency.tango.viking.bindings.map.listeners.OnMarkerClickListener;
+import agency.tango.viking.bindings.map.listeners.MarkerDragListener;
 import agency.tango.viking.bindings.map.models.BindableMarker;
 
 @SuppressWarnings({ "unused" })
@@ -33,8 +32,8 @@ public class MarkerBindings {
   }
 
   @BindingAdapter("gmv_infoWindowAdapter")
-  public static <T> void infoWindowAdapter(GoogleMapView googleMapView,
-      InfoWindowAdapterFactory<T> infoWindowAdapter) {
+  public static <T> void infoWindowAdapter(GoogleMapView<T> googleMapView,
+      InfoWindowAdapterFactory<BindableMarker<T>> infoWindowAdapter) {
     googleMapView.setInfoWindowAdapter(infoWindowAdapter);
   }
 
@@ -45,20 +44,20 @@ public class MarkerBindings {
   }
 
   @BindingAdapter("gmv_infoWindowCloseListener")
-  public static void onInfoWindowCloseListener(GoogleMapView googleMapView,
-      GoogleMap.OnInfoWindowCloseListener onInfoWindowCloseListener) {
-    googleMapView.setOnInfoWindowCloseListener(onInfoWindowCloseListener);
+  public static <T> void onInfoWindowCloseListener(GoogleMapView<T> googleMapView,
+      ItemClickListener<BindableMarker<T>> itemClickListener) {
+    googleMapView.setOnInfoWindowCloseListener(itemClickListener);
   }
 
   @BindingAdapter("gmv_infoWindowLongClickListener")
-  public static void onInfoWindowLongClickListener(GoogleMapView googleMapView,
-      GoogleMap.OnInfoWindowLongClickListener onInfoWindowLongClickListener) {
-    googleMapView.setOnInfoWindowLongClickListener(onInfoWindowLongClickListener);
+  public static <T> void onInfoWindowLongClickListener(GoogleMapView<T> googleMapView,
+      ItemClickListener<BindableMarker<T>> itemClickListener) {
+    googleMapView.setOnInfoWindowLongClickListener(itemClickListener);
   }
 
   @BindingAdapter("gmv_markerDragListener")
-  public static void onMarkerDragListener(GoogleMapView googleMapView,
-      GoogleMap.OnMarkerDragListener onMarkerDragListener) {
-    googleMapView.setOnMarkerDragListener(onMarkerDragListener);
+  public static <T> void markerDragListener(GoogleMapView<T> googleMapView,
+      MarkerDragListener<T> markerDragListener) {
+    googleMapView.setMarkerDragListener(markerDragListener);
   }
 }

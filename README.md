@@ -1,6 +1,6 @@
 # Viking
 
-[![Download](https://api.bintray.com/packages/tangoagency/maven/viking/images/download.svg) ](https://bintray.com/tangoagency/maven/viking/_latestVersion) [![Build Status](https://travis-ci.org/TangoAgency/Viking.svg?branch=master)](https://travis-ci.org/TangoAgency/Viking)
+[![Download](https://api.bintray.com/packages/tangoagency/maven/viking/images/download.svg) ](https://bintray.com/tangoagency/maven/viking/_latestVersion) [![Build Status](https://travis-ci.org/TangoAgency/Viking.svg?branch=master)](https://travis-ci.org/TangoAgency/Viking) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/70f38ae0149147d7998efd9fc17c65a3)](https://www.codacy.com/app/TangoAgency/Viking?utm_source=github.com&utm_medium=referral&utm_content=TangoAgency/Viking&utm_campaign=badger)
 
 <a href="https://github.com/TangoAgency/Viking"><img src="https://cloud.githubusercontent.com/assets/469111/22284925/b91cfca0-e2e9-11e6-9bcc-fc8e1a1f34a0.png" width="300px"></a>
 

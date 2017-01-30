@@ -9,26 +9,13 @@ android {
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
         versionName "1.0"
+        multiDexEnabled true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
+
     signingConfigs {
-        release {
-            storeFile file("./keystore.jks")
-            storePassword 'Developer123'
-            keyAlias 'production'
-            keyPassword 'Developer123'
-        }
-    }
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            signingConfig signingConfigs.release
-        }
         debug {
-            multiDexEnabled true
-            signingConfig signingConfigs.release
-            minifyEnabled false
+            storeFile file('debug.keystore')
         }
     }
 

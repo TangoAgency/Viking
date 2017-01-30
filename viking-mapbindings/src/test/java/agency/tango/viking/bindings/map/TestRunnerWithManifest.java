@@ -21,7 +21,8 @@ public class TestRunnerWithManifest extends RobolectricTestRunner {
 
   private static File resourcesBaseDirFile() {
     File testDir = Util.file("src", "test", "resources");
-    return hasTestManifest(testDir) ? testDir : Util.file("viking-mapbindings", "src", "test", "resources");
+    return hasTestManifest(testDir) ? testDir
+        : Util.file("viking-mapbindings", "src", "test", "resources");
   }
 
   private static boolean hasTestManifest(File testDir) {
@@ -30,6 +31,7 @@ public class TestRunnerWithManifest extends RobolectricTestRunner {
 
   @Override
   protected AndroidManifest getAppManifest(Config config) {
-    return new AndroidManifest(resourceFile("AndroidManifest.xml"), resourceFile("res"), resourceFile("assets"));
+    return new AndroidManifest(resourceFile("AndroidManifest.xml"), resourceFile("res"),
+        resourceFile("assets"));
   }
 }

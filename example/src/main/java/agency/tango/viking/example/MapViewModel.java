@@ -273,7 +273,6 @@ public class MapViewModel extends ViewModel {
             View view = LayoutInflater.from(context).inflate(R.layout.info_window, null);
 
             TextView title = (TextView) view.findViewById(R.id.tv_title);
-            TextView description = (TextView) view.findViewById(R.id.tv_description);
 
             title.setText(String.format("LatLng: %s", clusterItem.getPosition().toString()));
             return view;

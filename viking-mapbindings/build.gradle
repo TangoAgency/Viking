@@ -38,7 +38,6 @@ dependencies {
 
     compile deps.googlePlayServicesMaps
     compile deps.googleMapsUtils
-    compile deps.supportCompat
 
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'

@@ -36,10 +36,6 @@ public class VikingCodeProcessor extends AbstractProcessor {
   private ProcessingEnvironment processingEnvironment;
   private Messager messager;
 
-  public VikingCodeProcessor() {
-    super();
-  }
-
   @Override
   public synchronized void init(ProcessingEnvironment processingEnv) {
     super.init(processingEnv);

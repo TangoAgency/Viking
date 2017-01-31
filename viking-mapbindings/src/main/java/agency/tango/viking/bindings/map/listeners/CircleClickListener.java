@@ -10,7 +10,9 @@ public class CircleClickListener implements GoogleMap.OnCircleClickListener {
   private ItemClickListener<BindableCircle> itemClickListener;
   private final CircleManager circleManager;
 
-  public CircleClickListener(CircleManager circleManager) {this.circleManager = circleManager;}
+  public CircleClickListener(CircleManager circleManager) {
+    this.circleManager = circleManager;
+  }
 
   @Override
   public void onCircleClick(Circle circle) {

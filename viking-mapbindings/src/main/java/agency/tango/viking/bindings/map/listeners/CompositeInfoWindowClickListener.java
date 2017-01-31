@@ -9,9 +9,6 @@ import java.util.List;
 public class CompositeInfoWindowClickListener implements GoogleMap.OnInfoWindowClickListener {
   private final List<GoogleMap.OnInfoWindowClickListener> listeners = new ArrayList<>();
 
-  public CompositeInfoWindowClickListener() {
-  }
-
   public void addOnInfoWindowClickListener(GoogleMap.OnInfoWindowClickListener listener) {
     listeners.add(listener);
   }

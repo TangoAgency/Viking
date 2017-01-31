@@ -8,9 +8,6 @@ import java.util.List;
 public class CompositeOnCameraIdleListener implements GoogleMap.OnCameraIdleListener {
   private final List<GoogleMap.OnCameraIdleListener> listeners = new ArrayList<>();
 
-  public CompositeOnCameraIdleListener() {
-  }
-
   public void addOnCameraIdleListener(GoogleMap.OnCameraIdleListener listener) {
     listeners.add(listener);
   }

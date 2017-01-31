@@ -9,9 +9,6 @@ import java.util.List;
 public class CompositeMarkerClickListener implements GoogleMap.OnMarkerClickListener {
   private final List<GoogleMap.OnMarkerClickListener> listeners = new ArrayList<>();
 
-  public CompositeMarkerClickListener() {
-  }
-
   public void addOnMarkerClickListener(GoogleMap.OnMarkerClickListener onMarkerClickListener) {
     listeners.add(onMarkerClickListener);
   }

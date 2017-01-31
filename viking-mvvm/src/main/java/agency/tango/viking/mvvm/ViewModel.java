@@ -20,10 +20,6 @@ public abstract class ViewModel extends BaseObservable {
   private final List<ViewModel> childViewModels = new ArrayList<>();
   private boolean started = false;
 
-  public ViewModel() {
-
-  }
-
   @CallSuper
   public void start() {
     if (isFirstRun()) {

@@ -11,8 +11,6 @@ import java.util.List;
 public class CompositeInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
   private List<GoogleMap.InfoWindowAdapter> infoWindowAdapters = new ArrayList<>();
 
-  public CompositeInfoWindowAdapter() {
-  }
 
   public void addInfoWindowAdapter(GoogleMap.InfoWindowAdapter adapter) {
     infoWindowAdapters.add(adapter);

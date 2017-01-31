@@ -10,7 +10,9 @@ public class PolygonClickListener implements GoogleMap.OnPolygonClickListener {
   private final PolygonManager polygonManager;
   private ItemClickListener<BindablePolygon> itemClickListener;
 
-  public PolygonClickListener(PolygonManager polygonManager) {this.polygonManager = polygonManager;}
+  public PolygonClickListener(PolygonManager polygonManager) {
+    this.polygonManager = polygonManager;
+  }
 
   @Override
   public void onPolygonClick(Polygon polygon) {

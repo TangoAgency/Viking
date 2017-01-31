@@ -15,15 +15,20 @@ import javax.inject.Inject;
 
 public abstract class ActivityView<VM extends ViewModel, VD extends ViewDataBinding> extends
     AppCompatActivity {
-  private VD binding;
-  private int layoutIdRes;
-  private ViewModelDelegate<VM> viewModelDelegate;
 
   @Inject
   VM viewModel;
 
+  private VD binding;
+  private int layoutIdRes;
+  private ViewModelDelegate<VM> viewModelDelegate;
+
   public ActivityView(@LayoutRes int layoutIdRes) {
     this.layoutIdRes = layoutIdRes;
+  }
+
+  public final VM viewModel() {
+    return viewModel;
   }
 
   @Override
@@ -77,10 +82,6 @@ public abstract class ActivityView<VM extends ViewModel, VD extends ViewDataBind
 
   protected VD binding() {
     return binding;
-  }
-
-  public final VM viewModel() {
-    return viewModel;
   }
 
   @SuppressWarnings("unchecked")

@@ -16,12 +16,13 @@ import javax.inject.Inject;
 
 public abstract class FragmentView<VM extends ViewModel, VD extends ViewDataBinding> extends
     Fragment {
-  private VD binding;
-  private int layoutIdRes;
-  private ViewModelDelegate<VM> viewModelDelegate;
 
   @Inject
   VM viewModel;
+
+  private VD binding;
+  private int layoutIdRes;
+  private ViewModelDelegate<VM> viewModelDelegate;
 
   public FragmentView(@LayoutRes int layoutIdRes) {
     this.layoutIdRes = layoutIdRes;
@@ -58,6 +59,10 @@ public abstract class FragmentView<VM extends ViewModel, VD extends ViewDataBind
     super.onStop();
   }
 
+  public VM viewModel() {
+    return viewModel;
+  }
+
   @Override
   public void onSaveInstanceState(Bundle outState) {
     super.onSaveInstanceState(outState);
@@ -74,11 +79,11 @@ public abstract class FragmentView<VM extends ViewModel, VD extends ViewDataBind
     return (T) resolveFragment(id).viewModel();
   }
 
+  protected VD binding() {
+    return binding;
+  }
+
   protected abstract void inject(Context screen);
 
   protected abstract void bind(VD binding);
-
-  public VM viewModel() {
-    return viewModel;
-  }
 }

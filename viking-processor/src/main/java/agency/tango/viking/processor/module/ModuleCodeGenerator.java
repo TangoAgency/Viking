@@ -5,7 +5,6 @@ import com.squareup.javapoet.AnnotationSpec;
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.MethodSpec;
 import com.squareup.javapoet.ParameterizedTypeName;
-import com.squareup.javapoet.TypeName;
 import com.squareup.javapoet.TypeSpec;
 import com.squareup.javapoet.TypeVariableName;
 
@@ -21,7 +20,6 @@ import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
-import javax.lang.model.element.TypeParameterElement;
 import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.TypeMirror;
 
@@ -43,19 +41,6 @@ public class ModuleCodeGenerator implements CodeBuilder {
     this.processingEnvironment = processingEnvironment;
   }
 
-  private TypeName getTypeName(List<? extends TypeParameterElement> typeParameters,
-      VariableElement variableElement, TypeName defaultType, AnnotatedClass annotatedClass) {
-    for (TypeParameterElement typeParameterElement : typeParameters) {
-      if (typeParameterElement.getSimpleName()
-          .toString()
-          .equals(variableElement.asType().toString())) {
-        return get(annotatedClass.getTypeElement());
-      }
-    }
-
-    return defaultType;
-  }
-
   @Override
   public TypeSpec buildTypeSpec(AnnotatedClass annotatedClass) {
 
@@ -69,16 +54,14 @@ public class ModuleCodeGenerator implements CodeBuilder {
     Map<String, Object> parsedAnnotation = getAnnotation(AutoModule.class,
         annotatedClass.getTypeElement());
 
-    ClassName className = null;
-    Object typeMirrors = (Object) parsedAnnotation.get("superClass");
+    ClassName className;
+    Object typeMirrors = parsedAnnotation.get("superClass");
 
     if (typeMirrors instanceof Class<?>) {
       className = ClassName.get((Class<?>) typeMirrors);
     } else {
       className = ClassName.bestGuess(typeMirrors.toString());
     }
-
-    //TypeName typeName = TypeName.get(String.class);
 
     if (className.equals(get(Object.class))) {
 

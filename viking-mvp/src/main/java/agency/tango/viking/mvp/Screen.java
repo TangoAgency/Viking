@@ -12,7 +12,8 @@ public abstract class Screen<V, P extends Presenter<V>> extends AppCompatActivit
 
   @Inject
   protected P presenter;
-  PresenterDelegate<P> presenterDelegate;
+
+  private PresenterDelegate<P> presenterDelegate;
 
   protected Screen(int layoutResId) {
     this.layoutResId = layoutResId;

@@ -10,7 +10,9 @@ import agency.tango.viking.bindings.map.models.BindableCircle;
 
 @SuppressWarnings({ "unused" })
 public class CircleBindings {
-  private CircleBindings() {}
+  private CircleBindings() {
+
+  }
 
   @BindingAdapter("gmv_circles")
   public static void circles(GoogleMapView googleMapView,

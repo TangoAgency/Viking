@@ -41,7 +41,8 @@ public class ClusterBindings {
   }
 
   @BindingAdapter("gmv_clusterItemInfoWindowAdapter")
-  public static <T extends ClusterItem> void clusterItemInfoWindowAdapter(GoogleMapView googleMapView,
+  public static <T extends ClusterItem> void clusterItemInfoWindowAdapter(
+      GoogleMapView googleMapView,
       InfoWindowAdapterFactory<T> infoWindowAdapterFactory) {
     googleMapView.setClusterItemInfoWindowAdapter(infoWindowAdapterFactory);
   }

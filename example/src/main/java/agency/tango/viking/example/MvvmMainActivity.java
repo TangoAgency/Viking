@@ -17,7 +17,8 @@ public class MvvmMainActivity extends ActivityView<MainViewModel, ActMvvmdemoBin
   @Override
   protected void inject(Context context) {
     App.get(context)
-        .getActivityComponentBuilder(MvvmMainActivity.class, MvvmMainActivity_Component.Builder.class)
+        .getActivityComponentBuilder(MvvmMainActivity.class,
+            MvvmMainActivity_Component.Builder.class)
         .screenModule(new MvvmMainActivity_Module(context, this))
         .build()
         .injectMembers(this);

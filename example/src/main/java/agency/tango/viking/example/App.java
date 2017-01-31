@@ -43,6 +43,5 @@ public class App extends Application implements HasScreenSubcomponentBuilders {
 
     component = DiComponent.Initializer.init(this);
     component.inject(this);
-
   }
 }

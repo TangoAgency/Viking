@@ -9,12 +9,13 @@ android {
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
         versionName "1.0"
+        multiDexEnabled true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+
+    signingConfigs {
+        debug {
+            storeFile file('debug.keystore')
         }
     }
 
@@ -25,12 +26,14 @@ android {
 
 dependencies {
 
-    annotationProcessor project (":viking-processor")
-    provided project (":viking-annotations")
-    compile project (":viking-di")
-    compile project (":viking-mvp")
-    compile project (":viking-mvvm")
-    compile project (":viking-reactive")
+    annotationProcessor project(":viking-processor")
+    compile project(":viking-annotations")
+    compile project(":viking-di")
+    compile project(":viking-mvp")
+    compile project(":viking-mvvm")
+    compile project(":viking-reactive")
+    compile project(":viking-mapbindings")
+    compile project(":viking-map-aware-views")
 
     compile deps.rxJava
     compile deps.rxAndroid

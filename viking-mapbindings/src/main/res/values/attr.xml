@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <declare-styleable name="GoogleMapView">
+    <!-- These attributes definitions were created in order to have syntax completing in Android Studio
+    and are supposed to be used with data-binding only
+     -->
+    <attr name="gmv_cameraMoveStartedListener" format="reference"/>
+    <attr name="gmv_cameraMoveCanceledListener" format="reference"/>
+    <attr name="gmv_cameraIdleListener" format="reference"/>
+    <attr name="gmv_cameraMoveListener" format="reference"/>
+
+    <attr name="gmv_circles" format="reference"/>
+    <attr name="gmv_circleClickListener" format="reference"/>
+
+    <attr name="gmv_clusterItems" format="reference"/>
+    <attr name="gmv_rendererFactory" format="reference"/>
+    <attr name="gmv_algorithm" format="reference"/>
+    <attr name="gmv_clusterItemInfoWindowAdapter" format="reference"/>
+    <attr name="gmv_clusterInfoWindowAdapter" format="reference"/>
+    <attr name="gmv_clusterClickListener" format="reference"/>
+    <attr name="gmv_clusterItemClickListener" format="reference"/>
+    <attr name="gmv_clusterInfoWindowClickListener" format="reference"/>
+    <attr name="gmv_onClusterItemInfoWindowClickListener" format="reference"/>
+
+    <attr name="gmv_radius" format="reference"/>
+    <attr name="gmv_radiusChanged" format="reference"/>
+    <attr name="gmv_zoom" format="reference"/>
+    <attr name="gmv_zoomChanged" format="reference"/>
+    <attr name="gmv_latLng" format="reference"/>
+    <attr name="gmv_latLngChanged" format="reference"/>
+    <attr name="gmv_heatMap" format="reference"/>
+    <attr name="gmv_mapClickListener" format="reference"/>
+    <attr name="gmv_mapLoadedCallback" format="reference"/>
+    <attr name="gmv_mapLongClickListener" format="reference"/>
+    <attr name="gmv_myLocationButtonClickListener" format="reference"/>
+    <attr name="gmv_indoorStateChangeListener" format="reference"/>
+    <attr name="gmv_poiClickListener" format="reference"/>
+    <attr name="gmv_snapshotReadyCallback" format="reference"/>
+
+    <attr name="gmv_markers" format="reference"/>
+    <attr name="gmv_markerClickListener" format="reference"/>
+    <attr name="gmv_infoWindowAdapter" format="reference"/>
+    <attr name="gmv_infoWindowClickListener" format="reference"/>
+    <attr name="gmv_infoWindowCloseListener" format="reference"/>
+    <attr name="gmv_infoWindowLongClickListener" format="reference"/>
+    <attr name="gmv_markerDragListener" format="reference"/>
+
+    <attr name="gmv_groundOverlays" format="reference"/>
+    <attr name="gmv_groundOverlayClickListener" format="reference"/>
+
+    <attr name="gmv_polygons" format="reference"/>
+    <attr name="gmv_polygonClickListener" format="reference"/>
+
+    <attr name="gmv_polylines" format="reference"/>
+    <attr name="gmv_polylineClickListener" format="reference"/>
+  </declare-styleable>
+</resources>

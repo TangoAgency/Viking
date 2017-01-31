@@ -1,6 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="agency.tango.viking.example"
-  >
+          package="agency.tango.viking.example">
+
+  <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+  <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
 
   <application
     android:name=".App"
@@ -11,17 +13,19 @@
     android:theme="@style/AppTheme"
     >
 
-    <activity android:name=".MvvmMainActivity">
-
-      <intent-filter>
-        <action android:name="android.intent.action.MAIN"/>
-        <category android:name="android.intent.category.LAUNCHER"/>
-      </intent-filter>
-
-    </activity>
-
+    <activity android:name=".MvvmMainActivity"/>
     <activity android:name=".MvvmSecondActivity"/>
 
-  </application>
+        <activity android:name=".MapActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <meta-data
+            android:name="com.google.android.maps.v2.API_KEY"
+            android:value="AIzaSyBneg2h17I7QXriSeWBysBAci4q5Wz4op0"/>
+    </application>
 </manifest>

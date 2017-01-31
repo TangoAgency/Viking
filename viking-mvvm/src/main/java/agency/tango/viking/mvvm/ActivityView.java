@@ -17,6 +17,7 @@ public abstract class ActivityView<VM extends ViewModel, VD extends ViewDataBind
     AppCompatActivity {
   private VD binding;
   private int layoutIdRes;
+  private ViewModelDelegate<VM> viewModelDelegate;
 
   @Inject
   VM viewModel;
@@ -29,36 +30,35 @@ public abstract class ActivityView<VM extends ViewModel, VD extends ViewDataBind
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     inject(this);
+    viewModelDelegate = new ViewModelDelegate<>(viewModel);
     binding = DataBindingUtil.setContentView(this, layoutIdRes);
     bind(binding);
 
-    if (savedInstanceState != null) {
-      viewModel.restoreState(savedInstanceState);
-    }
+    viewModelDelegate.onCreate(savedInstanceState);
   }
 
   @Override
   protected void onStart() {
     super.onStart();
-    viewModel.start();
+    viewModelDelegate.onStart();
   }
 
   @Override
   protected void onStop() {
-    viewModel.stop();
+    viewModelDelegate.onStop();
     super.onStop();
   }
 
   @Override
   protected void onActivityResult(int requestCode, int resultCode, Intent data) {
     super.onActivityResult(requestCode, resultCode, data);
-    viewModel.onResult(requestCode, resultCode, data);
+    viewModelDelegate.onActivityResult(requestCode, resultCode, data);
   }
 
   @Override
   protected void onSaveInstanceState(Bundle outState) {
     super.onSaveInstanceState(outState);
-    viewModel.saveState(outState);
+    viewModelDelegate.onSaveInstanceState(outState);
   }
 
   @SuppressWarnings("unchecked")
@@ -86,9 +86,5 @@ public abstract class ActivityView<VM extends ViewModel, VD extends ViewDataBind
   @SuppressWarnings("unchecked")
   protected <T extends Serializable> T getIntentExtra(String key) {
     return (T) getIntent().getSerializableExtra(key);
-  }
-
-  private String resolveScreenName() {
-    return getClass().getSimpleName();
   }
 }

@@ -1,26 +1,26 @@
 package agency.tango.viking.mvp;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.CallSuper;
 import android.util.SparseArray;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static android.app.Activity.RESULT_OK;
+
 public abstract class Presenter<TView> implements IPresenter {
-  public static final boolean SUCCESS = true;
-  public static final boolean FAILURE = false;
+
+  private final SparseArray<OnResultAction> onResultActions = new SparseArray<>();
+  private final List<StartupAction> startupActions = new ArrayList<>();
 
   protected IPresenter childPresenter;
 
   private boolean started = false;
-  private final SparseArray<OnResultAction> onResultActions = new SparseArray<>();
-  private final List<StartupAction> startupActions = new ArrayList<>();
   private boolean stateWasRestored;
 
-  public Presenter() {
-
-  }
-
+  @CallSuper
   public void start() {
     if (childPresenter != null) {
       childPresenter.start();
@@ -34,15 +34,38 @@ public abstract class Presenter<TView> implements IPresenter {
     }
   }
 
-  private boolean isFirstRun() {
-    return !started;
-  }
-
+  @CallSuper
   @Override
   public void stop() {
     if (childPresenter != null) {
       childPresenter.stop();
     }
+  }
+
+  @CallSuper
+  @Override
+  public void onResult(int requestCode, int resultCode, Intent data) {
+    executeOnResultActions(requestCode, data, resultCode == RESULT_OK);
+  }
+
+  @CallSuper
+  @Override
+  public void saveState(Bundle dataWrapper) {
+
+  }
+
+  @CallSuper
+  @Override
+  public void restoreState(Bundle dataWrapper) {
+    stateWasRestored = true;
+  }
+
+  public final void registerOnResultAction(int requestCode, OnResultAction action) {
+    onResultActions.put(requestCode, action);
+  }
+
+  public boolean stateWasRestored() {
+    return stateWasRestored;
   }
 
   protected void runOnStartup(StartupAction action) {
@@ -65,38 +88,14 @@ public abstract class Presenter<TView> implements IPresenter {
     }
   }
 
-  @Override
-  public final void onResult(int requestCode, Bundle dataWrapper) {
-    executeOnResultActions(requestCode, dataWrapper, SUCCESS);
-  }
-
-  @Override
-  public final void onResultCanceled(int requestCode, Bundle dataWrapper) {
-    executeOnResultActions(requestCode, dataWrapper, FAILURE);
-  }
-
-  public boolean stateWasRestored() {
-    return stateWasRestored;
-  }
-
-  @Override
-  public void saveState(Bundle dataWrapper) {
-
-  }
-
-  @Override
-  public void restoreState(Bundle dataWrapper) {
-    stateWasRestored = true;
-  }
-
-  private void executeOnResultActions(Integer requestCode, Bundle dataWrapper, boolean result) {
+  private void executeOnResultActions(int requestCode, Intent data, boolean result) {
     OnResultAction onResultAction = onResultActions.get(requestCode);
     if (onResultAction != null) {
-      onResultAction.execute(result, dataWrapper);
+      onResultActions.get(requestCode).execute(result, data);
     }
   }
 
-  public final void registerOnResultAction(int requestCode, OnResultAction action) {
-    onResultActions.put(requestCode, action);
+  private boolean isFirstRun() {
+    return !started;
   }
 }

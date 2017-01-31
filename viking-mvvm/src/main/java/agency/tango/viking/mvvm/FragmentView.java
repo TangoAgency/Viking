@@ -18,6 +18,7 @@ public abstract class FragmentView<VM extends ViewModel, VD extends ViewDataBind
     Fragment {
   private VD binding;
   private int layoutIdRes;
+  private ViewModelDelegate<VM> viewModelDelegate;
 
   @Inject
   VM viewModel;
@@ -33,13 +34,13 @@ public abstract class FragmentView<VM extends ViewModel, VD extends ViewDataBind
     View view = inflater.inflate(layoutIdRes, container, false);
 
     inject(getContext());
-
+    viewModelDelegate = new ViewModelDelegate<>(viewModel);
     binding = DataBindingUtil.bind(view);
 
     bind(binding);
 
     if (savedInstanceState != null) {
-      viewModel.restoreState(savedInstanceState);
+      viewModelDelegate.onCreate(savedInstanceState);
     }
 
     return view;
@@ -48,19 +49,19 @@ public abstract class FragmentView<VM extends ViewModel, VD extends ViewDataBind
   @Override
   public void onStart() {
     super.onStart();
-    viewModel.start();
+    viewModelDelegate.onStart();
   }
 
   @Override
   public void onStop() {
-    viewModel.stop();
+    viewModelDelegate.onStop();
     super.onStop();
   }
 
   @Override
   public void onSaveInstanceState(Bundle outState) {
     super.onSaveInstanceState(outState);
-    viewModel.saveState(outState);
+    viewModelDelegate.onSaveInstanceState(outState);
   }
 
   @SuppressWarnings("unchecked")
@@ -79,9 +80,5 @@ public abstract class FragmentView<VM extends ViewModel, VD extends ViewDataBind
 
   public VM viewModel() {
     return viewModel;
-  }
-
-  private String resolveScreenName() {
-    return getClass().getSimpleName();
   }
 }

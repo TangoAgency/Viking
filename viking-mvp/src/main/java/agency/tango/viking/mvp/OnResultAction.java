@@ -1,7 +1,7 @@
 package agency.tango.viking.mvp;
 
-import android.os.Bundle;
+import android.content.Intent;
 
 public interface OnResultAction {
-  void execute(boolean success, Bundle dataWrapper);
+  void execute(boolean success, Intent data);
 }

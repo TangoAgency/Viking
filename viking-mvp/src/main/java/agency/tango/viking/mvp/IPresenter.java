@@ -1,15 +1,15 @@
 package agency.tango.viking.mvp;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 public interface IPresenter {
+
   void start();
 
   void stop();
 
-  void onResult(int requestCode, Bundle dataWrapper);
-
-  void onResultCanceled(int requestCode, Bundle dataWrapper);
+  void onResult(int requestCode, int resultCode, Intent data);
 
   void saveState(Bundle dataWrapper);
 
@@ -19,7 +19,6 @@ public interface IPresenter {
 
     @Override
     public void start() {
-
     }
 
     @Override
@@ -28,12 +27,7 @@ public interface IPresenter {
     }
 
     @Override
-    public void onResult(int requestCode, Bundle dataWrapper) {
-
-    }
-
-    @Override
-    public void onResultCanceled(int requestCode, Bundle dataWrapper) {
+    public void onResult(int requestCode, int resultCode, Intent data) {
 
     }
 

@@ -5,16 +5,20 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
+import javax.inject.Inject;
+
 public abstract class Screen<V, P extends Presenter<V>> extends AppCompatActivity {
   private final int layoutResId;
 
+  @Inject
   protected P presenter;
+  PresenterDelegate<P> presenterDelegate;
 
   protected Screen(int layoutResId) {
     this.layoutResId = layoutResId;
   }
 
-  public IPresenter presenter() {
+  public P presenter() {
     return presenter;
   }
 
@@ -24,7 +28,7 @@ public abstract class Screen<V, P extends Presenter<V>> extends AppCompatActivit
     setContentView(layoutResId);
 
     inject(this);
-
+    presenterDelegate = new PresenterDelegate<>(presenter);
     onViewReady();
 
     if (savedInstanceState != null) {
@@ -32,43 +36,33 @@ public abstract class Screen<V, P extends Presenter<V>> extends AppCompatActivit
     }
   }
 
-  protected abstract void inject(Context screen);
-
-  protected void onViewReady() {
-
+  @Override
+  protected void onStart() {
+    super.onStart();
+    presenterDelegate.onStart();
   }
 
   @Override
-  protected void onResume() {
-    super.onResume();
-    presenter.start();
-  }
-
-  @Override
-  protected void onPause() {
-    super.onPause();
-    presenter.stop();
+  protected void onStop() {
+    presenterDelegate.onStop();
+    super.onStop();
   }
 
   @Override
   protected void onActivityResult(int requestCode, int resultCode, Intent data) {
     super.onActivityResult(requestCode, resultCode, data);
-
-    switch (resultCode) {
-      case RESULT_CANCELED:
-        presenter.onResultCanceled(requestCode, data.getExtras());
-        break;
-      case RESULT_OK:
-        presenter.onResult(requestCode, data.getExtras());
-        break;
-      default:
-        break;
-    }
+    presenterDelegate.onActivityResult(requestCode, resultCode, data);
   }
 
   @Override
   protected void onSaveInstanceState(Bundle outState) {
     super.onSaveInstanceState(outState);
-    presenter.saveState(outState);
+    presenterDelegate.onSaveInstanceState(outState);
+  }
+
+  protected abstract void inject(Context screen);
+
+  protected void onViewReady() {
+
   }
 }

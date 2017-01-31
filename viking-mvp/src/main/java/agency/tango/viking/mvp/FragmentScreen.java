@@ -8,17 +8,23 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import javax.inject.Inject;
+
 public abstract class FragmentScreen<V, P extends Presenter<V>>
     extends Fragment {
 
   private final int layoutResId;
+
+  @Inject
   protected P presenter;
+
+  private PresenterDelegate<P> presenterDelegate;
 
   protected FragmentScreen(int layoutResId) {
     this.layoutResId = layoutResId;
   }
 
-  public IPresenter presenter() {
+  public P presenter() {
     return presenter;
   }
 
@@ -26,6 +32,7 @@ public abstract class FragmentScreen<V, P extends Presenter<V>>
   public void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     inject(getActivity());
+    presenterDelegate.onCreate(savedInstanceState);
   }
 
   @Nullable
@@ -39,32 +46,27 @@ public abstract class FragmentScreen<V, P extends Presenter<V>>
     return view;
   }
 
-  protected abstract void inject(Context context);
-
-  protected void onViewReady() {
-
-  }
-
   @Override
   public void onStart() {
     super.onStart();
-    presenter.start();
+    presenterDelegate.onStart();
   }
 
   @Override
   public void onStop() {
     super.onStop();
-    presenter.stop();
+    presenterDelegate.onStop();
   }
 
   @Override
-  public void onDestroy() {
-    super.onDestroy();
+  public void onSaveInstanceState(Bundle outState) {
+    super.onSaveInstanceState(outState);
+    presenterDelegate.onSaveInstanceState(outState);
   }
 
-  private String resolveScreenName() {
-    return getClass().getSimpleName();
-  }
+  protected abstract void inject(Context context);
 
-  protected abstract IPresenter createPresenter(FragmentScreen screen, Bundle savedInstanceState);
+  protected void onViewReady() {
+
+  }
 }

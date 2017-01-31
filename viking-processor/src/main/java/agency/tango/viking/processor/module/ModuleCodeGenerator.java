@@ -18,7 +18,6 @@ import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.ExecutableElement;
-import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.TypeMirror;
@@ -58,7 +57,7 @@ public class ModuleCodeGenerator implements CodeBuilder {
     Object typeMirrors = parsedAnnotation.get("superClass");
 
     if (typeMirrors instanceof Class<?>) {
-      className = ClassName.get((Class<?>) typeMirrors);
+      className = get((Class<?>) typeMirrors);
     } else {
       className = ClassName.bestGuess(typeMirrors.toString());
     }
@@ -66,7 +65,7 @@ public class ModuleCodeGenerator implements CodeBuilder {
     if (className.equals(get(Object.class))) {
 
       builder.superclass(
-          ParameterizedTypeName.get(ClassName.get(ScreenModule.class),
+          ParameterizedTypeName.get(get(ScreenModule.class),
               get(annotatedClass.getTypeElement())));
 
       MethodSpec.Builder constructorBuilder = MethodSpec.constructorBuilder();
@@ -92,7 +91,7 @@ public class ModuleCodeGenerator implements CodeBuilder {
         if (enclosed.getKind() == ElementKind.CONSTRUCTOR) {
           ExecutableElement constructorElement = (ExecutableElement) enclosed;
           if (constructorElement.getParameters().size() > 0 && constructorElement.getModifiers()
-              .contains(Modifier.PUBLIC)) {
+              .contains(PUBLIC)) {
             MethodSpec.Builder constructorBuilder = MethodSpec.constructorBuilder();
 
             List<String> paramNames = new ArrayList<>();
@@ -105,7 +104,7 @@ public class ModuleCodeGenerator implements CodeBuilder {
               paramNames.add(variableElement.getSimpleName().toString());
             }
 
-            builder.addMethod(constructorBuilder.addModifiers(Modifier.PUBLIC)
+            builder.addMethod(constructorBuilder.addModifiers(PUBLIC)
                 .addStatement("super($L)", Joiner.on(", ").join(paramNames))
                 .build());
           }

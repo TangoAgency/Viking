@@ -2,7 +2,6 @@ package agency.tango.viking.processor.module;
 
 import com.google.common.base.Joiner;
 import com.squareup.javapoet.AnnotationSpec;
-import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.MethodSpec;
 import com.squareup.javapoet.ParameterizedTypeName;
 import com.squareup.javapoet.TypeName;
@@ -14,7 +13,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import javax.lang.model.element.Modifier;
 import javax.lang.model.type.TypeMirror;
 
 import agency.tango.viking.annotations.AutoModule;
@@ -27,7 +25,10 @@ import dagger.Subcomponent;
 import static agency.tango.viking.processor.Util.getAnnotation;
 import static com.squareup.javapoet.ClassName.get;
 import static com.squareup.javapoet.TypeSpec.interfaceBuilder;
+import static javax.lang.model.element.Modifier.ABSTRACT;
+import static javax.lang.model.element.Modifier.FINAL;
 import static javax.lang.model.element.Modifier.PUBLIC;
+import static javax.lang.model.element.Modifier.STATIC;
 
 public class ComponentCodeBuilder implements CodeBuilder {
   @Override
@@ -58,11 +59,11 @@ public class ComponentCodeBuilder implements CodeBuilder {
         .addMember("modules", String.format("{%s,%s}", module, Joiner.on(",").join(types)))
         .build());
 
-    TypeSpec.Builder builderBuilder = TypeSpec.interfaceBuilder("Builder")
-        .addModifiers(Modifier.PUBLIC, Modifier.STATIC)
+    TypeSpec.Builder builderBuilder = interfaceBuilder("Builder")
+        .addModifiers(PUBLIC, STATIC)
         .addAnnotation(Subcomponent.Builder.class)
         .addSuperinterface(
-            ParameterizedTypeName.get(ClassName.get(ScreenComponentBuilder.class),
+            ParameterizedTypeName.get(get(ScreenComponentBuilder.class),
                 get(annotatedClass.getPackage(),
                     annotatedClass.getClassName() + "_Module"),
                 get(annotatedClass.getPackage(),
@@ -72,8 +73,8 @@ public class ComponentCodeBuilder implements CodeBuilder {
       TypeMirror typeMirror = (TypeMirror) obj;
 
       builderBuilder.addMethod(MethodSpec.methodBuilder("screenModule")
-          .addModifiers(Modifier.PUBLIC, Modifier.ABSTRACT)
-          .addParameter(TypeName.get(typeMirror), "module", Modifier.FINAL)
+          .addModifiers(PUBLIC, ABSTRACT)
+          .addParameter(TypeName.get(typeMirror), "module", FINAL)
           .returns(get(annotatedClass.getPackage(),
               annotatedClass.getClassName() + "_Component", "Builder"))
           .build());

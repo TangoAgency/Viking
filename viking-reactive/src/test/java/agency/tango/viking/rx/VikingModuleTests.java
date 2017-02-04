@@ -15,7 +15,7 @@ import static com.google.common.truth.Truth.assertThat;
 @Config(manifest=Config.NONE)
 public class VikingModuleTests {
   @Test
-  public void vikingRxModule_ReturnsProperScheduler() {
+  public void vikingRxModule_returnsProperScheduler() {
     VikingRxModule vikingRxModule = new VikingRxModule();
 
     BaseSchedulerProvider baseSchedulerProvider = vikingRxModule.providesMainThreadShecduler();

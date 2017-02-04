@@ -1,6 +1,6 @@
 apply plugin: 'com.android.library'
 apply plugin: 'com.novoda.bintray-release'
-apply plugin: 'jacoco-android'
+apply from: '../jacoco-android.gradle'
 
 android {
   compileSdkVersion rootProject.ext.compileSdkVersion
@@ -21,6 +21,7 @@ android {
       proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
     }
   }
+
 }
 
 dependencies {

@@ -10,7 +10,6 @@ subprojects { project ->
 
     apply plugin: 'checkstyle'
 
-
     checkstyle {
         configFile = rootProject.file('checkstyle.xml')
         toolVersion = "7.3"
@@ -24,7 +23,6 @@ subprojects { project ->
             check.dependsOn('checkstyle')
         }
     }
-
 
     buildscript {
         repositories {

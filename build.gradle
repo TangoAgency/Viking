@@ -10,7 +10,6 @@ subprojects { project ->
 
     apply plugin: 'checkstyle'
 
-
     checkstyle {
         configFile = rootProject.file('checkstyle.xml')
         toolVersion = "7.3"
@@ -39,6 +38,8 @@ subprojects { project ->
             classpath 'gradle.plugin.com.kageiit:lintrules:1.1.2'
             classpath 'com.novoda:bintray-release:0.3.4'
             classpath 'me.tatarka:gradle-retrolambda:3.3.0-beta4'
+            classpath 'com.dicedmelon.gradle:jacoco-android:0.1.1'
+            classpath 'com.palantir:jacoco-coverage:0.4.0'
         }
     }
 }
@@ -108,3 +109,18 @@ ext.deps = [
     autoservice: 'com.google.auto.service:auto-service:1.0-rc2',
     autocommon: 'com.google.auto:auto-common:0.6',
 ]
+
+task codeCoverageReport(type: JacocoReport) {
+    executionData fileTree(project.rootDir.absolutePath).include("**/build/jacoco/*.exec")
+
+    reports {
+        xml.enabled true
+        xml.destination "${buildDir}/reports/jacoco/report.xml"
+        html.enabled true
+        csv.enabled false
+    }
+}
+
+codeCoverageReport.dependsOn {
+    subprojects*.test
+}

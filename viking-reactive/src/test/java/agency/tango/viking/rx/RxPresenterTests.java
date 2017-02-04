@@ -34,7 +34,7 @@ public class RxPresenterTests {
   private TestScheduler testScheduler;
 
   @Before
-  public void setup() {
+  public void setUp() {
     testScheduler = new TestScheduler();
     when(baseSchedulerProvider.ui()).thenReturn(testScheduler);
   }

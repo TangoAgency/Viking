@@ -10,6 +10,7 @@ subprojects { project ->
 
     apply plugin: 'checkstyle'
 
+
     checkstyle {
         configFile = rootProject.file('checkstyle.xml')
         toolVersion = "7.3"
@@ -110,17 +111,13 @@ ext.deps = [
     autocommon: 'com.google.auto:auto-common:0.6',
 ]
 
-task codeCoverageReport(type: JacocoReport) {
-    executionData fileTree(project.rootDir.absolutePath).include("**/build/jacoco/*.exec")
-
-    reports {
-        xml.enabled true
-        xml.destination "${buildDir}/reports/jacoco/report.xml"
-        html.enabled true
-        csv.enabled false
-    }
-}
-
-codeCoverageReport.dependsOn {
-    subprojects*.test
-}
+//task codeCoverageReport(type: JacocoReport) {
+//    //executionData fileTree(project.rootDir.absolutePath).include("**/build/jacoco/*.exec")
+//
+//    reports {
+//        xml.enabled true
+//        xml.destination "${buildDir}/reports/jacoco/report.xml"
+//        html.enabled true
+//        csv.enabled false
+//    }
+//}

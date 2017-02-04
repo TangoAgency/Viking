@@ -53,11 +53,7 @@ before_install:
   - echo -e "\n84831b9409646a918e30573bab4c9c91346d8abd" > "$ANDROID_HOME/licenses/android-sdk-preview-license"
 
 script:
-  - ./gradlew build jacocoTestReport assembleAndroidTest
-#  - echo no | android create avd --force -n test -t $ANDROID_TARGET --abi $ANDROID_ABI
-#  - emulator -avd test -no-skin -no-audio -no-window &
-#  - android-wait-for-emulator
-  - ./gradlew connectedCheck
+  - ./gradlew build jacocoTestReport assembleAndroidTest connectedCheck
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)

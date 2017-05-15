@@ -41,3 +41,5 @@ publish {
     desc = ''
     website = 'https://github.com/TangoAgency/Viking'
 }
+
+apply from: rootProject.file('gradle/gradle-mvn-push.gradle')

@@ -13,11 +13,12 @@ import static android.app.Activity.RESULT_OK;
 
 @SuppressWarnings("Convert2streamapi")
 public abstract class ViewModel extends BaseObservable {
-  private final SparseArray<OnResultAction> onResultActions = new SparseArray<>();
-  private boolean stateWasRestored;
 
+  private final SparseArray<OnResultAction> onResultActions = new SparseArray<>();
   private final List<StartupAction> startupActions = new ArrayList<>();
   private final List<ViewModel> childViewModels = new ArrayList<>();
+
+  private boolean stateWasRestored;
   private boolean started = false;
 
   @CallSuper
@@ -59,14 +60,14 @@ public abstract class ViewModel extends BaseObservable {
   }
 
   @CallSuper
-  void saveState(Bundle outState) {
+  public void saveState(Bundle outState) {
     for (int i = 0; i < childViewModels.size(); i++) {
       childViewModels.get(i).saveState(outState);
     }
   }
 
   @CallSuper
-  void restoreState(Bundle savedState) {
+  public void restoreState(Bundle savedState) {
     for (int i = 0; i < childViewModels.size(); i++) {
       childViewModels.get(i).restoreState(savedState);
     }

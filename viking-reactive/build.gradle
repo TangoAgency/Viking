@@ -30,10 +30,10 @@ dependencies {
   provided project(":viking-mvp")
 
   provided deps.dagger
+  annotationProcessor deps.daggerCompiler
 
   compile deps.rxJava
   compile deps.rxAndroid
-
 
   androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
     exclude group: 'com.android.support', module: 'support-annotations'
@@ -56,3 +56,5 @@ publish {
   desc = ''
   website = 'https://github.com/TangoAgency/Viking'
 }
+
+apply from: rootProject.file('gradle/gradle-mvn-push.gradle')

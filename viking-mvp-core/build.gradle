@@ -5,9 +5,9 @@ apply from: '../jacoco.gradle'
 def logger = new com.android.build.gradle.internal.LoggerWrapper(project.logger)
 def sdkHandler = new com.android.build.gradle.internal.SdkHandler(project, logger)
 for (File file : sdkHandler.sdkLoader.repositories) {
-    repositories.maven {
-        url = file.toURI()
-    }
+  repositories.maven {
+    url = file.toURI()
+  }
 }
 
 sourceCompatibility = rootProject.ext.sourceCompatibilityVersion
@@ -15,18 +15,18 @@ targetCompatibility = rootProject.ext.targetCompatibilityVersion
 
 dependencies {
 
-    compileOnly deps.android
-    compileOnly deps.dagger
+  compileOnly deps.supportAnnotations
+  compileOnly deps.android
 }
 
 publish {
-    userOrg = 'tangoagency'
-    groupId = 'agency.tango.android.viking'
-    artifactId = 'viking-annotations'
-    publishVersion = '0.0.1'
-    desc = ''
-    website = 'https://github.com/TangoAgency/Viking'
+  userOrg = 'tangoagency'
+  groupId = 'agency.tango.android.viking'
+  artifactId = 'viking-mvp-core'
+  publishVersion = '0.0.1'
+  desc = ''
+  website = 'https://github.com/TangoAgency/Viking'
 }
 
-
 apply from: rootProject.file('gradle/gradle-mvn-push.gradle')
+

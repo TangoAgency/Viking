@@ -33,12 +33,11 @@ subprojects { project ->
             }
         }
         dependencies {
-            classpath 'com.android.tools.build:gradle:2.2.3'
+            classpath 'com.android.tools.build:gradle:2.3.2'
             classpath 'gradle.plugin.com.kageiit:lintrules:1.1.2'
             classpath 'com.novoda:bintray-release:0.3.4'
             classpath 'me.tatarka:gradle-retrolambda:3.3.0-beta4'
             classpath 'com.dicedmelon.gradle:jacoco-android:0.1.1'
-            classpath 'com.palantir:jacoco-coverage:0.4.0'
         }
     }
 }
@@ -85,8 +84,8 @@ ext.deps = [
     googleMapsUtils: "com.google.maps.android:android-maps-utils:0.4.4",
 
     //dagger
-    dagger: 'com.google.dagger:dagger:2.8',
-    daggerCompiler: 'com.google.dagger:dagger-compiler:2.8',
+    dagger: 'com.google.dagger:dagger:2.9',
+    daggerCompiler: 'com.google.dagger:dagger-compiler:2.9',
 
     //RxJava
     rxJava: 'io.reactivex.rxjava2:rxjava:2.0.0',
@@ -101,7 +100,7 @@ ext.deps = [
 
     // Test dependencies
     junit: 'junit:junit:4.12',
-    mockito: 'org.mockito:mockito-core:2.6.8',
+    mockito: 'org.mockito:mockito-core:2.7.5',
     truth: 'com.google.truth:truth:0.28',
     robolectric: 'org.robolectric:robolectric:3.2.2',
     compiletesting: 'com.google.testing.compile:compile-testing:0.9',

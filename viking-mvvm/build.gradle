@@ -24,6 +24,10 @@ android {
     dataBinding {
         enabled = true
     }
+
+    lintOptions {
+        abortOnError false
+    }
 }
 
 dependencies {
@@ -40,7 +44,6 @@ dependencies {
     testCompile deps.junit
 }
 
-
 publish {
     userOrg = 'tangoagency'
     groupId = 'agency.tango.android.viking'
@@ -49,3 +52,5 @@ publish {
     desc = ''
     website = 'https://github.com/TangoAgency/Viking'
 }
+
+apply from: rootProject.file('gradle/gradle-mvn-push.gradle')

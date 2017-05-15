@@ -38,7 +38,8 @@ public abstract class FragmentScreen<V, P extends Presenter<V>>
   @Nullable
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container,
-      Bundle savedInstanceState) {
+      Bundle savedInstanceState)
+  {
     View view = inflater.inflate(layoutResId, container, false);
 
     onViewReady();
@@ -64,9 +65,9 @@ public abstract class FragmentScreen<V, P extends Presenter<V>>
     presenterDelegate.onSaveInstanceState(outState);
   }
 
-  protected abstract void inject(Context context);
-
   protected void onViewReady() {
 
   }
+
+  protected abstract void inject(Context context);
 }

@@ -12,7 +12,7 @@ import io.reactivex.schedulers.Schedulers;
 import static com.google.common.truth.Truth.assertThat;
 
 @RunWith(RobolectricTestRunner.class)
-@Config(manifest=Config.NONE)
+@Config(manifest = Config.NONE)
 public class VikingModuleTests {
   @Test
   public void vikingRxModule_returnsProperScheduler() {

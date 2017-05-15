@@ -32,3 +32,5 @@ dependencies {
 
   provided deps.googlePlayServicesMaps
 }
+
+apply from: rootProject.file('gradle/gradle-mvn-push.gradle')

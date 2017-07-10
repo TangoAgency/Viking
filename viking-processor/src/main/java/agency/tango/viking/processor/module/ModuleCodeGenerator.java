@@ -27,9 +27,11 @@ import agency.tango.viking.di.ScreenModule;
 import agency.tango.viking.processor.AnnotatedClass;
 import agency.tango.viking.processor.CodeBuilder;
 import dagger.Module;
+import dagger.Provides;
 
 import static agency.tango.viking.processor.Util.getAnnotation;
 import static com.squareup.javapoet.ClassName.get;
+import static com.squareup.javapoet.MethodSpec.methodBuilder;
 import static com.squareup.javapoet.TypeSpec.classBuilder;
 import static javax.lang.model.element.Modifier.PUBLIC;
 
@@ -112,7 +114,17 @@ public class ModuleCodeGenerator implements CodeBuilder {
       }
     }
 
-    return builder.build();
+    for (int i = 0; i < annotatedClass.getExecutableElements().size(); i++) {
+      ExecutableElement element = (ExecutableElement) annotatedClass.getExecutableElements().get(i);
 
+      builder.addMethod(methodBuilder("provides" + element.getSimpleName())
+          .addAnnotation(Provides.class)
+          .addModifiers(PUBLIC)
+          .addCode("return this.screen.$N();", element.getSimpleName())
+          .returns(get(element.getReturnType()))
+          .build());
+    }
+
+    return builder.build();
   }
 }

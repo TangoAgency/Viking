@@ -11,8 +11,7 @@ import dagger.Provides;
 @Module
 public abstract class ScreenModule<T> {
   private final Context context;
-
-  private final T screen;
+  protected final T screen;
 
   public ScreenModule(Context context, T screen) {
     this.context = context;

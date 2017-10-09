@@ -3,8 +3,7 @@ package agency.tango.viking.mvp.core;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public interface IDataWrapper
-{
+public interface IDataWrapper {
     boolean getBooleanExtra(String name, boolean defaultValue);
 
     byte getByteExtra(String name, byte defaultValue);

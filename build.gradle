@@ -6,6 +6,9 @@ subprojects { project ->
         maven {
             url "https://plugins.gradle.org/m2/"
         }
+        maven {
+            url "https://maven.google.com/"
+        }
     }
 
     apply plugin: 'checkstyle'
@@ -53,17 +56,17 @@ task clean(type: Delete) {
 }
 
 ext {
-    minSdkVersion = 9
+    minSdkVersion = 15
     targetSdkVersion = 25
-    compileSdkVersion = 25
-    buildToolsVersion = '25.0.2'
+    compileSdkVersion = 26
+    buildToolsVersion = '26.0.2'
     sourceCompatibilityVersion = JavaVersion.VERSION_1_7
     targetCompatibilityVersion = JavaVersion.VERSION_1_7
 }
 
-def androidToolsVersion = '25.2.0'
-def supportLibraryVersion = '25.1.0'
-def googlePlayServicesVersion = '10.0.1'
+def androidToolsVersion = '26.0.2'
+def supportLibraryVersion = '26.1.0'
+def googlePlayServicesVersion = '11.4.2'
 ext.deps = [
     // Android
     android: 'com.google.android:android:4.1.1.4',
@@ -72,7 +75,7 @@ ext.deps = [
     appCompat: "com.android.support:appcompat-v7:$supportLibraryVersion",
     supportAnnotations: "com.android.support:support-annotations:$supportLibraryVersion",
     supportTestRunner: 'com.android.support.test:runner:0.5',
-    androidGradle: 'com.android.tools.build:gradle:2.2.0',
+    androidGradle: 'com.android.tools.build:gradle:2.3.3',
 
     lint: "com.android.tools.lint:lint:$androidToolsVersion",
     lintApi: "com.android.tools.lint:lint-api:$androidToolsVersion",
@@ -84,8 +87,8 @@ ext.deps = [
     googleMapsUtils: "com.google.maps.android:android-maps-utils:0.4.4",
 
     //dagger
-    dagger: 'com.google.dagger:dagger:2.9',
-    daggerCompiler: 'com.google.dagger:dagger-compiler:2.9',
+    dagger: 'com.google.dagger:dagger:2.11',
+    daggerCompiler: 'com.google.dagger:dagger-compiler:2.11',
 
     //RxJava
     rxJava: 'io.reactivex.rxjava2:rxjava:2.0.0',

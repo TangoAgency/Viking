@@ -1,7 +1,9 @@
 package agency.tango.viking.mvvm;
 
 import android.content.Intent;
-import android.databinding.BaseObservable;
+import android.databinding.Bindable;
+import android.databinding.Observable;
+import android.databinding.PropertyChangeRegistry;
 import android.os.Bundle;
 import android.support.annotation.CallSuper;
 import android.util.SparseArray;
@@ -12,7 +14,7 @@ import java.util.List;
 import static android.app.Activity.RESULT_OK;
 
 @SuppressWarnings("Convert2streamapi")
-public abstract class ViewModel extends BaseObservable {
+public abstract class ViewModel extends android.arch.lifecycle.ViewModel implements Observable {
 
   private final SparseArray<OnResultAction> onResultActions = new SparseArray<>();
   private final List<StartupAction> startupActions = new ArrayList<>();
@@ -104,4 +106,57 @@ public abstract class ViewModel extends BaseObservable {
       onResultActions.get(requestCode).execute(result, data);
     }
   }
+
+  //region Observable
+    private transient PropertyChangeRegistry mCallbacks;
+
+    @Override
+    public void addOnPropertyChangedCallback(OnPropertyChangedCallback callback) {
+      synchronized (this) {
+        if (mCallbacks == null) {
+          mCallbacks = new PropertyChangeRegistry();
+        }
+      }
+      mCallbacks.add(callback);
+    }
+
+    @Override
+    public void removeOnPropertyChangedCallback(OnPropertyChangedCallback callback) {
+      synchronized (this) {
+        if (mCallbacks == null) {
+          return;
+        }
+      }
+      mCallbacks.remove(callback);
+    }
+
+    /**
+     * Notifies listeners that all properties of this instance have changed.
+     */
+  public void notifyChange() {
+    synchronized (this) {
+      if (mCallbacks == null) {
+        return;
+      }
+    }
+    mCallbacks.notifyCallbacks(this, 0, null);
+  }
+
+  /**
+   * Notifies listeners that a specific property has changed. The getter for the property
+   * that changes should be marked with {@link Bindable} to generate a field in
+   * <code>BR</code> to be used as <code>fieldId</code>.
+   *
+   * @param fieldId The generated BR id for the Bindable field.
+   */
+  public void notifyPropertyChanged(int fieldId) {
+    synchronized (this) {
+      if (mCallbacks == null) {
+        return;
+      }
+    }
+    mCallbacks.notifyCallbacks(this, fieldId, null);
+  }
+
+  //endregion
 }

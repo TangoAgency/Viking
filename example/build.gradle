@@ -40,6 +40,9 @@ dependencies {
     compile project(":viking-mapbindings")
     compile project(":viking-map-aware-views")
 
+    compile deps.archCompontentsImplementation
+    compile deps.archComponentsAnnotationProcessor
+
     compile deps.rxJava
     compile deps.rxAndroid
     compile deps.dagger

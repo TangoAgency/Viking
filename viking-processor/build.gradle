@@ -23,6 +23,10 @@ dependencies {
   compile deps.javapoet
 
   compileOnly deps.dagger
+  compileOnly deps.daggerAndroid
+  compileOnly deps.daggerAndroidSupport
+
+  compileOnly deps.archCompontentsImplementation
 
   compileOnly files(org.gradle.internal.jvm.Jvm.current().getToolsJar())
 

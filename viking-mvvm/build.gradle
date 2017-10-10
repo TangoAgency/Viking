@@ -39,7 +39,9 @@ dependencies {
 
     compile deps.archCompontentsImplementation
     compile deps.archComponentsAnnotationProcessor
-
+    compile deps.daggerAndroid
+    compile deps.daggerAndroidSupport
+    annotationProcessor deps.daggerAndroidProccesor
 
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'

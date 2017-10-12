@@ -15,8 +15,8 @@ public abstract class MapAwareActivityView<VM extends ViewModel, VD extends View
 
   private static final String MAPVIEW_BUNDLE_KEY = "mapview_bundle_key";
 
-  public MapAwareActivityView(@LayoutRes int layoutIdRes) {
-    super(layoutIdRes);
+  public MapAwareActivityView(@LayoutRes int layoutIdRes, Class<VM> viewModelClass) {
+    super(layoutIdRes, viewModelClass);
   }
 
   @Override

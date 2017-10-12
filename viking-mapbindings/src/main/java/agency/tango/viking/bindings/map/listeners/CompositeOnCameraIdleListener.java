@@ -18,4 +18,8 @@ public class CompositeOnCameraIdleListener implements GoogleMap.OnCameraIdleList
       listener.onCameraIdle();
     }
   }
+
+  public void clear() {
+    listeners.clear();
+  }
 }

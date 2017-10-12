@@ -1,47 +1,26 @@
 package agency.tango.viking.example;
 
-import android.app.Application;
-import android.content.Context;
+import com.squareup.leakcanary.LeakCanary;
 
-import java.util.Map;
+import agency.tango.viking.example.di.DaggerDiComponent;
+import dagger.android.AndroidInjector;
+import dagger.android.DaggerApplication;
 
-import javax.inject.Inject;
-
-import agency.tango.viking.di.ScreenComponentBuilder;
-import agency.tango.viking.di.HasScreenSubcomponentBuilders;
-import agency.tango.viking.example.di.DiComponent;
-
-public class App extends Application implements HasScreenSubcomponentBuilders {
-
-  private DiComponent component;
-
-  @Inject
-  Map<Class<?>, ScreenComponentBuilder> activityComponentBuilders;
-
-  public static DiComponent component(Context context) {
-    return ((App) context.getApplicationContext()).component;
-  }
-
-  public static HasScreenSubcomponentBuilders get(Context context) {
-    return ((HasScreenSubcomponentBuilders) context.getApplicationContext());
-  }
-
-  public void setComponent(DiComponent diComponent) {
-    component = diComponent;
-
-  }
-  @SuppressWarnings("unchecked")
-  @Override
-  public <T extends ScreenComponentBuilder> T getActivityComponentBuilder(Class<?> activityClass,
-      Class<T> compotentBuilderType) {
-    return (T) activityComponentBuilders.get(activityClass);
-  }
+public class App extends DaggerApplication {
 
   @Override
   public void onCreate() {
     super.onCreate();
+    if (LeakCanary.isInAnalyzerProcess(this)) {
+      // This process is dedicated to LeakCanary for heap analysis.
+      // You should not init your app in this process.
+      return;
+    }
+    LeakCanary.install(this);
+  }
 
-    component = DiComponent.Initializer.init(this);
-    component.inject(this);
+  @Override
+  protected AndroidInjector<? extends DaggerApplication> applicationInjector() {
+    return DaggerDiComponent.builder().application(this).build();
   }
 }

@@ -37,4 +37,8 @@ public class CompositeInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
     }
     return null;
   }
+
+  public void clear() {
+    infoWindowAdapters.clear();
+  }
 }

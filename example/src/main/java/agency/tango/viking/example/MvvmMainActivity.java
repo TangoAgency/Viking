@@ -1,9 +1,14 @@
 package agency.tango.viking.example;
 
-import android.content.Context;
+import android.arch.lifecycle.Observer;
+import android.support.annotation.Nullable;
+import android.util.Log;
+
+import javax.inject.Inject;
 
 import agency.tango.viking.annotations.AutoModule;
 import agency.tango.viking.example.databinding.ActMvvmdemoBinding;
+import agency.tango.viking.example.services.Navigator;
 import agency.tango.viking.example.viewmodels.MainViewModel;
 import agency.tango.viking.mvvm.ActivityView;
 
@@ -11,21 +16,23 @@ import agency.tango.viking.mvvm.ActivityView;
 public class MvvmMainActivity extends ActivityView<MainViewModel, ActMvvmdemoBinding> {
 
   public MvvmMainActivity() {
-    super(R.layout.act_mvvmdemo);
+    super(R.layout.act_mvvmdemo, MainViewModel.class);
   }
 
-  @Override
-  protected void inject(Context context) {
-    App.get(context)
-        .getActivityComponentBuilder(MvvmMainActivity.class,
-            MvvmMainActivity_Component.Builder.class)
-        .screenModule(new MvvmMainActivity_Module(context, this))
-        .build()
-        .injectMembers(this);
-  }
+  @Inject
+  Navigator navigator;
 
   @Override
   protected void bind(ActMvvmdemoBinding binding) {
+
+    viewModel().getTest().observe(this, new Observer<Integer>() {
+      @Override
+      public void onChanged(@Nullable Integer integer) {
+        Log.d("test", String.format("%s", integer));
+        navigator.openSecondActivity();
+      }
+    });
+
     binding.setViewModel(viewModel());
   }
 }

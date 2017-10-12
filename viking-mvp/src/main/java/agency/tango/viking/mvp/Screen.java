@@ -1,5 +1,7 @@
 package agency.tango.viking.mvp;
 
+import android.arch.lifecycle.ViewModelProvider;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,14 +11,16 @@ import javax.inject.Inject;
 
 public abstract class Screen<V, P extends Presenter<V>> extends AppCompatActivity {
   private final int layoutResId;
-
-  @Inject
-  protected P presenter;
-
+  private final Class<P> presenterClass;
+  private P presenter;
   private PresenterDelegate<P> presenterDelegate;
 
-  protected Screen(int layoutResId) {
+  @Inject
+  ViewModelProvider.Factory viewModelFactory;
+
+  protected Screen(int layoutResId, Class<P> presenterClass) {
     this.layoutResId = layoutResId;
+    this.presenterClass = presenterClass;
   }
 
   public P presenter() {
@@ -28,8 +32,9 @@ public abstract class Screen<V, P extends Presenter<V>> extends AppCompatActivit
     super.onCreate(savedInstanceState);
     setContentView(layoutResId);
 
-    inject(this);
+    presenter = ViewModelProviders.of(this, viewModelFactory).get(presenterClass);
     presenterDelegate = new PresenterDelegate<>(presenter);
+
     onViewReady();
 
     if (savedInstanceState != null) {

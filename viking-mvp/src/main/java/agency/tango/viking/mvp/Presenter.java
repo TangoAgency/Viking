@@ -1,5 +1,6 @@
 package agency.tango.viking.mvp;
 
+import android.arch.lifecycle.ViewModel;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.CallSuper;
@@ -10,7 +11,7 @@ import java.util.List;
 
 import static android.app.Activity.RESULT_OK;
 
-public abstract class Presenter<TView> implements IPresenter {
+public abstract class Presenter<TView> extends ViewModel implements IPresenter {
 
   private final SparseArray<OnResultAction> onResultActions = new SparseArray<>();
   private final List<StartupAction> startupActions = new ArrayList<>();

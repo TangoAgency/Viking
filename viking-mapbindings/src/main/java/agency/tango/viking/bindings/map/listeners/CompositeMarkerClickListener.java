@@ -23,4 +23,8 @@ public class CompositeMarkerClickListener implements GoogleMap.OnMarkerClickList
     }
     return false;
   }
+
+  public void clear() {
+    listeners.clear();
+  }
 }

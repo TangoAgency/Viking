@@ -74,6 +74,23 @@ public class GoogleMapView<T> extends MapView {
   private CircleClickListener circleClickListener;
   private PolygonClickListener polygonClickListener;
 
+  public void clear() {
+
+    latLng.setOnChangeListener(null);
+    zoom.setOnChangeListener(null);
+    radius.setOnChangeListener(null);
+
+    markerClickListener.clear();
+
+    onCameraIdleListener.clear();
+    infoWindowAdapter.clear();
+    infoWindowClickListener.clear();
+    polylineClickListener.setItemClickListener(null);
+    overlayClickListener.setItemClickListener(null);
+    circleClickListener.setItemClickListener(null);
+    polygonClickListener.setItemClickListener(null);
+  }
+
   public GoogleMapView(Context context) {
     super(context);
     init();
@@ -593,4 +610,5 @@ public class GoogleMapView<T> extends MapView {
 
     return width > height ? width : height;
   }
+
 }

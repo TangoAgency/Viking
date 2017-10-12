@@ -1,27 +1,32 @@
 package agency.tango.viking.mvp;
 
+import android.arch.lifecycle.ViewModelProvider;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import javax.inject.Inject;
 
+import dagger.android.support.DaggerFragment;
+
 public abstract class FragmentScreen<V, P extends Presenter<V>>
-    extends Fragment {
+    extends DaggerFragment {
 
   private final int layoutResId;
+  private PresenterDelegate<P> presenterDelegate;
+  private final Class<P> presenterClass;
+  private P presenter;
 
   @Inject
-  protected P presenter;
+  ViewModelProvider.Factory viewModelFactory;
 
-  private PresenterDelegate<P> presenterDelegate;
-
-  protected FragmentScreen(int layoutResId) {
+  protected FragmentScreen(int layoutResId, Class<P> presenterClass) {
     this.layoutResId = layoutResId;
+    this.presenterClass = presenterClass;
   }
 
   public P presenter() {
@@ -31,8 +36,6 @@ public abstract class FragmentScreen<V, P extends Presenter<V>>
   @Override
   public void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    inject(getActivity());
-    presenterDelegate.onCreate(savedInstanceState);
   }
 
   @Nullable
@@ -41,6 +44,12 @@ public abstract class FragmentScreen<V, P extends Presenter<V>>
       Bundle savedInstanceState)
   {
     View view = inflater.inflate(layoutResId, container, false);
+
+    presenter = ViewModelProviders.of(this).get(presenterClass);
+
+    if (savedInstanceState != null) {
+      presenterDelegate.onCreate(savedInstanceState);
+    }
 
     onViewReady();
 

@@ -1,31 +1,36 @@
 package agency.tango.viking.mvvm;
 
-import android.content.Context;
+import android.arch.lifecycle.ViewModelProvider;
+import android.arch.lifecycle.ViewModelProviders;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import javax.inject.Inject;
 
+import dagger.android.support.DaggerFragment;
+
 public abstract class FragmentView<VM extends ViewModel, VD extends ViewDataBinding> extends
-    Fragment {
+    DaggerFragment {
 
-  @Inject
-  VM viewModel;
-
+  private VM viewModel;
   private VD binding;
   private int layoutIdRes;
+  private final Class<VM> viewModelClass;
   private ViewModelDelegate<VM> viewModelDelegate;
 
-  public FragmentView(@LayoutRes int layoutIdRes) {
+  @Inject
+  ViewModelProvider.Factory viewModelFactory;
+
+  public FragmentView(@LayoutRes int layoutIdRes, Class<VM> viewModelClass) {
     this.layoutIdRes = layoutIdRes;
+    this.viewModelClass = viewModelClass;
   }
 
   @Nullable
@@ -34,7 +39,7 @@ public abstract class FragmentView<VM extends ViewModel, VD extends ViewDataBind
       Bundle savedInstanceState) {
     View view = inflater.inflate(layoutIdRes, container, false);
 
-    inject(getContext());
+    viewModel = ViewModelProviders.of(this, viewModelFactory).get(viewModelClass);
     viewModelDelegate = new ViewModelDelegate<>(viewModel);
     binding = DataBindingUtil.bind(view);
 
@@ -82,8 +87,6 @@ public abstract class FragmentView<VM extends ViewModel, VD extends ViewDataBind
   protected VD binding() {
     return binding;
   }
-
-  protected abstract void inject(Context screen);
 
   protected abstract void bind(VD binding);
 }

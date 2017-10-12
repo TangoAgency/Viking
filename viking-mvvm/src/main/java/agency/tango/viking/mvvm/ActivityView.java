@@ -1,30 +1,36 @@
 package agency.tango.viking.mvvm;
 
-import android.content.Context;
+import android.arch.lifecycle.ViewModelProvider;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.annotation.LayoutRes;
-import android.support.v7.app.AppCompatActivity;
 
 import java.io.Serializable;
 
 import javax.inject.Inject;
 
+import dagger.android.support.DaggerAppCompatActivity;
+
 public abstract class ActivityView<VM extends ViewModel, VD extends ViewDataBinding> extends
-    AppCompatActivity {
+    DaggerAppCompatActivity {
+
+  private VM viewModel;
 
   @Inject
-  VM viewModel;
+  ViewModelProvider.Factory viewModelFactory;
 
   private VD binding;
   private int layoutIdRes;
+  private final Class<VM> viewModelClass;
   private ViewModelDelegate<VM> viewModelDelegate;
 
-  public ActivityView(@LayoutRes int layoutIdRes) {
+  public ActivityView(@LayoutRes int layoutIdRes, Class<VM> viewModelClass) {
     this.layoutIdRes = layoutIdRes;
+    this.viewModelClass = viewModelClass;
   }
 
   public final VM viewModel() {
@@ -34,7 +40,7 @@ public abstract class ActivityView<VM extends ViewModel, VD extends ViewDataBind
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    inject(this);
+    viewModel = ViewModelProviders.of(this, viewModelFactory).get(viewModelClass);
     viewModelDelegate = new ViewModelDelegate<>(viewModel);
     binding = DataBindingUtil.setContentView(this, layoutIdRes);
     bind(binding);
@@ -75,8 +81,6 @@ public abstract class ActivityView<VM extends ViewModel, VD extends ViewDataBind
   protected <T extends ViewModel> T resolveChildViewModel(@IdRes int id) {
     return (T) resolveFragment(id).viewModel();
   }
-
-  protected abstract void inject(Context context);
 
   protected abstract void bind(VD binding);
 

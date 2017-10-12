@@ -18,8 +18,8 @@ public abstract class MapAwareFragmentView<VM extends ViewModel, VD extends View
     extends FragmentView<VM, VD> {
   private static final String MAPVIEW_BUNDLE_KEY = "mapview_bundle_key";
 
-  public MapAwareFragmentView(@LayoutRes int layoutIdRes) {
-    super(layoutIdRes);
+  public MapAwareFragmentView(@LayoutRes int layoutIdRes, Class<VM> viewModelClass) {
+    super(layoutIdRes, viewModelClass);
   }
 
   @Nullable

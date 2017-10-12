@@ -41,17 +41,32 @@ dependencies {
     compile project(":viking-map-aware-views")
 
     compile deps.archCompontentsImplementation
-    compile deps.archComponentsAnnotationProcessor
+    annotationProcessor deps.archComponentsAnnotationProcessor
 
     compile deps.rxJava
     compile deps.rxAndroid
-    compile deps.dagger
-    compile deps.appCompat
 
+    compile deps.dagger
     annotationProcessor deps.daggerCompiler
+    compile deps.daggerAndroid
+    compile (deps.daggerAndroidSupport, {
+        exclude group: 'com.android.support'
+    })
+    annotationProcessor deps.daggerAndroidProccesor
+
+    compile deps.appCompat
+    compile deps.supportCompat
+
+    compile deps.archCompontentsImplementation
+    annotationProcessor deps.archComponentsAnnotationProcessor
+
+    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5.4'
+    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.4'
+
 
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
+        exclude group: 'com.google.code.findbugs'
     })
     testCompile deps.junit
 }

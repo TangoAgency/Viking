@@ -74,7 +74,7 @@ public abstract class MapEntityManagerBase<T> implements IMapEntityManager<T> {
   @Override
   public void addItems(GoogleMap googleMap, Collection<T> items) {
     if (items instanceof ObservableList) {
-      ((ObservableList<T>) items).addOnListChangedCallback(itemsListener);
+      //((ObservableList<T>) items).addOnListChangedCallback(itemsListener);
     }
 
     addItems(items);

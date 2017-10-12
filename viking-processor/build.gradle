@@ -24,9 +24,9 @@ dependencies {
 
   compileOnly deps.dagger
   compileOnly deps.daggerAndroid
-  compileOnly deps.daggerAndroidSupport
+  //compileOnly deps.daggerAndroidSupport
 
-  compileOnly deps.archCompontentsImplementation
+  //compileOnly deps.archCompontentsImplementation
 
   compileOnly files(org.gradle.internal.jvm.Jvm.current().getToolsJar())
 

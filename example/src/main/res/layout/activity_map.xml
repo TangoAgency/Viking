@@ -4,7 +4,7 @@
         xmlns:tools="http://schemas.android.com/tools"
   >
   <data>
-
+    <import type="java.lang.String" />
     <variable
       name="viewModel"
       type="agency.tango.viking.example.MapViewModel"
@@ -24,35 +24,58 @@
       android:layout_width="match_parent"
       android:layout_height="0dp"
       android:layout_weight="1"
-      bind:gmv_circleClickListener="@{viewModel.circleClickListener}"
-      bind:gmv_circles="@{viewModel.circles}"
-      bind:gmv_clusterClickListener="@{viewModel.clusterClickListener}"
-      bind:gmv_clusterInfoWindowAdapter="@{viewModel.clusterInfoWindowAdapter}"
-      bind:gmv_clusterItemInfoWindowAdapter="@{viewModel.clusterItemInfoWindowAdapter}"
-      bind:gmv_clusterItems="@{viewModel.clusterItems}"
-      bind:gmv_groundOverlayClickListener="@{viewModel.overlayClickListener}"
-      bind:gmv_groundOverlays="@{viewModel.overlays}"
-      bind:gmv_heatMap="@{viewModel.heatMap}"
-      bind:gmv_infoWindowAdapter="@{viewModel.infoWindowAdapter}"
-      bind:gmv_infoWindowClickListener="@{viewModel.infoWindowClickListener}"
-      bind:gmv_latLng="@={viewModel.latLng}"
-      bind:gmv_markerClickListener="@{viewModel.markerClickListener}"
-      bind:gmv_markers="@{viewModel.models}"
-      bind:gmv_polygonClickListener="@{viewModel.polygonClickListener}"
-      bind:gmv_polygons="@{viewModel.polygons}"
-      bind:gmv_polylineClickListener="@{viewModel.polylineClickListener}"
-      bind:gmv_polylines="@{viewModel.polylines}"
-      bind:gmv_rendererFactory="@{viewModel.rendererFactory}"
-      bind:gmv_zoom="@={viewModel.zoom}"
+
+    bind:gmv_circleClickListener="@{viewModel.circleClickListener}"
+    bind:gmv_circles="@{viewModel.circles}"
+
+
+    bind:gmv_markerClickListener="@{viewModel.markerClickListener}"
+    bind:gmv_markers="@{viewModel.models}"
+    bind:gmv_polygonClickListener="@{viewModel.polygonClickListener}"
+    bind:gmv_polygons="@{viewModel.polygons}"
+    bind:gmv_polylineClickListener="@{viewModel.polylineClickListener}"
+    bind:gmv_polylines="@{viewModel.polylines}"
+
+    bind:gmv_zoom="@={viewModel.zoom}"
+
+    bind:gmv_groundOverlayClickListener="@{viewModel.overlayClickListener}"
+    bind:gmv_groundOverlays="@{viewModel.overlays}"
+
+    bind:gmv_rendererFactory="@{viewModel.rendererFactory}"
+
       />
+
+    <!-- Problems
+
+bind:gmv_latLng="@={viewModel.latLng}"
+
+    bind:gmv_heatMap="@{viewModel.heatMap}"
+
+    bind:gmv_infoWindowAdapter="@{viewModel.infoWindowAdapter}"
+    bind:gmv_infoWindowClickListener="@{viewModel.infoWindowClickListener}"
+
+      bind:gmv_clusterItems="@{viewModel.clusterItems}"
+    bind:gmv_clusterClickListener="@{viewModel.clusterClickListener}"
+    bind:gmv_clusterInfoWindowAdapter="@{viewModel.clusterInfoWindowAdapter}"
+    bind:gmv_clusterItemInfoWindowAdapter="@{viewModel.clusterItemInfoWindowAdapter}"
+    end problems -->
+
+
+
 
     <TextView
       android:id="@+id/tv_location"
       android:layout_width="match_parent"
       android:layout_height="48dp"
-      android:text="@{viewModel.location}"
+      android:text="@{String.valueOf(viewModel.zoom)}"
       android:gravity="center"
       tools:text="Location: 15.2015, 51.2012"
       />
+
+     <FrameLayout
+       android:layout_width="match_parent"
+       android:layout_height="200dp"
+       android:id="@+id/fragmentBla"
+       ></FrameLayout>
   </LinearLayout>
 </layout>

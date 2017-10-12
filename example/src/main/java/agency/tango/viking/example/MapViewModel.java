@@ -5,6 +5,7 @@ import android.databinding.Bindable;
 import android.databinding.ObservableArrayList;
 import android.databinding.ObservableList;
 import android.graphics.Color;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
@@ -30,6 +31,7 @@ import java.util.Collection;
 
 import javax.inject.Inject;
 
+import agency.tango.viking.annotations.ProvidesViewModel;
 import agency.tango.viking.bindings.map.InfoWindowAdapterFactory;
 import agency.tango.viking.bindings.map.RendererFactory;
 import agency.tango.viking.bindings.map.adapters.CustomInfoWindowAdapter;
@@ -40,10 +42,12 @@ import agency.tango.viking.bindings.map.models.BindableMarker;
 import agency.tango.viking.bindings.map.models.BindableOverlay;
 import agency.tango.viking.bindings.map.models.BindablePolygon;
 import agency.tango.viking.bindings.map.models.BindablePolyline;
+import agency.tango.viking.mvvm.StartupAction;
 import agency.tango.viking.mvvm.ViewModel;
 
+@ProvidesViewModel
 public class MapViewModel extends ViewModel {
-  private static final float DEFAULT_ZOOM = 12;
+  private static final float DEFAULT_ZOOM = 2;
 
   private final ObservableList<BindableMarker<ExampleModel>> models = new ObservableArrayList<>();
   private final ObservableList<BindablePolyline> polylines = new ObservableArrayList<>();
@@ -58,57 +62,65 @@ public class MapViewModel extends ViewModel {
   private float zoom = DEFAULT_ZOOM;
 
   @Inject
-  MapViewModel() {
+  MapViewModel(Context context) {
+    Log.d("MapViewModel", this.toString() + " " + context.toString());
+
+    runOnStartup(new StartupAction() {
+      @Override
+      public void execute() {
+        clusterItems.add(new ClusterModel(new LatLng(0, 11.101110)));
+        clusterItems.add(new ClusterModel(new LatLng(0, 12.202222)));
+        clusterItems.add(new ClusterModel(new LatLng(0, 13.303334)));
+        clusterItems.add(new ClusterModel(new LatLng(3, 11.101110)));
+        clusterItems.add(new ClusterModel(new LatLng(3, 12.202222)));
+        clusterItems.add(new ClusterModel(new LatLng(3, 13.303334)));
+
+        circles.add(new BindableCircle(new CircleOptions()
+            .radius(100000)
+            .clickable(true)
+            .center(new LatLng(0, 5))));
+
+        ExampleModel exampleModel = new ExampleModel("Hello", "World");
+        models.add(new BindableMarker<>(
+            exampleModel,
+            new MarkerOptions()
+                .title("marker")
+                .position(new LatLng(0, -10))));
+
+        polylines.add(new BindablePolyline(
+            new PolylineOptions()
+                .clickable(true)
+                .add(new LatLng(0, 25))
+                .add(new LatLng(0, 30))));
+
+        polygons.add(new BindablePolygon(new PolygonOptions()
+            .clickable(true)
+            .strokeColor(Color.rgb(255, 0, 0))
+            .add(new LatLng(0, 0))
+            .add(new LatLng(0, 1))
+            .add(new LatLng(1, 1))
+            .add(new LatLng(1, 0))));
+
+        overlays.add(new BindableOverlay(
+            new GroundOverlayOptions()
+                .image(BitmapDescriptorFactory.fromResource(R.drawable.heart))
+                .positionFromBounds(new LatLngBounds(new LatLng(0, -4), new LatLng(1, -3)))));
+
+        heatmapTileProvider = new HeatmapTileProvider.Builder()
+            .data(Arrays.asList(new LatLng(0, 20),
+                new LatLng(0, 21),
+                new LatLng(0, 22)))
+            .radius(50)
+            .build();
+
+        setZoom(5);
+      }
+    });
   }
 
   @Override
   public void start() {
     super.start();
-
-    clusterItems.add(new ClusterModel(new LatLng(0, 11.101110)));
-    clusterItems.add(new ClusterModel(new LatLng(0, 12.202222)));
-    clusterItems.add(new ClusterModel(new LatLng(0, 13.303334)));
-    clusterItems.add(new ClusterModel(new LatLng(3, 11.101110)));
-    clusterItems.add(new ClusterModel(new LatLng(3, 12.202222)));
-    clusterItems.add(new ClusterModel(new LatLng(3, 13.303334)));
-
-    circles.add(new BindableCircle(new CircleOptions()
-        .radius(100000)
-        .clickable(true)
-        .center(new LatLng(0, 5))));
-
-    ExampleModel exampleModel = new ExampleModel("Hello", "World");
-    models.add(new BindableMarker<>(
-        exampleModel,
-        new MarkerOptions()
-            .title("marker")
-            .position(new LatLng(0, -10))));
-
-    polylines.add(new BindablePolyline(
-        new PolylineOptions()
-            .clickable(true)
-            .add(new LatLng(0, 25))
-            .add(new LatLng(0, 30))));
-
-    polygons.add(new BindablePolygon(new PolygonOptions()
-        .clickable(true)
-        .strokeColor(Color.rgb(255, 0, 0))
-        .add(new LatLng(0, 0))
-        .add(new LatLng(0, 1))
-        .add(new LatLng(1, 1))
-        .add(new LatLng(1, 0))));
-
-    overlays.add(new BindableOverlay(
-        new GroundOverlayOptions()
-            .image(BitmapDescriptorFactory.fromResource(R.drawable.heart))
-            .positionFromBounds(new LatLngBounds(new LatLng(0, -4), new LatLng(1, -3)))));
-
-    heatmapTileProvider = new HeatmapTileProvider.Builder()
-        .data(Arrays.asList(new LatLng(0, 20),
-            new LatLng(0, 21),
-            new LatLng(0, 22)))
-        .radius(50)
-        .build();
   }
 
   @Bindable
@@ -171,6 +183,7 @@ public class MapViewModel extends ViewModel {
   }
 
   public void setZoom(float zoom) {
+    Log.d("A", "Zoom: " + zoom);
     this.zoom = zoom;
     notifyPropertyChanged(BR.zoom);
   }
@@ -181,6 +194,7 @@ public class MapViewModel extends ViewModel {
       @Override
       public boolean onClick(BindableMarker<ExampleModel> item) {
         item.getMarker().showInfoWindow();
+        Log.d("AAA", "Clicked!");
         return true;
       }
     };

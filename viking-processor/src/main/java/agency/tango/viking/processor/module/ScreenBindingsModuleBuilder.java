@@ -1,6 +1,5 @@
 package agency.tango.viking.processor.module;
 
-
 import com.squareup.javapoet.AnnotationSpec;
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.MethodSpec;
@@ -54,13 +53,11 @@ public class ScreenBindingsModuleBuilder {
     return builder.build();
   }
 
-
   private ClassName getBuilderClassName(AnnotatedClass annotatedClass) {
 
     return ClassName.get(annotatedClass.getPackage(),
         annotatedClass.getClassName() + "_Component", "Builder");
   }
-
 
   private ClassName getComponentClassName(AnnotatedClass annotatedClass) {
     return ClassName.get(annotatedClass.getPackage(),

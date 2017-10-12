@@ -19,4 +19,8 @@ public class CompositeInfoWindowClickListener implements GoogleMap.OnInfoWindowC
       listener.onInfoWindowClick(marker);
     }
   }
+
+  public void clear() {
+    listeners.clear();
+  }
 }

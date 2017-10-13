@@ -75,6 +75,7 @@ public abstract class MapAwareActivityView<VM extends ViewModel, VD extends View
   @Override
   public void onDestroy() {
     mapView().onDestroy();
+    binding().unbind(); // TODO Remove when all bindings will be memory leak safe
     super.onDestroy();
   }
 

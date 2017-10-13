@@ -81,6 +81,7 @@ public abstract class MapAwareFragmentView<VM extends ViewModel, VD extends View
   @Override
   public void onDestroy() {
     mapView().onDestroy();
+    binding().unbind();
     super.onDestroy();
   }
 

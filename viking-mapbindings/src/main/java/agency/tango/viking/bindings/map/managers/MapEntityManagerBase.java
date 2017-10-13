@@ -4,6 +4,7 @@ import android.databinding.ObservableList;
 
 import com.google.android.gms.maps.GoogleMap;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -13,57 +14,11 @@ import static agency.tango.viking.bindings.map.CollectionUtils.moveRange;
 public abstract class MapEntityManagerBase<T> implements IMapEntityManager<T> {
 
   private final MapResolver mapResolver;
-  private ObservableList.OnListChangedCallback<ObservableList<T>> itemsListener;
+  private WeakReferenceOnListChangedCallback<T> itemsListener;
   protected List<T> entities = new ArrayList<>();
 
   MapEntityManagerBase(MapResolver mapResolver) {
     this.mapResolver = mapResolver;
-
-    itemsListener = new ObservableList.OnListChangedCallback<ObservableList<T>>() {
-      @Override
-      public void onChanged(ObservableList<T> observableList) {
-        mapResolver.resolve(googleMap -> addItems(googleMap, observableList));
-      }
-
-      @Override
-      public void onItemRangeChanged(ObservableList<T> observableList, int fromIndex,
-          int itemCount) {
-        mapResolver.resolve(googleMap -> {
-          for (int i = fromIndex; i < itemCount; i++) {
-            updateOnMap(entities.get(i), observableList.get(i), googleMap);
-          }
-        });
-      }
-
-      @Override
-      public void onItemRangeInserted(ObservableList<T> observableList, int fromIndex,
-          int itemCount) {
-        mapResolver.resolve(googleMap -> {
-          for (int i = fromIndex; i <= observableList.size() - itemCount; i++) {
-            entities.add(i, addToMap(observableList.get(i), googleMap));
-          }
-        });
-      }
-
-      @Override
-      public void onItemRangeMoved(ObservableList<T> observableList, int fromPosition,
-          int toPosition, int itemCount) {
-        moveRange(entities, fromPosition, toPosition, itemCount);
-      }
-
-      @Override
-      public void onItemRangeRemoved(ObservableList<T> observableList, int fromIndex,
-          int itemCount) {
-        mapResolver.resolve(googleMap -> {
-          for (int i = fromIndex; i < itemCount; i++) {
-            T entity = entities.remove(i);
-            if (entity != null) {
-              removeFromMap(entity, googleMap);
-            }
-          }
-        });
-      }
-    };
   }
 
   @Override
@@ -73,8 +28,10 @@ public abstract class MapEntityManagerBase<T> implements IMapEntityManager<T> {
 
   @Override
   public void addItems(GoogleMap googleMap, Collection<T> items) {
+
     if (items instanceof ObservableList) {
-      //((ObservableList<T>) items).addOnListChangedCallback(itemsListener);
+      itemsListener = new WeakReferenceOnListChangedCallback<T>(this);
+      ((ObservableList<T>) items).addOnListChangedCallback(itemsListener);
     }
 
     addItems(items);
@@ -98,4 +55,73 @@ public abstract class MapEntityManagerBase<T> implements IMapEntityManager<T> {
   protected abstract void removeFromMap(T entity, GoogleMap googleMap);
 
   protected abstract void updateOnMap(T entity, T item, GoogleMap googleMap);
+
+  private static class WeakReferenceOnListChangedCallback<T>
+      extends ObservableList.OnListChangedCallback<ObservableList<T>> {
+
+    private final WeakReference<MapEntityManagerBase<T>> managerBaseReference;
+
+    WeakReferenceOnListChangedCallback(MapEntityManagerBase<T> bindingRecyclerViewAdapter) {
+      this.managerBaseReference = new WeakReference<>(bindingRecyclerViewAdapter);
+    }
+
+    @Override
+    public void onChanged(ObservableList<T> observableList) {
+      MapEntityManagerBase<T> manager = managerBaseReference.get();
+      if (manager != null) {
+        manager.mapResolver.resolve(googleMap -> manager.addItems(googleMap, observableList));
+      }
+    }
+
+    @Override
+    public void onItemRangeChanged(ObservableList<T> observableList, int fromIndex,
+        int itemCount) {
+      MapEntityManagerBase<T> manager = managerBaseReference.get();
+      if (manager != null) {
+        manager.mapResolver.resolve(googleMap -> {
+          for (int i = fromIndex; i < itemCount; i++) {
+            manager.updateOnMap(manager.entities.get(i), observableList.get(i), googleMap);
+          }
+        });
+      }
+    }
+
+    @Override
+    public void onItemRangeInserted(ObservableList<T> observableList, int fromIndex,
+        int itemCount) {
+      MapEntityManagerBase<T> manager = managerBaseReference.get();
+      if (manager != null) {
+        manager.mapResolver.resolve(googleMap -> {
+          for (int i = fromIndex; i <= observableList.size() - itemCount; i++) {
+            manager.entities.add(i, manager.addToMap(observableList.get(i), googleMap));
+          }
+        });
+      }
+    }
+
+    @Override
+    public void onItemRangeMoved(ObservableList<T> observableList, int fromPosition,
+        int toPosition, int itemCount) {
+      MapEntityManagerBase<T> manager = managerBaseReference.get();
+      if (manager != null) {
+        moveRange(manager.entities, fromPosition, toPosition, itemCount);
+      }
+    }
+
+    @Override
+    public void onItemRangeRemoved(ObservableList<T> observableList, int fromIndex,
+        int itemCount) {
+      MapEntityManagerBase<T> manager = managerBaseReference.get();
+      if (manager != null) {
+        manager.mapResolver.resolve(googleMap -> {
+          for (int i = fromIndex; i < itemCount; i++) {
+            T entity = manager.entities.remove(i);
+            if (entity != null) {
+              manager.removeFromMap(entity, googleMap);
+            }
+          }
+        });
+      }
+    }
+  }
 }

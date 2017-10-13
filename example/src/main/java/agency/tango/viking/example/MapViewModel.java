@@ -113,7 +113,7 @@ public class MapViewModel extends ViewModel {
             .radius(50)
             .build();
 
-        setZoom(5);
+        setZoom(12);
       }
     });
   }
@@ -194,7 +194,6 @@ public class MapViewModel extends ViewModel {
       @Override
       public boolean onClick(BindableMarker<ExampleModel> item) {
         item.getMarker().showInfoWindow();
-        Log.d("AAA", "Clicked!");
         return true;
       }
     };

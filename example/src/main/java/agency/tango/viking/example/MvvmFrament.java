@@ -1,8 +1,10 @@
 package agency.tango.viking.example;
 
+import agency.tango.viking.annotations.AutoModule;
 import agency.tango.viking.example.databinding.FragmentTestBinding;
 import agency.tango.viking.mvvm.FragmentView;
 
+@AutoModule
 public class MvvmFrament extends FragmentView<TestViewModel2, FragmentTestBinding> {
 
   public static MvvmFrament newInstance() {

@@ -5,7 +5,6 @@ import android.app.Application;
 import net.droidlabs.dagger.annotations.AppScope;
 
 import agency.tango.viking.di.ScreenMappings;
-import agency.tango.viking.di.ViewModelMappings;
 import dagger.BindsInstance;
 import dagger.Component;
 import dagger.android.AndroidInjectionModule;
@@ -19,7 +18,7 @@ import dagger.android.support.AndroidSupportInjectionModule;
     AndroidSupportInjectionModule.class,
     ScreenMappings.class,
     AppModule.class,
-    ViewModelMappings.class,
+    //ViewModelMappings.class,
     TestModule.class,
 })
 public interface DiComponent extends AndroidInjector<DaggerApplication> {

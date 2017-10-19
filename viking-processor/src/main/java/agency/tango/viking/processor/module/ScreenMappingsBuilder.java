@@ -27,7 +27,13 @@ public class ScreenMappingsBuilder {
       builder.addMethod(MethodSpec.methodBuilder(
           String.format("provide%s", annotatedClass.getClassName()))
           .addModifiers(Modifier.ABSTRACT, Modifier.PUBLIC)
-          .addAnnotation(ClassName.get("dagger.android", "ContributesAndroidInjector"))
+          .addAnnotation(
+              AnnotationSpec.builder(ClassName.get("dagger.android", "ContributesAndroidInjector"))
+                  //.addMember("modules",
+                  //    String.format("%s.class", annotatedClass.getClassName() + "_Module"))
+                  .addMember("modules", "$T.class", ClassName.get(annotatedClass.getPackage(), annotatedClass.getClassName() + "_Module"))
+                  .build()
+          )
           .returns(ClassName.get(annotatedClass.getPackage(), annotatedClass.getClassName()))
           .build());
     }

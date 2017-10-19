@@ -1,6 +1,5 @@
 package agency.tango.viking.mvvm;
 
-import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
@@ -25,8 +24,11 @@ public abstract class FragmentView<VM extends ViewModel, VD extends ViewDataBind
   private final Class<VM> viewModelClass;
   private ViewModelDelegate<VM> viewModelDelegate;
 
+  //@Inject
+  //ViewModelProvider.Factory viewModelFactory;
+
   @Inject
-  ViewModelProvider.Factory viewModelFactory;
+  GenericViewModelFactory<VM> viewModelFactory;
 
   public FragmentView(@LayoutRes int layoutIdRes, Class<VM> viewModelClass) {
     this.layoutIdRes = layoutIdRes;

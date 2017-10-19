@@ -1,5 +1,6 @@
 package agency.tango.viking.example;
 
+import android.arch.lifecycle.MutableLiveData;
 import android.content.Context;
 import android.databinding.Bindable;
 import android.databinding.ObservableArrayList;
@@ -42,6 +43,7 @@ import agency.tango.viking.bindings.map.models.BindableMarker;
 import agency.tango.viking.bindings.map.models.BindableOverlay;
 import agency.tango.viking.bindings.map.models.BindablePolygon;
 import agency.tango.viking.bindings.map.models.BindablePolyline;
+import agency.tango.viking.example.services.Navigator;
 import agency.tango.viking.mvvm.StartupAction;
 import agency.tango.viking.mvvm.ViewModel;
 
@@ -61,10 +63,15 @@ public class MapViewModel extends ViewModel {
   private LatLng latLng;
   private float zoom = DEFAULT_ZOOM;
 
-  @Inject
-  MapViewModel(Context context) {
-    Log.d("MapViewModel", this.toString() + " " + context.toString());
+  MutableLiveData<NavigatorOperation> test = new SingleLiveEvent<>();
 
+
+
+
+  @Inject
+  MapViewModel(Context context, String test) {
+    Log.d("MapViewModel", this.toString() + " " + context.toString());
+    Log.d("MapViewModel", test);
     runOnStartup(new StartupAction() {
       @Override
       public void execute() {
@@ -194,6 +201,14 @@ public class MapViewModel extends ViewModel {
       @Override
       public boolean onClick(BindableMarker<ExampleModel> item) {
         item.getMarker().showInfoWindow();
+
+        test.postValue(new NavigatorOperation() {
+          @Override
+          public void navigate(Navigator navigator) {
+            navigator.openMainActivity();
+          }
+        });
+
         return true;
       }
     };

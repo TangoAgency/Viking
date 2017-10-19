@@ -17,6 +17,7 @@ dependencies {
 
     compileOnly deps.android
     compileOnly deps.dagger
+    compileOnly 'com.github.radzio:architecture-compontents:ed6c8f871f'
 }
 
 publish {

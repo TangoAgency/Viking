@@ -1,4 +1,4 @@
-package agency.tango.viking.example.di;
+package agency.tango.viking.annotations;
 
 import android.arch.lifecycle.ViewModel;
 

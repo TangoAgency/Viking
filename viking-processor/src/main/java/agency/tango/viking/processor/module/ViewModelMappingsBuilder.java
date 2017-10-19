@@ -9,6 +9,7 @@ import java.util.List;
 
 import javax.lang.model.element.Modifier;
 
+import agency.tango.viking.annotations.ViewModelKey;
 import agency.tango.viking.processor.AnnotatedClass;
 import dagger.Binds;
 import dagger.Module;
@@ -31,8 +32,7 @@ public class ViewModelMappingsBuilder {
           .addModifiers(Modifier.ABSTRACT, Modifier.PUBLIC)
           .addAnnotation(Binds.class)
           .addAnnotation(IntoMap.class)
-          .addAnnotation(AnnotationSpec.builder(
-              ClassName.get("agency.tango.viking.example.di", "ViewModelKey"))
+          .addAnnotation(AnnotationSpec.builder(ClassName.get(ViewModelKey.class))
               .addMember("value", "$T.class",
                   ClassName.get(annotatedClass.getPackage(), annotatedClass.getClassName()))
               .build())

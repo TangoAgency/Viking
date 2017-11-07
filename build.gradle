@@ -1,118 +1,118 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 subprojects { project ->
 
+  repositories {
+    google()
+    mavenCentral()
+    maven { url "https://plugins.gradle.org/m2/" }
+    maven { url "https://maven.google.com/" }
+    maven { url "https://jitpack.io" }
+  }
+
+  apply plugin: 'checkstyle'
+
+  checkstyle {
+    configFile = rootProject.file('checkstyle.xml')
+    toolVersion = "7.3"
+  }
+
+  task checkstyle(type: Checkstyle) {}
+
+  afterEvaluate {
+    if (project.tasks.findByName('check')) {
+      check.dependsOn('checkstyle')
+    }
+  }
+
+  buildscript {
     repositories {
-        mavenCentral()
-        maven { url "https://plugins.gradle.org/m2/" }
-        maven { url "https://maven.google.com/" }
-        maven { url "https://jitpack.io" }
+      google()
+      jcenter()
+      mavenCentral()
+      maven {
+        url "https://plugins.gradle.org/m2/"
+      }
     }
-
-    apply plugin: 'checkstyle'
-
-    checkstyle {
-        configFile = rootProject.file('checkstyle.xml')
-        toolVersion = "7.3"
+    dependencies {
+      classpath 'com.android.tools.build:gradle:3.0.0'
+      classpath 'gradle.plugin.com.kageiit:lintrules:1.1.2'
+      classpath 'com.novoda:bintray-release:0.5.0'
+      classpath 'me.tatarka:gradle-retrolambda:3.7.0'
+      classpath 'com.dicedmelon.gradle:jacoco-android:0.1.1'
     }
-
-    task checkstyle(type: Checkstyle) {
-    }
-
-    afterEvaluate {
-        if (project.tasks.findByName('check')) {
-            check.dependsOn('checkstyle')
-        }
-    }
-
-    buildscript {
-        repositories {
-            jcenter()
-            mavenCentral()
-            maven {
-                url "https://plugins.gradle.org/m2/"
-            }
-        }
-        dependencies {
-            classpath 'com.android.tools.build:gradle:2.3.3'
-            classpath 'gradle.plugin.com.kageiit:lintrules:1.1.2'
-            classpath 'com.novoda:bintray-release:0.3.4'
-            classpath 'me.tatarka:gradle-retrolambda:3.3.0-beta4'
-            classpath 'com.dicedmelon.gradle:jacoco-android:0.1.1'
-        }
-    }
+  }
 }
 
 allprojects {
-    repositories {
-        jcenter()
-        maven { url 'https://maven.google.com' }
-        maven { url "https://jitpack.io" }
-    }
+  repositories {
+    google()
+    jcenter()
+    maven { url 'https://maven.google.com' }
+    maven { url "https://jitpack.io" }
+  }
 }
 
 task clean(type: Delete) {
-    delete rootProject.buildDir
+  delete rootProject.buildDir
 }
 
 ext {
-    minSdkVersion = 15
-    targetSdkVersion = 25
-    compileSdkVersion = 26
-    buildToolsVersion = '26.0.2'
-    sourceCompatibilityVersion = JavaVersion.VERSION_1_7
-    targetCompatibilityVersion = JavaVersion.VERSION_1_7
+  minSdkVersion = 15
+  targetSdkVersion = 25
+  compileSdkVersion = 26
+  buildToolsVersion = '26.0.2'
+  sourceCompatibilityVersion = JavaVersion.VERSION_1_7
+  targetCompatibilityVersion = JavaVersion.VERSION_1_7
 }
 
 def androidToolsVersion = '26.0.2'
 def supportLibraryVersion = '26.1.0'
 def googlePlayServicesVersion = '11.4.2'
-ext.deps = [
-    // Android
-    android: 'com.google.android:android:4.1.1.4',
-    supportCompat: "com.android.support:support-compat:$supportLibraryVersion",
-    supportFragment: "com.android.support:support-fragment:$supportLibraryVersion",
-    appCompat: "com.android.support:appcompat-v7:$supportLibraryVersion",
-    supportAnnotations: "com.android.support:support-annotations:$supportLibraryVersion",
-    supportTestRunner: 'com.android.support.test:runner:0.5',
-    androidGradle: 'com.android.tools.build:gradle:2.3.3',
+ext.deps = [// Android
+            android                          : 'com.google.android:android:4.1.1.4',
+            supportCompat                    : "com.android.support:support-compat:$supportLibraryVersion",
+            supportFragment                  : "com.android.support:support-fragment:$supportLibraryVersion",
+            appCompat                        : "com.android.support:appcompat-v7:$supportLibraryVersion",
+            supportAnnotations               : "com.android.support:support-annotations:$supportLibraryVersion",
+            supportTestRunner                : 'com.android.support.test:runner:0.5',
+            androidGradle                    : 'com.android.tools.build:gradle:2.3.3',
 
-    lint: "com.android.tools.lint:lint:$androidToolsVersion",
-    lintApi: "com.android.tools.lint:lint-api:$androidToolsVersion",
-    lintChecks: "com.android.tools.lint:lint-checks:$androidToolsVersion",
-    lintTests: "com.android.tools.lint:lint-tests:$androidToolsVersion",
+            lint                             : "com.android.tools.lint:lint:$androidToolsVersion",
+            lintApi                          : "com.android.tools.lint:lint-api:$androidToolsVersion",
+            lintChecks                       : "com.android.tools.lint:lint-checks:$androidToolsVersion",
+            lintTests                        : "com.android.tools.lint:lint-tests:$androidToolsVersion",
 
-    //Arch components
-    archCompontentsImplementation: "android.arch.lifecycle:extensions:1.0.0-beta2",
-    archComponentsAnnotationProcessor:  "android.arch.lifecycle:compiler:1.0.0-beta2",
+            //Arch components
+            archCompontentsImplementation    : "android.arch.lifecycle:extensions:1.0.0-beta2",
+            archComponentsAnnotationProcessor: "android.arch.lifecycle:compiler:1.0.0-beta2",
 
-    // Google Services
-    googlePlayServicesMaps: "com.google.android.gms:play-services-maps:$googlePlayServicesVersion",
-    googleMapsUtils: "com.google.maps.android:android-maps-utils:0.4.4",
+            // Google Services
+            googlePlayServicesMaps           : "com.google.android.gms:play-services-maps:$googlePlayServicesVersion",
+            googleMapsUtils                  : "com.google.maps.android:android-maps-utils:0.4.4",
 
-    //dagger
-    dagger: 'com.google.dagger:dagger:2.11',
-    daggerCompiler: 'com.google.dagger:dagger-compiler:2.11',
-    daggerAndroid:"com.google.dagger:dagger-android:2.11",
-    daggerAndroidSupport: "com.google.dagger:dagger-android-support:2.11",
-    daggerAndroidProccesor: "com.google.dagger:dagger-android-processor:2.11",
+            //dagger
+            dagger                           : 'com.google.dagger:dagger:2.11',
+            daggerCompiler                   : 'com.google.dagger:dagger-compiler:2.11',
+            daggerAndroid                    : "com.google.dagger:dagger-android:2.11",
+            daggerAndroidSupport             : "com.google.dagger:dagger-android-support:2.11",
+            daggerAndroidProccesor           : "com.google.dagger:dagger-android-processor:2.11",
 
-    //RxJava
-    rxJava: 'io.reactivex.rxjava2:rxjava:2.0.0',
-    rxAndroid: 'io.reactivex.rxjava2:rxandroid:2.0.0',
+            //RxJava
+            rxJava                           : 'io.reactivex.rxjava2:rxjava:2.0.0',
+            rxAndroid                        : 'io.reactivex.rxjava2:rxandroid:2.0.0',
 
-    // Square
-    javapoet: 'com.squareup:javapoet:1.7.0',
+            // Square
+            javapoet                         : 'com.squareup:javapoet:1.7.0',
 
-    // Third Party
-    javaparser: 'com.github.javaparser:javaparser-core:2.4.0',
-    javax: 'javax.inject:javax.inject:1',
+            // Third Party
+            javaparser                       : 'com.github.javaparser:javaparser-core:2.4.0',
+            javax                            : 'javax.inject:javax.inject:1',
 
-    // Test dependencies
-    junit: 'junit:junit:4.12',
-    mockito: 'org.mockito:mockito-core:2.7.5',
-    truth: 'com.google.truth:truth:0.28',
-    robolectric: 'org.robolectric:robolectric:3.2.2',
-    compiletesting: 'com.google.testing.compile:compile-testing:0.9',
-    autoservice: 'com.google.auto.service:auto-service:1.0-rc2',
-    autocommon: 'com.google.auto:auto-common:0.6',
-]
+            // Test dependencies
+            junit                            : 'junit:junit:4.12',
+            mockito                          : 'org.mockito:mockito-core:2.7.5',
+            truth                            : 'com.google.truth:truth:0.28',
+            robolectric                      : 'org.robolectric:robolectric:3.2.2',
+            compiletesting                   : 'com.google.testing.compile:compile-testing:0.9',
+            autoservice                      : 'com.google.auto.service:auto-service:1.0-rc2',
+            autocommon                       : 'com.google.auto:auto-common:0.6',]

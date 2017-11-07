@@ -32,41 +32,41 @@ android {
 dependencies {
 
     annotationProcessor project(":viking-processor")
-    compile project(":viking-annotations")
-    compile project(":viking-di")
-    compile project(":viking-mvp")
-    compile project(":viking-mvvm")
-    compile project(":viking-reactive")
-    compile project(":viking-mapbindings")
-    compile project(":viking-map-aware-views")
+    implementation project(":viking-annotations")
+    implementation project(":viking-di")
+    implementation project(":viking-mvp")
+    implementation project(":viking-mvvm")
+    implementation project(":viking-reactive")
+    implementation project(":viking-mapbindings")
+    implementation project(":viking-map-aware-views")
 
-    compile deps.archCompontentsImplementation
+    implementation deps.archCompontentsImplementation
     annotationProcessor deps.archComponentsAnnotationProcessor
 
-    compile deps.rxJava
-    compile deps.rxAndroid
+    implementation deps.rxJava
+    implementation deps.rxAndroid
 
-    compile deps.dagger
+    implementation deps.dagger
     annotationProcessor deps.daggerCompiler
-    compile deps.daggerAndroid
-    compile (deps.daggerAndroidSupport, {
+    implementation deps.daggerAndroid
+    implementation (deps.daggerAndroidSupport, {
         exclude group: 'com.android.support'
     })
     annotationProcessor deps.daggerAndroidProccesor
 
-    compile deps.appCompat
-    compile deps.supportCompat
+    implementation deps.appCompat
+    implementation deps.supportCompat
 
-    compile deps.archCompontentsImplementation
+    implementation deps.archCompontentsImplementation
     annotationProcessor deps.archComponentsAnnotationProcessor
 
-    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5.4'
-    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.4'
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.5.4'
+    releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.4'
 
 
-    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+    androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
         exclude group: 'com.google.code.findbugs'
     })
-    testCompile deps.junit
+    testImplementation deps.junit
 }

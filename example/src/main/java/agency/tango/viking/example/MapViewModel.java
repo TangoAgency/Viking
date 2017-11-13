@@ -179,6 +179,7 @@ public class MapViewModel extends ViewModel {
   }
 
   public void setLatLng(LatLng latLng) {
+    Log.d("A", "LatLng: " + latLng);
     this.latLng = latLng;
     this.notifyPropertyChanged(BR.latLng);
     this.notifyPropertyChanged(BR.location);

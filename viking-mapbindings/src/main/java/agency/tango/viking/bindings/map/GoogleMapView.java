@@ -51,8 +51,12 @@ import agency.tango.viking.bindings.map.models.BindablePolyline;
 
 public class GoogleMapView<T> extends MapView {
 
-  private BindableItem<LatLng> latLng = new BindableItem<>();
-  private BindableItem<Float> zoom = new BindableItem<>();
+  private BindableItem<LatLng> latLng = new BindableItem<>(value -> {
+    getMapAsync(googleMap -> googleMap.moveCamera(CameraUpdateFactory.newLatLng(value)));
+  });
+  private BindableItem<Float> zoom = new BindableItem<>(value -> {
+    getMapAsync(googleMap -> googleMap.moveCamera(CameraUpdateFactory.zoomTo(value)));
+  });
   private BindableItem<Integer> radius = new BindableItem<>();
 
   private MarkerManager<T> markerManager;

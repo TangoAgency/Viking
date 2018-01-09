@@ -3,10 +3,8 @@ package agency.tango.viking.map.views;
 import android.databinding.ViewDataBinding;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
-
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
-
 import agency.tango.viking.mvvm.ActivityView;
 import agency.tango.viking.mvvm.ViewModel;
 
@@ -21,10 +19,8 @@ public abstract class MapAwareActivityView<VM extends ViewModel, VD extends View
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
-
     MapsInitializer.initialize(this);
-
+    super.onCreate(savedInstanceState);
     Bundle mapViewBundle;
     if (savedInstanceState != null) {
       mapViewBundle = savedInstanceState.getBundle(MAPVIEW_BUNDLE_KEY);

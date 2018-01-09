@@ -31,7 +31,8 @@ public class ScreenMappingsBuilder {
               AnnotationSpec.builder(ClassName.get("dagger.android", "ContributesAndroidInjector"))
                   //.addMember("modules",
                   //    String.format("%s.class", annotatedClass.getClassName() + "_Module"))
-                  .addMember("modules", "$T.class", ClassName.get(annotatedClass.getPackage(), annotatedClass.getClassName() + "_Module"))
+                  .addMember("modules", "$T.class", ClassName.get(annotatedClass.getPackage(),
+                      annotatedClass.getClassName() + "_Module"))
                   .build()
           )
           .returns(ClassName.get(annotatedClass.getPackage(), annotatedClass.getClassName()))

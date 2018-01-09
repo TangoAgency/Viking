@@ -4,9 +4,7 @@ import android.arch.lifecycle.Observer;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
-
 import com.google.android.gms.maps.MapView;
-
 import agency.tango.viking.annotations.AutoModule;
 import agency.tango.viking.annotations.AutoProvides;
 import agency.tango.viking.example.databinding.ActivityMapBinding;
@@ -54,5 +52,4 @@ public class MapActivity extends MapAwareActivityView<MapViewModel, ActivityMapB
   public String test() {
     return "Hello workd";
   }
-
 }

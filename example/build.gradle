@@ -63,10 +63,10 @@ dependencies {
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.5.4'
     releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.4'
 
+    androidTestImplementation deps.supportAnnotations
+    androidTestImplementation deps.supportTestRunner
+    androidTestImplementation deps.supportTestRules
+    androidTestImplementation deps.espressoCore
 
-    androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
-        exclude group: 'com.android.support', module: 'support-annotations'
-        exclude group: 'com.google.code.findbugs'
-    })
     testImplementation deps.junit
 }

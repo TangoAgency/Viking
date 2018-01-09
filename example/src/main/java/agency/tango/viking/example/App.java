@@ -1,7 +1,8 @@
 package agency.tango.viking.example;
 
+import android.content.Context;
+import android.support.multidex.MultiDex;
 import com.squareup.leakcanary.LeakCanary;
-
 import agency.tango.viking.example.di.DaggerDiComponent;
 import dagger.android.AndroidInjector;
 import dagger.android.DaggerApplication;
@@ -17,6 +18,12 @@ public class App extends DaggerApplication {
       return;
     }
     LeakCanary.install(this);
+  }
+
+  @Override
+  protected void attachBaseContext(Context base) {
+    super.attachBaseContext(base);
+    MultiDex.install(this);
   }
 
   @Override

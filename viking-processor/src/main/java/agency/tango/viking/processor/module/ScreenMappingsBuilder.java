@@ -1,16 +1,15 @@
 package agency.tango.viking.processor.module;
 
 import com.squareup.javapoet.AnnotationSpec;
-import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.MethodSpec;
 import com.squareup.javapoet.TypeSpec;
-
+import net.droidlabs.dagger.annotations.ActivityScope;
 import java.util.List;
-
 import javax.lang.model.element.Modifier;
-
 import agency.tango.viking.processor.AnnotatedClass;
 import dagger.Module;
+
+import static com.squareup.javapoet.ClassName.get;
 
 public class ScreenMappingsBuilder {
 
@@ -28,14 +27,15 @@ public class ScreenMappingsBuilder {
           String.format("provide%s", annotatedClass.getClassName()))
           .addModifiers(Modifier.ABSTRACT, Modifier.PUBLIC)
           .addAnnotation(
-              AnnotationSpec.builder(ClassName.get("dagger.android", "ContributesAndroidInjector"))
+              AnnotationSpec.builder(get("dagger.android", "ContributesAndroidInjector"))
                   //.addMember("modules",
                   //    String.format("%s.class", annotatedClass.getClassName() + "_Module"))
-                  .addMember("modules", "$T.class", ClassName.get(annotatedClass.getPackage(),
+                  .addMember("modules", "$T.class", get(annotatedClass.getPackage(),
                       annotatedClass.getClassName() + "_Module"))
                   .build()
           )
-          .returns(ClassName.get(annotatedClass.getPackage(), annotatedClass.getClassName()))
+          .addAnnotation(AnnotationSpec.builder(get(ActivityScope.class)).build())
+          .returns(get(annotatedClass.getPackage(), annotatedClass.getClassName()))
           .build());
     }
 

@@ -55,15 +55,15 @@ public abstract class FragmentView<VM extends ViewModel, VD extends ViewDataBind
   }
 
   @Override
-  public void onStart() {
-    super.onStart();
+  public void onResume() {
+    super.onResume();
     viewModelDelegate.onStart();
   }
 
   @Override
-  public void onStop() {
+  public void onPause() {
+    super.onPause();
     viewModelDelegate.onStop();
-    super.onStop();
   }
 
   public VM viewModel() {

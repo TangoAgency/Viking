@@ -1,16 +1,10 @@
 package agency.tango.viking.processor.module;
 
-import com.squareup.javapoet.AnnotationSpec;
 import com.squareup.javapoet.ParameterSpec;
 import com.squareup.javapoet.TypeSpec;
-
-import net.droidlabs.dagger.annotations.ActivityScope;
-
 import java.util.Map;
-
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.ExecutableElement;
-
 import agency.tango.viking.annotations.AutoModule;
 import agency.tango.viking.processor.AnnotatedClass;
 import agency.tango.viking.processor.CodeBuilder;
@@ -36,7 +30,7 @@ public class ModuleCodeGenerator implements CodeBuilder {
     String module = annotatedClass.getClassName() + "_Module";
     TypeSpec.Builder builder = classBuilder(module).addModifiers(PUBLIC);
 
-    builder.addAnnotation(AnnotationSpec.builder(get(ActivityScope.class)).build());
+    //builder.addAnnotation(AnnotationSpec.builder(get(ActivityScope.class)).build());
 
     builder.addAnnotation(Module.class);
 

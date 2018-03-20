@@ -3,7 +3,7 @@ package agency.tango.viking.mvp;
 import android.content.Intent;
 import android.os.Bundle;
 
-public interface IPresenter {
+public interface IPresenter<TView> {
 
   void start();
 

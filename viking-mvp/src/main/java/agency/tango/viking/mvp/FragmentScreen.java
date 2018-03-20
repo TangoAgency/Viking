@@ -1,16 +1,13 @@
 package agency.tango.viking.mvp;
 
-import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
-import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import javax.inject.Inject;
-
 import dagger.android.support.DaggerFragment;
 
 public abstract class FragmentScreen<V, P extends Presenter<V>>
@@ -22,7 +19,7 @@ public abstract class FragmentScreen<V, P extends Presenter<V>>
   private P presenter;
 
   @Inject
-  ViewModelProvider.Factory viewModelFactory;
+  GenericViewModelFactory<P> viewModelFactory;
 
   protected FragmentScreen(int layoutResId, Class<P> presenterClass) {
     this.layoutResId = layoutResId;
@@ -41,30 +38,34 @@ public abstract class FragmentScreen<V, P extends Presenter<V>>
   @Nullable
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container,
-      Bundle savedInstanceState)
-  {
+      Bundle savedInstanceState) {
     View view = inflater.inflate(layoutResId, container, false);
 
-    presenter = ViewModelProviders.of(this).get(presenterClass);
+    presenter = ViewModelProviders.of(this, viewModelFactory).get(presenterClass);
+    presenterDelegate = new PresenterDelegate<>(presenter);
 
     if (savedInstanceState != null) {
       presenterDelegate.onCreate(savedInstanceState);
     }
 
-    onViewReady();
-
     return view;
   }
 
   @Override
-  public void onStart() {
-    super.onStart();
+  public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+    super.onViewCreated(view, savedInstanceState);
+    onViewReady();
+  }
+
+  @Override
+  public void onResume() {
+    super.onResume();
     presenterDelegate.onStart();
   }
 
   @Override
-  public void onStop() {
-    super.onStop();
+  public void onPause() {
+    super.onPause();
     presenterDelegate.onStop();
   }
 
@@ -77,6 +78,4 @@ public abstract class FragmentScreen<V, P extends Presenter<V>>
   protected void onViewReady() {
 
   }
-
-  protected abstract void inject(Context context);
 }

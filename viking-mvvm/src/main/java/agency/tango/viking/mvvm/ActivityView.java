@@ -51,15 +51,15 @@ public abstract class ActivityView<VM extends ViewModel, VD extends ViewDataBind
   }
 
   @Override
-  protected void onStart() {
-    super.onStart();
+  public void onResume() {
+    super.onResume();
     viewModelDelegate.onStart();
   }
 
   @Override
-  protected void onStop() {
+  public void onPause() {
+    super.onPause();
     viewModelDelegate.onStop();
-    super.onStop();
   }
 
   @Override

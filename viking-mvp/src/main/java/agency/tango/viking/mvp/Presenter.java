@@ -11,7 +11,7 @@ import java.util.List;
 
 import static android.app.Activity.RESULT_OK;
 
-public abstract class Presenter<TView> extends ViewModel implements IPresenter {
+public abstract class Presenter<TView> extends ViewModel implements IPresenter<TView> {
 
   private final SparseArray<OnResultAction> onResultActions = new SparseArray<>();
   private final List<StartupAction> startupActions = new ArrayList<>();

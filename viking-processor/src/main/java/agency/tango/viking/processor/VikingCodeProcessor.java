@@ -115,6 +115,9 @@ public class VikingCodeProcessor extends AbstractProcessor {
       AnnotatedClass annotatedClass, TypeMirror typeMirror) {
     String fragmentModuleName = TypeName.get(typeMirror).toString();
     List<AnnotatedClass> classesWithinOneScope = annotatedClassesWithScopeAttribute.get(fragmentModuleName);
+    if (classesWithinOneScope == null) {
+      classesWithinOneScope = new ArrayList<>();
+    }
     classesWithinOneScope.add(annotatedClass);
   }
 

@@ -6,15 +6,11 @@ import com.squareup.javapoet.MethodSpec;
 import com.squareup.javapoet.ParameterizedTypeName;
 import com.squareup.javapoet.TypeName;
 import com.squareup.javapoet.TypeSpec;
-
 import net.droidlabs.dagger.annotations.ActivityScope;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
 import javax.lang.model.type.TypeMirror;
-
 import agency.tango.viking.annotations.AutoModule;
 import agency.tango.viking.di.ScreenComponent;
 import agency.tango.viking.di.ScreenComponentBuilder;

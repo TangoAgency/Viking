@@ -2,16 +2,52 @@ package agency.tango.viking.processor;
 
 import com.google.common.collect.ImmutableSet;
 import com.google.testing.compile.JavaFileObjects;
-
 import org.junit.Ignore;
 import org.junit.Test;
-
 import javax.tools.JavaFileObject;
 
 import static com.google.common.truth.Truth.assertAbout;
 import static com.google.testing.compile.JavaSourcesSubjectFactory.javaSources;
 
 public class VikingCodeProcessorTest {
+  @Test
+  public void generatesActivityFragmentsModule() {
+    JavaFileObject testActivity = JavaFileObjects.forSourceString("test.TestActivity",
+        "package test;\n"
+            + "import agency.tango.viking.annotations.AutoModule;\n"
+            + "\n"
+            + "@AutoModule\n"
+            + "public class TestActivity {\n"
+            + "    \n"
+            + "}");
+
+    JavaFileObject testFragment = JavaFileObjects.forSourceString("test.TestFragment",
+        "package test;\n"
+            + "import agency.tango.viking.annotations.AutoModule;\n"
+            + "\n"
+            + "@AutoModule(scope = TestActivity.class)\n"
+            + "public class TestFragment {\n"
+            + "    \n"
+            + "}");
+
+    JavaFileObject expectedActivityFragmentsModule = JavaFileObjects.forSourceString("test.ActivityFragments_Module",
+        "package test;\n"
+            + "import dagger.Module;\n"
+            + "import dagger.android.ContributesAndroidInjector;\n"
+            + "\n"
+            + "@Module\n"
+            + "public abstract class TestActivityFragments_Module {\n"
+            + "  @ContributesAndroidInjector\n"
+            + "  public abstract TestFragment providesTestFragment();\n"
+            + "}");
+
+    assertAbout(javaSources())
+        .that(ImmutableSet.of(testActivity, testFragment))
+        .processedWith(new VikingCodeProcessor())
+        .compilesWithoutError()
+        .and()
+        .generatesSources(expectedActivityFragmentsModule);
+  }
 
   @Ignore
   @Test

@@ -38,6 +38,7 @@ dependencies {
   testCompile deps.truth
 
   testCompile deps.dagger
+  testCompile deps.daggerAndroidProccesor
   testCompile deps.android
 }
 

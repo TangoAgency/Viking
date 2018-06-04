@@ -44,7 +44,7 @@ public class ScreenMappingsBuilder {
         annotationBuilder.addMember("modules", "$T.class", get(annotatedClass.getPackage(),
             annotatedClass.getClassName() + "_Module"));
       } else {
-        annotationBuilder.addMember("modules", "$T.class, $T.class", get(annotatedClass.getPackage(),
+        annotationBuilder.addMember("modules", "{$T.class, $T.class}", get(annotatedClass.getPackage(),
             annotatedClass.getClassName() + "_Module"), get(typeMirror));
       }
 

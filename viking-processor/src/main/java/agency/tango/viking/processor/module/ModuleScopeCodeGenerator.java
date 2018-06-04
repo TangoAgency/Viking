@@ -26,7 +26,7 @@ public class ModuleScopeCodeGenerator implements ExtendedCodeBuilder {
   @Override
   public TypeSpec buildTypeSpec(AnnotatedClass... annotatedClasses) {
     String module = moduleName + "Fragments_Module";
-    TypeSpec.Builder builder = classBuilder(module).addModifiers(PUBLIC);
+    TypeSpec.Builder builder = classBuilder(module).addModifiers(PUBLIC, ABSTRACT);
 
     builder.addAnnotation(Module.class);
 

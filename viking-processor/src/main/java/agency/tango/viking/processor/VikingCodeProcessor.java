@@ -2,13 +2,14 @@ package agency.tango.viking.processor;
 
 import android.support.annotation.Nullable;
 import com.google.auto.service.AutoService;
+import com.google.common.collect.ListMultimap;
+import com.google.common.collect.MultimapBuilder;
 import com.squareup.javapoet.JavaFile;
 import com.squareup.javapoet.TypeName;
 import com.squareup.javapoet.TypeSpec;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -71,7 +72,8 @@ public class VikingCodeProcessor extends AbstractProcessor {
 
   private void handleAutoModule(RoundEnvironment roundEnv) {
     ArrayList<AnnotatedClass> annotatedClassClasses = new ArrayList<>();
-    Map<String, List<AnnotatedClass>> annotatedClassesWithScopeAttribute = new HashMap<>();
+    ListMultimap<String, AnnotatedClass> annotatedClassesWithScopeAttribute =
+        MultimapBuilder.treeKeys().arrayListValues().build();
     for (Element annotatedElement : roundEnv.getElementsAnnotatedWith(AutoModule.class)) {
 
       TypeElement annotatedTypeElement = (TypeElement) annotatedElement;
@@ -111,13 +113,11 @@ public class VikingCodeProcessor extends AbstractProcessor {
     return typeMirror;
   }
 
-  private void addToScopedAnnotatedClass(Map<String, List<AnnotatedClass>> annotatedClassesWithScopeAttribute,
+  private void addToScopedAnnotatedClass(ListMultimap<String, AnnotatedClass> annotatedClassesWithScopeAttribute,
       AnnotatedClass annotatedClass, TypeMirror typeMirror) {
-    String fragmentModuleName = TypeName.get(typeMirror).toString();
+    String[] fragmentModuleFullName = TypeName.get(typeMirror).toString().split("\\.");
+    String fragmentModuleName = fragmentModuleFullName[fragmentModuleFullName.length - 1];
     List<AnnotatedClass> classesWithinOneScope = annotatedClassesWithScopeAttribute.get(fragmentModuleName);
-    if (classesWithinOneScope == null) {
-      classesWithinOneScope = new ArrayList<>();
-    }
     classesWithinOneScope.add(annotatedClass);
   }
 
@@ -206,13 +206,13 @@ public class VikingCodeProcessor extends AbstractProcessor {
     screenMappingsFile.writeTo(processingEnvironment.getFiler());
   }
 
-  private void generateScopeRelated(Map<String, List<AnnotatedClass>> annotatedClassesWithScopeAttribute)
+  private void generateScopeRelated(ListMultimap<String, AnnotatedClass> annotatedClassesWithScopeAttribute)
       throws IOException {
     for (String scopeName : annotatedClassesWithScopeAttribute.keySet()) {
       List<AnnotatedClass> annotatedClasses = annotatedClassesWithScopeAttribute.get(scopeName);
 
-      TypeSpec moduleTypeSpec = new ModuleScopeCodeGenerator(scopeName).buildTypeSpec(
-          annotatedClasses.toArray(new AnnotatedClass[annotatedClasses.size()]));
+      TypeSpec moduleTypeSpec = new ModuleScopeCodeGenerator(scopeName)
+          .buildTypeSpec(annotatedClasses.toArray(new AnnotatedClass[annotatedClasses.size()]));
       JavaFile moduleFile = builder(annotatedClasses.get(0).getPackage(), moduleTypeSpec).build();
       moduleFile.writeTo(processingEnvironment.getFiler());
     }

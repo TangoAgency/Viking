@@ -1,6 +1,5 @@
 package agency.tango.viking.processor;
 
-import android.support.annotation.Nullable;
 import com.google.auto.service.AutoService;
 import com.google.common.collect.ListMultimap;
 import com.google.common.collect.MultimapBuilder;
@@ -45,6 +44,8 @@ public class VikingCodeProcessor extends AbstractProcessor {
   private ProcessingEnvironment processingEnvironment;
   private Messager messager;
 
+  private List<TypeMirror> typesWithScope = new ArrayList<>();
+
   @Override
   public synchronized void init(ProcessingEnvironment processingEnv) {
     super.init(processingEnv);
@@ -71,7 +72,7 @@ public class VikingCodeProcessor extends AbstractProcessor {
   }
 
   private void handleAutoModule(RoundEnvironment roundEnv) {
-    ArrayList<AnnotatedClass> annotatedClassClasses = new ArrayList<>();
+    List<AnnotatedClass> annotatedClassClasses = new ArrayList<>();
     ListMultimap<String, AnnotatedClass> annotatedClassesWithScopeAttribute =
         MultimapBuilder.treeKeys().arrayListValues().build();
     for (Element annotatedElement : roundEnv.getElementsAnnotatedWith(AutoModule.class)) {
@@ -83,34 +84,46 @@ public class VikingCodeProcessor extends AbstractProcessor {
 
       AnnotatedClass annotatedClass = buildAnnotatedClass(annotatedTypeElement);
 
-      TypeMirror typeMirror = getScopeTypeMirror(annotatedClass);
-      if (typeMirror != null) {
+      List<TypeMirror> typeMirrors = getScopeTypeMirrors(annotatedClass);
+      for (TypeMirror typeMirror : typeMirrors) {
+        addToTypesWithScope(typeMirror);
         addToScopedAnnotatedClass(annotatedClassesWithScopeAttribute, annotatedClass, typeMirror);
       }
 
-      annotatedClassClasses.add(annotatedClass);
+      if(typeMirrors.isEmpty()) {
+        annotatedClassClasses.add(annotatedClass);
+      }
     }
 
     try {
-      generate(annotatedClassClasses);
       generateScopeRelated(annotatedClassesWithScopeAttribute);
+      generate(annotatedClassClasses);
     } catch (IOException e) {
       messager.printMessage(ERROR, "Couldn't generate class");
     }
     return;
   }
 
-  @Nullable
-  private TypeMirror getScopeTypeMirror(AnnotatedClass annotatedClass) {
+  private void addToTypesWithScope(TypeMirror typeMirror) {
+    for (TypeMirror type : typesWithScope) {
+      if (type.equals(typeMirror)) {
+        return;
+      }
+    }
+    typesWithScope.add(typeMirror);
+  }
+
+  private List<TypeMirror> getScopeTypeMirrors(AnnotatedClass annotatedClass) {
     Map<String, Object> parsedAnnotation = getAnnotation(AutoModule.class,
         annotatedClass.getTypeElement());
 
-    Object type = parsedAnnotation.get("scope");
-    TypeMirror typeMirror = null;
-    if (!type.equals(Object.class)) {
-      typeMirror = (TypeMirror) type;
+    List<TypeMirror> typeMirrors = new ArrayList<>();
+    Object[] types = (Object[]) parsedAnnotation.get("scopes");
+    for (Object obj : types) {
+      TypeMirror typeMirror = (TypeMirror) obj;
+      typeMirrors.add(typeMirror);
     }
-    return typeMirror;
+    return typeMirrors;
   }
 
   private void addToScopedAnnotatedClass(ListMultimap<String, AnnotatedClass> annotatedClassesWithScopeAttribute,
@@ -202,7 +215,7 @@ public class VikingCodeProcessor extends AbstractProcessor {
     screenBindingsFile.writeTo(processingEnvironment.getFiler());
 
     JavaFile screenMappingsFile = builder("agency.tango.viking.di",
-        new ScreenMappingsBuilder().buildTypeSpec(annotatedClasses)).build();
+        new ScreenMappingsBuilder().buildTypeSpec(annotatedClasses, typesWithScope)).build();
     screenMappingsFile.writeTo(processingEnvironment.getFiler());
   }
 

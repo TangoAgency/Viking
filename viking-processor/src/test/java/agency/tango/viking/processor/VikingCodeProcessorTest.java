@@ -25,7 +25,7 @@ public class VikingCodeProcessorTest {
         "package test;\n"
             + "import agency.tango.viking.annotations.AutoModule;\n"
             + "\n"
-            + "@AutoModule(scope = TestActivity.class)\n"
+            + "@AutoModule(scopes = {TestActivity.class})\n"
             + "public class TestFragment {\n"
             + "    \n"
             + "}");

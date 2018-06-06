@@ -2,8 +2,10 @@ package agency.tango.viking.processor.module;
 
 import com.squareup.javapoet.AnnotationSpec;
 import com.squareup.javapoet.MethodSpec;
+import com.squareup.javapoet.TypeName;
 import com.squareup.javapoet.TypeSpec;
 import net.droidlabs.dagger.annotations.ActivityScope;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import javax.lang.model.element.Modifier;
@@ -17,7 +19,7 @@ import static com.squareup.javapoet.ClassName.get;
 
 public class ScreenMappingsBuilder {
 
-  public TypeSpec buildTypeSpec(List<AnnotatedClass> annotatedClasses) {
+  public TypeSpec buildTypeSpec(List<AnnotatedClass> annotatedClasses, List<TypeMirror> typesWithScope) {
 
     AnnotationSpec.Builder moduleAnnotationBuilder = AnnotationSpec.builder(Module.class);
 
@@ -29,10 +31,11 @@ public class ScreenMappingsBuilder {
       Map<String, Object> parsedAnnotation = getAnnotation(AutoModule.class,
           annotatedClass.getTypeElement());
 
-      Object[] typeMirrors = (Object[]) parsedAnnotation.get("includes");
-      TypeMirror typeMirror = null;
-      for (Object type : typeMirrors) {
-        typeMirror = (TypeMirror) type;
+      Object[] types = (Object[]) parsedAnnotation.get("includes");
+      List<TypeMirror> typeMirrors = new ArrayList<>();
+      for (Object type : types) {
+        TypeMirror typeMirror = (TypeMirror) type;
+        typeMirrors.add(typeMirror);
       }
 
       AnnotationSpec.Builder annotationBuilder =
@@ -40,13 +43,21 @@ public class ScreenMappingsBuilder {
       //.addMember("modules",
       //    String.format("%s.class", annotatedClass.getClassName() + "_Module"))
 
-      if (typeMirror == null) {
-        annotationBuilder.addMember("modules", "$T.class", get(annotatedClass.getPackage(),
-            annotatedClass.getClassName() + "_Module"));
-      } else {
-        annotationBuilder.addMember("modules", "{$T.class, $T.class}", get(annotatedClass.getPackage(),
-            annotatedClass.getClassName() + "_Module"), get(typeMirror));
+      String modules = String.format("{%s.class",
+          get(annotatedClass.getPackage(), annotatedClass.getClassName() + "_Module").toString());
+      StringBuilder stringBuilder = new StringBuilder(modules);
+      for (TypeMirror typeMirror : typeMirrors) {
+        stringBuilder.append(", ").append(TypeName.get(typeMirror).toString()).append(".class");
       }
+
+      for (TypeMirror type : typesWithScope) {
+        if(annotatedClass.getTypeMirror().equals(type)) {
+          stringBuilder.append(", ").append(TypeName.get(type).toString()).append("Fragments_Module.class");
+        }
+      }
+
+      modules = stringBuilder.append("}").toString();
+      annotationBuilder.addMember("modules", modules);
 
       builder.addMethod(MethodSpec.methodBuilder(
           String.format("provide%s", annotatedClass.getClassName()))

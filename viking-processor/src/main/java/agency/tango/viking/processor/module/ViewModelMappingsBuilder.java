@@ -38,7 +38,7 @@ public class ViewModelMappingsBuilder {
               .build())
           .addParameter(ClassName.get(annotatedClass.getPackage(), annotatedClass.getClassName()),
               "viewModel")
-          .returns(ClassName.get("android.arch.lifecycle", "ViewModel"))
+          .returns(ClassName.get("androidx.lifecycle", "ViewModel"))
           .build());
     }
 

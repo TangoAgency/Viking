@@ -1,20 +1,19 @@
 package agency.tango.viking.mvvm;
 
 import android.content.Intent;
-import android.databinding.Bindable;
-import android.databinding.Observable;
-import android.databinding.PropertyChangeRegistry;
 import android.os.Bundle;
-import android.support.annotation.CallSuper;
 import android.util.SparseArray;
-
 import java.util.ArrayList;
 import java.util.List;
+import androidx.annotation.CallSuper;
+import androidx.databinding.Bindable;
+import androidx.databinding.Observable;
+import androidx.databinding.PropertyChangeRegistry;
 
 import static android.app.Activity.RESULT_OK;
 
 @SuppressWarnings("Convert2streamapi")
-public abstract class ViewModel extends android.arch.lifecycle.ViewModel implements Observable {
+public abstract class ViewModel extends androidx.lifecycle.ViewModel implements Observable {
 
   private final SparseArray<OnResultAction> onResultActions = new SparseArray<>();
   private final List<StartupAction> startupActions = new ArrayList<>();

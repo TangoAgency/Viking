@@ -1,12 +1,12 @@
 package agency.tango.viking.mvvm;
 
-import android.arch.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProviders;
 import android.content.Intent;
-import android.databinding.DataBindingUtil;
-import android.databinding.ViewDataBinding;
+import androidx.databinding.DataBindingUtil;
+import androidx.databinding.ViewDataBinding;
 import android.os.Bundle;
-import android.support.annotation.IdRes;
-import android.support.annotation.LayoutRes;
+import androidx.annotation.IdRes;
+import androidx.annotation.LayoutRes;
 
 import java.io.Serializable;
 

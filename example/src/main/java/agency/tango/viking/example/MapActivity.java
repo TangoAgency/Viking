@@ -1,8 +1,8 @@
 package agency.tango.viking.example;
 
-import android.arch.lifecycle.Observer;
+import androidx.lifecycle.Observer;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 import android.util.Log;
 import com.google.android.gms.maps.MapView;
 import agency.tango.viking.annotations.AutoModule;

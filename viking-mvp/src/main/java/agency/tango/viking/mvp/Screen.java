@@ -1,9 +1,9 @@
 package agency.tango.viking.mvp;
 
-import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
 import javax.inject.Inject;
+import androidx.lifecycle.ViewModelProviders;
 import dagger.android.support.DaggerAppCompatActivity;
 
 public abstract class Screen<V, P extends Presenter<V>> extends DaggerAppCompatActivity {

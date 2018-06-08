@@ -1,5 +1,5 @@
 apply plugin: 'com.android.library'
-apply plugin: 'com.novoda.bintray-release'
+// apply plugin: 'com.novoda.bintray-release'
 apply from: '../jacoco-android.gradle'
 
 android {
@@ -12,7 +12,7 @@ android {
     versionCode 1
     versionName "1.0"
 
-    testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
   }
   buildTypes {
@@ -35,7 +35,7 @@ dependencies {
   compile deps.rxJava
   compile deps.rxAndroid
 
-  androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+  androidTestCompile('androidx.test.espresso:espresso-core:3.1.0-alpha3', {
     exclude group: 'com.android.support', module: 'support-annotations'
   })
 
@@ -48,13 +48,13 @@ dependencies {
   testCompile project(":viking-mvp")
 }
 
-publish {
-  userOrg = 'tangoagency'
-  groupId = 'agency.tango.android.viking'
-  artifactId = 'viking-reactive'
-  publishVersion = '0.0.1'
-  desc = ''
-  website = 'https://github.com/TangoAgency/Viking'
-}
+//publish {
+//  userOrg = 'tangoagency'
+//  groupId = 'agency.tango.android.viking'
+//  artifactId = 'viking-reactive'
+//  publishVersion = '0.0.1'
+//  desc = ''
+//  website = 'https://github.com/TangoAgency/Viking'
+//}
 
 apply from: rootProject.file('gradle/gradle-mvn-push.gradle')

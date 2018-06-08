@@ -1,5 +1,5 @@
 apply plugin: 'com.android.library'
-apply plugin: 'com.novoda.bintray-release'
+// apply plugin: 'com.novoda.bintray-release'
 apply from: '../jacoco-android.gradle'
 
 android {
@@ -12,7 +12,7 @@ android {
         versionCode 1
         versionName "1.0"
 
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
     }
     buildTypes {
@@ -33,32 +33,32 @@ android {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
 
-    compile deps.supportFragment
-    compile deps.appCompat
+    compile 'androidx.fragment:fragment:1.0.0-alpha3'
+    compile 'androidx.appcompat:appcompat:1.0.0-alpha3'
     compile deps.javax
 
-    compile deps.archCompontentsImplementation
-    annotationProcessor deps.archComponentsAnnotationProcessor
+    compile 'androidx.lifecycle:lifecycle-extensions:2.0.0-alpha1'
+    annotationProcessor 'androidx.lifecycle:lifecycle-compiler:2.0.0-alpha1'
     compile deps.daggerAndroid
     compile (deps.daggerAndroidSupport, {
         exclude group: 'com.android.support'
     })
     annotationProcessor deps.daggerAndroidProccesor
 
-    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+    androidTestCompile('androidx.test.espresso:espresso-core:3.1.0-alpha3', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
 
     testCompile deps.junit
 }
-
-publish {
-    userOrg = 'tangoagency'
-    groupId = 'agency.tango.android.viking'
-    artifactId = 'viking-mvvm'
-    publishVersion = '0.0.1'
-    desc = ''
-    website = 'https://github.com/TangoAgency/Viking'
-}
+//
+//publish {
+//    userOrg = 'tangoagency'
+//    groupId = 'agency.tango.android.viking'
+//    artifactId = 'viking-mvvm'
+//    publishVersion = '0.0.1'
+//    desc = ''
+//    website = 'https://github.com/TangoAgency/Viking'
+//}
 
 apply from: rootProject.file('gradle/gradle-mvn-push.gradle')

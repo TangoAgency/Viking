@@ -2,6 +2,13 @@ apply plugin: 'com.android.application'
 apply from: '../jacoco-android.gradle'
 
 android {
+
+    compileOptions {
+        encoding "UTF-8"
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
     compileSdkVersion rootProject.ext.compileSdkVersion
     buildToolsVersion rootProject.ext.buildToolsVersion
     defaultConfig {
@@ -11,7 +18,7 @@ android {
         versionCode 1
         versionName "1.0"
         multiDexEnabled true
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
     signingConfigs {
@@ -40,8 +47,11 @@ dependencies {
     implementation project(":viking-mapbindings")
     implementation project(":viking-map-aware-views")
 
-    implementation deps.archCompontentsImplementation
-    annotationProcessor deps.archComponentsAnnotationProcessor
+    implementation deps.googlePlayServicesMaps
+    implementation deps.googleMapsUtils
+
+    implementation 'androidx.lifecycle:lifecycle-extensions:2.0.0-alpha1'
+    annotationProcessor 'androidx.lifecycle:lifecycle-compiler:2.0.0-alpha1'
 
     implementation deps.rxJava
     implementation deps.rxAndroid
@@ -54,19 +64,19 @@ dependencies {
     })
     annotationProcessor deps.daggerAndroidProccesor
 
-    implementation deps.appCompat
-    implementation deps.supportCompat
+    implementation 'androidx.appcompat:appcompat:1.0.0-alpha3'
+    implementation 'androidx.core:core:1.0.0-alpha3'
 
-    implementation deps.archCompontentsImplementation
-    annotationProcessor deps.archComponentsAnnotationProcessor
+    implementation 'androidx.lifecycle:lifecycle-extensions:2.0.0-alpha1'
+    annotationProcessor 'androidx.lifecycle:lifecycle-compiler:2.0.0-alpha1'
 
-    debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.5.4'
-    releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.4'
+//    debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.5.4'
+//    releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.4'
 
-    androidTestImplementation deps.supportAnnotations
-    androidTestImplementation deps.supportTestRunner
-    androidTestImplementation deps.supportTestRules
-    androidTestImplementation deps.espressoCore
+    androidTestImplementation 'androidx.annotation:annotation:1.0.0-alpha3'
+    androidTestImplementation 'androidx.test:runner:1.1.0-alpha3'
+    androidTestImplementation 'androidx.test:rules:1.1.0-alpha3'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0-alpha3'
 
     testImplementation deps.junit
 }

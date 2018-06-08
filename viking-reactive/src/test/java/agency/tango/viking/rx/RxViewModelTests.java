@@ -1,6 +1,6 @@
 package agency.tango.viking.rx;
 
-import android.databinding.Bindable;
+import androidx.databinding.Bindable;
 
 import org.junit.Before;
 import org.junit.Test;

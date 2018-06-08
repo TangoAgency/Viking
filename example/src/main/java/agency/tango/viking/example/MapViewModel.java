@@ -1,10 +1,10 @@
 package agency.tango.viking.example;
 
-import android.arch.lifecycle.MutableLiveData;
+import androidx.lifecycle.MutableLiveData;
 import android.content.Context;
-import android.databinding.Bindable;
-import android.databinding.ObservableArrayList;
-import android.databinding.ObservableList;
+import androidx.databinding.Bindable;
+import androidx.databinding.ObservableArrayList;
+import androidx.databinding.ObservableList;
 import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;

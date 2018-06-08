@@ -16,10 +16,10 @@ import static com.squareup.javapoet.TypeSpec.classBuilder;
 import static javax.lang.model.element.Modifier.ABSTRACT;
 import static javax.lang.model.element.Modifier.PUBLIC;
 
-public class ModuleScopeCodeGenerator implements ExtendedCodeBuilder {
+public class ModuleScopedCodeGenerator implements ExtendedCodeBuilder {
   private String moduleName;
 
-  public ModuleScopeCodeGenerator(String moduleName) {
+  public ModuleScopedCodeGenerator(String moduleName) {
     this.moduleName = moduleName;
   }
 
@@ -31,20 +31,29 @@ public class ModuleScopeCodeGenerator implements ExtendedCodeBuilder {
     builder.addAnnotation(Module.class);
 
     for (AnnotatedClass annotatedClass : annotatedClasses) {
+      AnnotationSpec.Builder annotationBuilder =
+          AnnotationSpec.builder(get("dagger.android", "ContributesAndroidInjector"));
+
+      String modules = ModuleBuilderUtil.buildModulesAttribute(annotatedClass);
+      annotationBuilder.addMember("modules", modules);
+
       builder.addMethod(
           methodBuilder("provides" + annotatedClass.getClassName())
-              .addAnnotation(AnnotationSpec.builder(get("dagger.android", "ContributesAndroidInjector")).build())
+              .addAnnotation(annotationBuilder.build())
               .addModifiers(PUBLIC, ABSTRACT)
               .returns(get(annotatedClass.getTypeElement()))
               .build());
 
       for (int i = 0; i < annotatedClass.getExecutableElements().size(); i++) {
-        ExecutableElement element = (ExecutableElement) annotatedClass.getExecutableElements().get(i);
+        ExecutableElement element =
+            (ExecutableElement) annotatedClass.getExecutableElements().get(i);
 
         builder.addMethod(methodBuilder("provides" + element.getSimpleName())
             .addAnnotation(Provides.class)
             .addModifiers(PUBLIC)
-            .addParameter(ParameterSpec.builder(get(annotatedClass.getTypeElement()), "view").build())
+            .addParameter(ParameterSpec
+                .builder(get(annotatedClass.getTypeElement()), "view")
+                .build())
             .addCode("return view.$N();", element.getSimpleName())
             .returns(TypeName.get(element.getReturnType()))
             .build());

@@ -1,9 +1,7 @@
 package agency.tango.viking.example.di;
 
 import android.app.Application;
-
 import net.droidlabs.dagger.annotations.AppScope;
-
 import agency.tango.viking.di.ScreenMappings;
 import dagger.BindsInstance;
 import dagger.Component;

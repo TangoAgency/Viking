@@ -24,7 +24,7 @@ public class MapActivity extends MapAwareActivityView<MapViewModel, ActivityMapB
     if (savedInstanceState == null) {
       getSupportFragmentManager()
           .beginTransaction()
-          .add(R.id.fragmentBla, MvvmFrament.newInstance())
+          .add(R.id.fragmentBla, MvvmFragment.newInstance())
           .commitAllowingStateLoss();
     }
   }
@@ -50,6 +50,6 @@ public class MapActivity extends MapAwareActivityView<MapViewModel, ActivityMapB
 
   @AutoProvides
   public String test() {
-    return "Hello workd";
+    return "Hello world";
   }
 }

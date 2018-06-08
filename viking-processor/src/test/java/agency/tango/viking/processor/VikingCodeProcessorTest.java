@@ -11,11 +11,14 @@ import static com.google.testing.compile.JavaSourcesSubjectFactory.javaSources;
 
 public class VikingCodeProcessorTest {
   @Test
-  public void vikingCodeProcessor_unScopedFragment_generatesScreenMappingsModule() {
-    JavaFileObject testActivity = JavaFileObjects.forSourceString("test.TestActivity", getTestActivity());
-    JavaFileObject testFragment = JavaFileObjects.forSourceString("test.TestFragment", getTestFragment());
+  public void unScopedFragment_generatesScreenMappingsModule() {
+    JavaFileObject testActivity = JavaFileObjects.forSourceString("test.TestActivity",
+        getTestActivity());
+    JavaFileObject testFragment = JavaFileObjects.forSourceString("test.TestFragment",
+        getTestFragment());
 
-    JavaFileObject expectedScreenMappings = JavaFileObjects.forSourceString("agency.tango.viking.di.ScreenMappings",
+    JavaFileObject expectedScreenMappings = JavaFileObjects.forSourceString(
+        "agency.tango.viking.di.ScreenMappings",
         "package agency.tango.viking.di;\n"
             + "import dagger.Module;\n"
             + "import dagger.android.ContributesAndroidInjector;\n"
@@ -47,23 +50,29 @@ public class VikingCodeProcessorTest {
   }
 
   @Test
-  public void vikingCodeProcessor_scopedFragment_generatesActivityFragmentsAndScreenMappingsModules() {
-    JavaFileObject testActivity = JavaFileObjects.forSourceString("test.TestActivity", getTestActivity());
+  public void scopedFragment_generatesActivityFragmentsAndScreenMappingsModules(
+  ) {
+    JavaFileObject testActivity = JavaFileObjects.forSourceString("test.TestActivity",
+        getTestActivity());
     JavaFileObject testFragment = JavaFileObjects.forSourceString("test.TestFragment",
         getTestFragmentWithScopesAttribute("TestActivity.class"));
 
-    JavaFileObject expectedActivityFragmentsModule = JavaFileObjects.forSourceString("test.ActivityFragments_Module",
+    JavaFileObject expectedActivityFragmentsModule = JavaFileObjects.forSourceString(
+        "test.ActivityFragments_Module",
         "package test;\n"
             + "import dagger.Module;\n"
             + "import dagger.android.ContributesAndroidInjector;\n"
             + "\n"
             + "@Module\n"
             + "public abstract class TestActivityFragments_Module {\n"
-            + "  @ContributesAndroidInjector\n"
+            + "  @ContributesAndroidInjector("
+            + "      modules = {test.TestFragment_Module.class}\n"
+            + "  )\n"
             + "  public abstract TestFragment providesTestFragment();\n"
             + "}");
 
-    JavaFileObject expectedScreenMappings = JavaFileObjects.forSourceString("agency.tango.viking.di.ScreenMappings",
+    JavaFileObject expectedScreenMappings = JavaFileObjects.forSourceString(
+        "agency.tango.viking.di.ScreenMappings",
         "package agency.tango.viking.di;\n"
             + "import dagger.Module;\n"
             + "import dagger.android.ContributesAndroidInjector;\n"
@@ -88,21 +97,26 @@ public class VikingCodeProcessorTest {
   }
 
   @Test
-  public void vikingCodeProcessor_doubleScopedFragment_generatesActivitiesFragmentsAndScreenMappingsModules() {
-    JavaFileObject testActivity = JavaFileObjects.forSourceString("test.TestActivity", getTestActivity());
+  public void doubleScopedFragment_generatesActivitiesFragmentsAndScreenMappingsModules() {
+    JavaFileObject testActivity = JavaFileObjects.forSourceString("test.TestActivity",
+        getTestActivity());
     JavaFileObject secondTestActivity = JavaFileObjects.forSourceString(
         "test.SecondTestActivity", getSecondTestActivity());
     JavaFileObject testFragment = JavaFileObjects.forSourceString(
-        "test.TestFragment", getTestFragmentWithScopesAttribute("TestActivity.class", "SecondTestActivity.class"));
+        "test.TestFragment",
+        getTestFragmentWithScopesAttribute("TestActivity.class", "SecondTestActivity.class"));
 
-    JavaFileObject expectedActivityFragmentsModule = JavaFileObjects.forSourceString("test.ActivityFragments_Module",
+    JavaFileObject expectedActivityFragmentsModule = JavaFileObjects.forSourceString(
+        "test.ActivityFragments_Module",
         "package test;\n"
             + "import dagger.Module;\n"
             + "import dagger.android.ContributesAndroidInjector;\n"
             + "\n"
             + "@Module\n"
             + "public abstract class TestActivityFragments_Module {\n"
-            + "  @ContributesAndroidInjector\n"
+            + "  @ContributesAndroidInjector(\n"
+            + "      modules = {test.TestFragment_Module.class}\n"
+            + "  )\n"
             + "  public abstract TestFragment providesTestFragment();\n"
             + "}");
 
@@ -114,11 +128,14 @@ public class VikingCodeProcessorTest {
             + "\n"
             + "@Module\n"
             + "public abstract class SecondTestActivityFragments_Module {\n"
-            + "  @ContributesAndroidInjector\n"
+            + "  @ContributesAndroidInjector(\n"
+            + "      modules = {test.TestFragment_Module.class}\n"
+            + "  )\n"
             + "  public abstract TestFragment providesTestFragment();\n"
             + "}");
 
-    JavaFileObject expectedScreenMappings = JavaFileObjects.forSourceString("agency.tango.viking.di.ScreenMappings",
+    JavaFileObject expectedScreenMappings = JavaFileObjects.forSourceString(
+        "agency.tango.viking.di.ScreenMappings",
         "package agency.tango.viking.di;\n"
             + "import dagger.Module;\n"
             + "import dagger.android.ContributesAndroidInjector;\n"
@@ -147,11 +164,12 @@ public class VikingCodeProcessorTest {
         .compilesWithoutError()
         .and()
         .generatesSources(
-            expectedActivityFragmentsModule, expectedSecondActivityFragmentsModule, expectedScreenMappings);
+            expectedActivityFragmentsModule, expectedSecondActivityFragmentsModule,
+            expectedScreenMappings);
   }
 
   @Test
-  public void vikingCodeProcessor_includesModule_generatesScreenMappingsModule() {
+  public void includesModule_generatesScreenMappingsModule() {
     JavaFileObject testModule = JavaFileObjects.forSourceString("test.TestModule",
         "package test;\n"
             + "import dagger.Module;\n"
@@ -170,7 +188,8 @@ public class VikingCodeProcessorTest {
             + "    \n"
             + "}");
 
-    JavaFileObject expectedScreenMappings = JavaFileObjects.forSourceString("agency.tango.viking.di.ScreenMappings",
+    JavaFileObject expectedScreenMappings = JavaFileObjects.forSourceString(
+        "agency.tango.viking.di.ScreenMappings",
         "package agency.tango.viking.di;\n"
             + "import dagger.Module;\n"
             + "import dagger.android.ContributesAndroidInjector;\n"

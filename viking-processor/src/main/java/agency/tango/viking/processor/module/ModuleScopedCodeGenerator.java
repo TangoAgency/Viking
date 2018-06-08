@@ -1,6 +1,7 @@
 package agency.tango.viking.processor.module;
 
 import com.squareup.javapoet.AnnotationSpec;
+import com.squareup.javapoet.CodeBlock;
 import com.squareup.javapoet.ParameterSpec;
 import com.squareup.javapoet.TypeName;
 import com.squareup.javapoet.TypeSpec;
@@ -34,8 +35,8 @@ public class ModuleScopedCodeGenerator implements ExtendedCodeBuilder {
       AnnotationSpec.Builder annotationBuilder =
           AnnotationSpec.builder(get("dagger.android", "ContributesAndroidInjector"));
 
-      String modules = ModuleBuilderUtil.buildModulesAttribute(annotatedClass);
-      annotationBuilder.addMember("modules", modules);
+      CodeBlock modules = ModuleBuilderUtil.buildModulesAttribute(annotatedClass);
+      annotationBuilder.addMember("modules", modules.toBuilder().add("}").build());
 
       builder.addMethod(
           methodBuilder("provides" + annotatedClass.getClassName())

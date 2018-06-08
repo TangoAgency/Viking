@@ -1,8 +1,8 @@
 package agency.tango.viking.processor.module;
 
 import com.squareup.javapoet.AnnotationSpec;
+import com.squareup.javapoet.CodeBlock;
 import com.squareup.javapoet.MethodSpec;
-import com.squareup.javapoet.TypeName;
 import com.squareup.javapoet.TypeSpec;
 import net.droidlabs.dagger.annotations.ActivityScope;
 import java.util.List;
@@ -28,19 +28,19 @@ public class ScreenMappingsBuilder {
       AnnotationSpec.Builder annotationBuilder =
           AnnotationSpec.builder(get("dagger.android", "ContributesAndroidInjector"));
 
-      String modules = ModuleBuilderUtil.buildModulesAttribute(annotatedClass);
-      StringBuilder modulesBuilder = new StringBuilder(modules).deleteCharAt(modules.length() - 1);
+      CodeBlock modules = ModuleBuilderUtil.buildModulesAttribute(annotatedClass);
+      CodeBlock.Builder modulesBuilder = modules.toBuilder();
 
       for (TypeMirror type : typesWithScope) {
         if (annotatedClass.getTypeMirror().equals(type)) {
           modulesBuilder
-              .append(", ")
-              .append(TypeName.get(type).toString())
-              .append("Fragments_Module.class");
+              .add(", ")
+              .add("$L", get(type))
+              .add("Fragments_Module.class");
         }
       }
 
-      modules = modulesBuilder.append("}").toString();
+      modules = modulesBuilder.add("}").build();
       annotationBuilder.addMember("modules", modules);
 
       builder.addMethod(MethodSpec.methodBuilder(

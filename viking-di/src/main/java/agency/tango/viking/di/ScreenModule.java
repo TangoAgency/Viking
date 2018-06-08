@@ -7,7 +7,7 @@ import net.droidlabs.dagger.annotations.ActivityScope;
 import dagger.Module;
 import dagger.Provides;
 
-//@ActivityScope
+@ActivityScope
 @Module
 public abstract class ScreenModule<T> {
   private final Context context;

@@ -1,6 +1,6 @@
 package agency.tango.viking.processor.module;
 
-import com.squareup.javapoet.TypeName;
+import com.squareup.javapoet.CodeBlock;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -15,7 +15,7 @@ public class ModuleBuilderUtil {
   private ModuleBuilderUtil() {
   }
 
-  public static String buildModulesAttribute(AnnotatedClass annotatedClass) {
+  public static CodeBlock buildModulesAttribute(AnnotatedClass annotatedClass) {
     Map<String, Object> parsedAnnotation = getAnnotation(AutoModule.class,
         annotatedClass.getTypeElement());
 
@@ -26,13 +26,13 @@ public class ModuleBuilderUtil {
       typeMirrors.add(typeMirror);
     }
 
-    String modules = String.format("{%s.class",
-        get(annotatedClass.getPackage(), annotatedClass.getClassName() + "_Module").toString());
-    StringBuilder stringBuilder = new StringBuilder(modules);
+    CodeBlock.Builder builder = CodeBlock.builder().add("{$T.class",
+            get(annotatedClass.getPackage(), annotatedClass.getClassName() + "_Module"));
+
     for (TypeMirror typeMirror : typeMirrors) {
-      stringBuilder.append(", ").append(TypeName.get(typeMirror).toString()).append(".class");
+      builder.add(", ").add("$T.class", get(typeMirror));
     }
 
-    return stringBuilder.append("}").toString();
+    return builder.build();
   }
 }

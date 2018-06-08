@@ -52,7 +52,6 @@ public class VikingCodeProcessorTest {
     JavaFileObject testFragment = JavaFileObjects.forSourceString("test.TestFragment",
         getTestFragmentWithScopesAttribute("TestActivity.class"));
 
-
     JavaFileObject expectedActivityFragmentsModule = JavaFileObjects.forSourceString("test.ActivityFragments_Module",
         "package test;\n"
             + "import dagger.Module;\n"
@@ -88,6 +87,113 @@ public class VikingCodeProcessorTest {
         .generatesSources(expectedActivityFragmentsModule, expectedScreenMappings);
   }
 
+  @Test
+  public void vikingCodeProcessor_doubleScopedFragment_generatesActivitiesFragmentsAndScreenMappingsModules() {
+    JavaFileObject testActivity = JavaFileObjects.forSourceString("test.TestActivity", getTestActivity());
+    JavaFileObject secondTestActivity = JavaFileObjects.forSourceString(
+        "test.SecondTestActivity", getSecondTestActivity());
+    JavaFileObject testFragment = JavaFileObjects.forSourceString(
+        "test.TestFragment", getTestFragmentWithScopesAttribute("TestActivity.class", "SecondTestActivity.class"));
+
+    JavaFileObject expectedActivityFragmentsModule = JavaFileObjects.forSourceString("test.ActivityFragments_Module",
+        "package test;\n"
+            + "import dagger.Module;\n"
+            + "import dagger.android.ContributesAndroidInjector;\n"
+            + "\n"
+            + "@Module\n"
+            + "public abstract class TestActivityFragments_Module {\n"
+            + "  @ContributesAndroidInjector\n"
+            + "  public abstract TestFragment providesTestFragment();\n"
+            + "}");
+
+    JavaFileObject expectedSecondActivityFragmentsModule = JavaFileObjects.forSourceString(
+        "test.SecondActivityFragments_Module",
+        "package test;\n"
+            + "import dagger.Module;\n"
+            + "import dagger.android.ContributesAndroidInjector;\n"
+            + "\n"
+            + "@Module\n"
+            + "public abstract class SecondTestActivityFragments_Module {\n"
+            + "  @ContributesAndroidInjector\n"
+            + "  public abstract TestFragment providesTestFragment();\n"
+            + "}");
+
+    JavaFileObject expectedScreenMappings = JavaFileObjects.forSourceString("agency.tango.viking.di.ScreenMappings",
+        "package agency.tango.viking.di;\n"
+            + "import dagger.Module;\n"
+            + "import dagger.android.ContributesAndroidInjector;\n"
+            + "import net.droidlabs.dagger.annotations.ActivityScope;\n"
+            + "import test.SecondTestActivity;\n"
+            + "import test.TestActivity;\n"
+            + "\n"
+            + "@Module\n"
+            + "public abstract class ScreenMappings {\n"
+            + "  @ContributesAndroidInjector(\n"
+            + "      modules = {test.TestActivity_Module.class, test.TestActivityFragments_Module.class}\n"
+            + "  )\n"
+            + "  @ActivityScope\n"
+            + "  public abstract TestActivity provideTestActivity();\n"
+            + "\n"
+            + "  @ContributesAndroidInjector(\n"
+            + "      modules = {test.SecondTestActivity_Module.class, test.SecondTestActivityFragments_Module.class}\n"
+            + "  )\n"
+            + "  @ActivityScope\n"
+            + "  public abstract SecondTestActivity provideSecondTestActivity();\n"
+            + "}");
+
+    assertAbout(javaSources())
+        .that(ImmutableSet.of(testActivity, secondTestActivity, testFragment))
+        .processedWith(new VikingCodeProcessor())
+        .compilesWithoutError()
+        .and()
+        .generatesSources(
+            expectedActivityFragmentsModule, expectedSecondActivityFragmentsModule, expectedScreenMappings);
+  }
+
+  @Test
+  public void vikingCodeProcessor_includesModule_generatesScreenMappingsModule() {
+    JavaFileObject testModule = JavaFileObjects.forSourceString("test.TestModule",
+        "package test;\n"
+            + "import dagger.Module;\n"
+            + "\n"
+            + "@Module\n"
+            + "public class TestModule {\n"
+            + "    \n"
+            + "}");
+
+    JavaFileObject testActivity = JavaFileObjects.forSourceString("test.TestActivity",
+        "package test;\n"
+            + "import agency.tango.viking.annotations.AutoModule;\n"
+            + "\n"
+            + "@AutoModule(includes = {TestModule.class})\n"
+            + "public class TestActivity {\n"
+            + "    \n"
+            + "}");
+
+    JavaFileObject expectedScreenMappings = JavaFileObjects.forSourceString("agency.tango.viking.di.ScreenMappings",
+        "package agency.tango.viking.di;\n"
+            + "import dagger.Module;\n"
+            + "import dagger.android.ContributesAndroidInjector;\n"
+            + "import net.droidlabs.dagger.annotations.ActivityScope;\n"
+            + "import test.TestActivity;\n"
+            + "\n"
+            + "@Module\n"
+            + "public abstract class ScreenMappings {\n"
+            + "  @ContributesAndroidInjector(\n"
+            + "      modules = {test.TestActivity_Module.class, test.TestModule.class}\n"
+            + "  )\n"
+            + "  @ActivityScope\n"
+            + "  public abstract TestActivity provideTestActivity();\n"
+            + "}");
+
+    assertAbout(javaSources())
+        .that(ImmutableSet.of(testActivity, testModule))
+        .processedWith(new VikingCodeProcessor())
+        .compilesWithoutError()
+        .and()
+        .generatesSources(expectedScreenMappings);
+  }
+
   private String getTestFragment() {
     return "package test;\n"
         + "import agency.tango.viking.annotations.AutoModule;\n"
@@ -108,19 +214,28 @@ public class VikingCodeProcessorTest {
         + "}";
   }
 
+  private String getSecondTestActivity() {
+    return "package test;\n"
+        + "import agency.tango.viking.annotations.AutoModule;\n"
+        + "\n"
+        + "@AutoModule\n"
+        + "public class SecondTestActivity {\n"
+        + "    \n"
+        + "}";
+  }
+
   private String getTestFragmentWithScopesAttribute(String... scopesAttributes) {
     String autoModule = "@AutoModule";
     String testFragment = getTestFragment();
 
-    String scopesToInsert = "";
-    if (scopesAttributes.length == 1) {
-      scopesToInsert = String.format("(scopes = {%s})", scopesAttributes[0]);
-    } else if (scopesAttributes.length == 2) {
-      scopesToInsert = String.format("(scopes = {%s, %s})", scopesAttributes[0], scopesAttributes[1]);
+    StringBuilder scopesBuilder = new StringBuilder("(scopes = {");
+    for (String scopeAttribute : scopesAttributes) {
+      scopesBuilder.append(String.format("%s,", scopeAttribute));
     }
+    scopesBuilder.append("})");
 
     return new StringBuilder(testFragment)
-        .insert(testFragment.indexOf(autoModule) + autoModule.length(), scopesToInsert)
+        .insert(testFragment.indexOf(autoModule) + autoModule.length(), scopesBuilder.toString())
         .toString();
   }
 

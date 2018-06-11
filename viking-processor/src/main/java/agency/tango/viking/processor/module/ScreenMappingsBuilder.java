@@ -1,7 +1,6 @@
 package agency.tango.viking.processor.module;
 
 import com.squareup.javapoet.AnnotationSpec;
-import com.squareup.javapoet.CodeBlock;
 import com.squareup.javapoet.MethodSpec;
 import com.squareup.javapoet.TypeSpec;
 import net.droidlabs.dagger.annotations.ActivityScope;
@@ -10,6 +9,8 @@ import javax.lang.model.element.Modifier;
 import javax.lang.model.type.TypeMirror;
 import agency.tango.viking.processor.AnnotatedClass;
 import agency.tango.viking.processor.Util;
+import agency.tango.viking.processor.annotation.AnnotationUtil;
+import agency.tango.viking.processor.annotation.AnnotationAttributesBuilder;
 import dagger.Module;
 
 import static com.squareup.javapoet.ClassName.get;
@@ -29,20 +30,18 @@ public class ScreenMappingsBuilder {
       AnnotationSpec.Builder annotationBuilder =
           AnnotationSpec.builder(get("dagger.android", "ContributesAndroidInjector"));
 
-      CodeBlock modules = ModuleBuilderUtil.buildModulesAttribute(annotatedClass);
-      CodeBlock.Builder modulesBuilder = modules.toBuilder();
+      AnnotationAttributesBuilder modulesAttributesBuilder = new AnnotationAttributesBuilder()
+          .addAttribute(annotatedClass.getPackage(), annotatedClass.getClassName() + "_Module")
+          .addAttributes(AnnotationUtil.getValuesForAttribute("includes", annotatedClass));
 
       for (TypeMirror type : typesWithScope) {
         if (annotatedClass.getTypeMirror().equals(type)) {
-          modulesBuilder
-              .add(", ")
-              .add("$T.class", get(Util.getPackageName(type),
-                  Util.getSimpleTypeName(type) + "Fragments_Module"));
+          modulesAttributesBuilder
+              .addAttribute(Util.getPackageName(type), Util.getSimpleTypeName(type) + "Fragments_Module");
         }
       }
 
-      modules = modulesBuilder.add("}").build();
-      annotationBuilder.addMember("modules", modules);
+      annotationBuilder.addMember("modules", modulesAttributesBuilder.build());
 
       builder.addMethod(MethodSpec.methodBuilder(
           String.format("provide%s", annotatedClass.getClassName()))

@@ -9,6 +9,7 @@ import java.util.List;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.type.TypeMirror;
 import agency.tango.viking.processor.AnnotatedClass;
+import agency.tango.viking.processor.Util;
 import dagger.Module;
 
 import static com.squareup.javapoet.ClassName.get;
@@ -35,8 +36,8 @@ public class ScreenMappingsBuilder {
         if (annotatedClass.getTypeMirror().equals(type)) {
           modulesBuilder
               .add(", ")
-              .add("$L", get(type))
-              .add("Fragments_Module.class");
+              .add("$T.class", get(Util.getPackageName(type),
+                  Util.getSimpleTypeName(type) + "Fragments_Module"));
         }
       }
 

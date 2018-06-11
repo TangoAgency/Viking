@@ -11,7 +11,7 @@ import agency.tango.viking.processor.AnnotatedClass;
 import static agency.tango.viking.processor.Util.getAnnotation;
 import static com.squareup.javapoet.ClassName.get;
 
-public class ModuleBuilderUtil {
+public final class ModuleBuilderUtil {
   private ModuleBuilderUtil() {
   }
 

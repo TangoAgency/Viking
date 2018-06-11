@@ -13,7 +13,8 @@ public final class AnnotationUtil {
   private AnnotationUtil() {
   }
 
-  public static List<TypeMirror> getValuesForAttribute(String attribute, AnnotatedClass annotatedClass) {
+  public static List<TypeMirror> getValuesForAttribute(String attribute,
+      AnnotatedClass annotatedClass) {
     Map<String, Object> parsedAnnotation = getAnnotation(AutoModule.class,
         annotatedClass.getTypeElement());
 

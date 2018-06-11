@@ -9,7 +9,6 @@ import com.squareup.javapoet.JavaFile;
 import com.squareup.javapoet.TypeSpec;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -25,13 +24,10 @@ import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.TypeMirror;
 import agency.tango.viking.annotations.AutoModule;
 import agency.tango.viking.annotations.AutoProvides;
-import agency.tango.viking.annotations.ProvidesViewModel;
 import agency.tango.viking.processor.module.ComponentCodeBuilder;
 import agency.tango.viking.processor.module.ModuleCodeGenerator;
 import agency.tango.viking.processor.module.ModuleScopedCodeGenerator;
-import agency.tango.viking.processor.module.ScreenBindingsModuleBuilder;
 import agency.tango.viking.processor.module.ScreenMappingsBuilder;
-import agency.tango.viking.processor.module.ViewModelMappingsBuilder;
 
 import static agency.tango.viking.processor.Util.getAnnotation;
 import static com.squareup.javapoet.JavaFile.builder;
@@ -68,7 +64,6 @@ public class VikingCodeProcessor extends AbstractProcessor {
   public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
 
     handleAutoModule(roundEnv);
-    handleAutoModule2(roundEnv);
     return true;
   }
 
@@ -139,28 +134,6 @@ public class VikingCodeProcessor extends AbstractProcessor {
     classesWithinOneScope.add(annotatedClass);
   }
 
-  private void handleAutoModule2(RoundEnvironment roundEnv) {
-    ArrayList<AnnotatedClass> annotatedClassClasses = new ArrayList<>();
-    for (Element annotatedElement : roundEnv.getElementsAnnotatedWith(ProvidesViewModel.class)) {
-
-      TypeElement annotatedClass = (TypeElement) annotatedElement;
-      if (!isValidClass(annotatedClass)) {
-        continue;
-      }
-
-      annotatedClassClasses.add(
-          new AnnotatedClass(annotatedClass, Collections.<ExecutableElement>emptyList(),
-              annotatedClass));
-    }
-
-    try {
-      generateViewModelRelated(annotatedClassClasses);
-    } catch (IOException e) {
-      messager.printMessage(ERROR, "Couldn't generate class");
-    }
-    return;
-  }
-
   private boolean isValidClass(TypeElement annotatedClass) {
 
     if (!ClassValidator.isPublic(annotatedClass)) {
@@ -217,10 +190,6 @@ public class VikingCodeProcessor extends AbstractProcessor {
       componentFile.writeTo(processingEnvironment.getFiler());
     }
 
-    JavaFile screenBindingsFile = builder("agency.tango.viking.di",
-        new ScreenBindingsModuleBuilder().buildTypeSpec(annotatedClasses)).build();
-    screenBindingsFile.writeTo(processingEnvironment.getFiler());
-
     JavaFile screenMappingsFile = builder("agency.tango.viking.di",
         new ScreenMappingsBuilder().buildTypeSpec(annotatedClasses, typesWithScope)).build();
     screenMappingsFile.writeTo(processingEnvironment.getFiler());
@@ -237,16 +206,6 @@ public class VikingCodeProcessor extends AbstractProcessor {
       JavaFile moduleFile = builder(Util.getPackageName(typeMirror), moduleTypeSpec).build();
       moduleFile.writeTo(processingEnvironment.getFiler());
     }
-  }
-
-  private void generateViewModelRelated(List<AnnotatedClass> annotatedClasses) throws IOException {
-    if (annotatedClasses.size() == 0) {
-      return;
-    }
-
-    JavaFile viewModelMappingsFile = builder("agency.tango.viking.di",
-        new ViewModelMappingsBuilder().buildTypeSpec(annotatedClasses)).build();
-    viewModelMappingsFile.writeTo(processingEnvironment.getFiler());
   }
 }
 

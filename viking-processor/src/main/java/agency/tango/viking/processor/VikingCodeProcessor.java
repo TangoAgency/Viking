@@ -10,7 +10,6 @@ import com.squareup.javapoet.TypeSpec;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import javax.annotation.processing.AbstractProcessor;
 import javax.annotation.processing.Messager;
@@ -24,12 +23,12 @@ import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.TypeMirror;
 import agency.tango.viking.annotations.AutoModule;
 import agency.tango.viking.annotations.AutoProvides;
+import agency.tango.viking.processor.annotation.AnnotationUtil;
 import agency.tango.viking.processor.module.ComponentCodeBuilder;
 import agency.tango.viking.processor.module.ModuleCodeGenerator;
 import agency.tango.viking.processor.module.ModuleScopedCodeGenerator;
 import agency.tango.viking.processor.module.ScreenMappingsBuilder;
 
-import static agency.tango.viking.processor.Util.getAnnotation;
 import static com.squareup.javapoet.JavaFile.builder;
 import static java.util.Collections.singleton;
 import static javax.lang.model.SourceVersion.latestSupported;
@@ -68,7 +67,7 @@ public class VikingCodeProcessor extends AbstractProcessor {
   }
 
   private void handleAutoModule(RoundEnvironment roundEnv) {
-    List<AnnotatedClass> annotatedClassClasses = new ArrayList<>();
+    List<AnnotatedClass> annotatedClasses = new ArrayList<>();
     ListMultimap<TypeMirror, AnnotatedClass> annotatedClassesWithScopeAttribute =
         MultimapBuilder.hashKeys().arrayListValues().build();
     for (Element annotatedElement : roundEnv.getElementsAnnotatedWith(AutoModule.class)) {
@@ -80,28 +79,34 @@ public class VikingCodeProcessor extends AbstractProcessor {
 
       AnnotatedClass annotatedClass = buildAnnotatedClass(annotatedTypeElement);
 
-      List<TypeMirror> typeMirrors = getScopeTypeMirrors(annotatedClass);
-      for (TypeMirror typeMirror : typeMirrors) {
-        addToTypesWithScope(typeMirror);
-        addToScopedAnnotatedClass(annotatedClassesWithScopeAttribute, annotatedClass, typeMirror);
-      }
-
-      if (typeMirrors.isEmpty()) {
-        annotatedClassClasses.add(annotatedClass);
+      boolean saved = saveScopeRelated(annotatedClassesWithScopeAttribute, annotatedClass);
+      if (!saved) {
+        annotatedClasses.add(annotatedClass);
       }
     }
 
     try {
-      generateModules(ImmutableSet
-          .copyOf(Iterables
-              .concat(annotatedClassClasses, annotatedClassesWithScopeAttribute.values()))
-          .asList());
+      Iterable<AnnotatedClass> allAnnotatedClasses = Iterables
+          .concat(annotatedClasses, annotatedClassesWithScopeAttribute.values());
+
+      generateModules(ImmutableSet.copyOf(allAnnotatedClasses).asList());
       generateScopeRelated(annotatedClassesWithScopeAttribute);
-      generateMappings(annotatedClassClasses);
+      generateMappings(annotatedClasses);
     } catch (IOException e) {
       messager.printMessage(ERROR, "Couldn't generate class");
     }
-    return;
+  }
+
+  private boolean saveScopeRelated(
+      ListMultimap<TypeMirror, AnnotatedClass> annotatedClassesWithScopeAttribute,
+      AnnotatedClass annotatedClass) {
+    List<TypeMirror> typeMirrors = AnnotationUtil.getValuesForAttribute("scopes", annotatedClass);
+    for (TypeMirror typeMirror : typeMirrors) {
+      addToTypesWithScope(typeMirror);
+      addToScopedAnnotatedClass(annotatedClassesWithScopeAttribute, annotatedClass, typeMirror);
+    }
+
+    return !typeMirrors.isEmpty();
   }
 
   private void addToTypesWithScope(TypeMirror typeMirror) {
@@ -113,24 +118,10 @@ public class VikingCodeProcessor extends AbstractProcessor {
     typesWithScope.add(typeMirror);
   }
 
-  private List<TypeMirror> getScopeTypeMirrors(AnnotatedClass annotatedClass) {
-    Map<String, Object> parsedAnnotation = getAnnotation(AutoModule.class,
-        annotatedClass.getTypeElement());
-
-    List<TypeMirror> typeMirrors = new ArrayList<>();
-    Object[] types = (Object[]) parsedAnnotation.get("scopes");
-    for (Object obj : types) {
-      TypeMirror typeMirror = (TypeMirror) obj;
-      typeMirrors.add(typeMirror);
-    }
-    return typeMirrors;
-  }
-
   private void addToScopedAnnotatedClass(
       ListMultimap<TypeMirror, AnnotatedClass> annotatedClassesWithScopeAttribute,
       AnnotatedClass annotatedClass, TypeMirror typeMirror) {
-    List<AnnotatedClass> classesWithinOneScope = annotatedClassesWithScopeAttribute.get(
-        typeMirror);
+    List<AnnotatedClass> classesWithinOneScope = annotatedClassesWithScopeAttribute.get(typeMirror);
     classesWithinOneScope.add(annotatedClass);
   }
 
@@ -178,6 +169,19 @@ public class VikingCodeProcessor extends AbstractProcessor {
     }
   }
 
+  private void generateScopeRelated(
+      ListMultimap<TypeMirror, AnnotatedClass> annotatedClassesWithScopeAttribute)
+      throws IOException {
+    for (TypeMirror typeMirror : annotatedClassesWithScopeAttribute.keySet()) {
+      List<AnnotatedClass> annotatedClasses = annotatedClassesWithScopeAttribute.get(typeMirror);
+
+      TypeSpec moduleTypeSpec = new ModuleScopedCodeGenerator(Util.getSimpleTypeName(typeMirror))
+          .buildTypeSpec(annotatedClasses.toArray(new AnnotatedClass[annotatedClasses.size()]));
+      JavaFile moduleFile = builder(Util.getPackageName(typeMirror), moduleTypeSpec).build();
+      moduleFile.writeTo(processingEnvironment.getFiler());
+    }
+  }
+
   private void generateMappings(List<AnnotatedClass> annotatedClasses) throws IOException {
     if (annotatedClasses.size() == 0) {
       return;
@@ -193,19 +197,6 @@ public class VikingCodeProcessor extends AbstractProcessor {
     JavaFile screenMappingsFile = builder("agency.tango.viking.di",
         new ScreenMappingsBuilder().buildTypeSpec(annotatedClasses, typesWithScope)).build();
     screenMappingsFile.writeTo(processingEnvironment.getFiler());
-  }
-
-  private void generateScopeRelated(
-      ListMultimap<TypeMirror, AnnotatedClass> annotatedClassesWithScopeAttribute)
-      throws IOException {
-    for (TypeMirror typeMirror : annotatedClassesWithScopeAttribute.keySet()) {
-      List<AnnotatedClass> annotatedClasses = annotatedClassesWithScopeAttribute.get(typeMirror);
-
-      TypeSpec moduleTypeSpec = new ModuleScopedCodeGenerator(Util.getSimpleTypeName(typeMirror))
-          .buildTypeSpec(annotatedClasses.toArray(new AnnotatedClass[annotatedClasses.size()]));
-      JavaFile moduleFile = builder(Util.getPackageName(typeMirror), moduleTypeSpec).build();
-      moduleFile.writeTo(processingEnvironment.getFiler());
-    }
   }
 }
 

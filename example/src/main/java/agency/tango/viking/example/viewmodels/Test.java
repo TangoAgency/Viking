@@ -1,6 +1,6 @@
 package agency.tango.viking.example.viewmodels;
 
-import android.arch.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModel;
 import android.util.Log;
 
 import javax.inject.Inject;

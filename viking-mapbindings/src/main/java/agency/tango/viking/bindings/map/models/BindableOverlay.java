@@ -1,6 +1,6 @@
 package agency.tango.viking.bindings.map.models;
 
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 
 import com.google.android.gms.maps.model.GroundOverlay;
 import com.google.android.gms.maps.model.GroundOverlayOptions;

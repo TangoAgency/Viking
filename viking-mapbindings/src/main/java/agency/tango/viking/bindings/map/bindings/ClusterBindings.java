@@ -1,6 +1,6 @@
 package agency.tango.viking.bindings.map.bindings;
 
-import android.databinding.BindingAdapter;
+import androidx.databinding.BindingAdapter;
 
 import com.google.maps.android.clustering.Cluster;
 import com.google.maps.android.clustering.ClusterItem;

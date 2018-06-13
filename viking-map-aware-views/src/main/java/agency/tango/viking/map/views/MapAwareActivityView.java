@@ -1,8 +1,8 @@
 package agency.tango.viking.map.views;
 
-import android.databinding.ViewDataBinding;
+import androidx.databinding.ViewDataBinding;
 import android.os.Bundle;
-import android.support.annotation.LayoutRes;
+import androidx.annotation.LayoutRes;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import agency.tango.viking.mvvm.ActivityView;

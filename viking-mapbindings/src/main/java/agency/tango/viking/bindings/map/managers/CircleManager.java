@@ -1,6 +1,6 @@
 package agency.tango.viking.bindings.map.managers;
 
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.Circle;

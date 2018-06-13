@@ -1,7 +1,7 @@
 package agency.tango.viking.example.arch;
 
-import android.arch.lifecycle.ViewModel;
-import android.arch.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModelProvider;
 
 import net.droidlabs.dagger.annotations.AppScope;
 

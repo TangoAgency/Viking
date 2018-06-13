@@ -1,6 +1,6 @@
 package agency.tango.viking.bindings.map.managers;
 
-import android.databinding.ObservableList;
+import androidx.databinding.ObservableList;
 
 import com.google.android.gms.maps.GoogleMap;
 

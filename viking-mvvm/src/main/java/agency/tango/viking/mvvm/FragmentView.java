@@ -1,18 +1,16 @@
 package agency.tango.viking.mvvm;
 
-import android.arch.lifecycle.ViewModelProviders;
-import android.databinding.DataBindingUtil;
-import android.databinding.ViewDataBinding;
 import android.os.Bundle;
-import android.support.annotation.IdRes;
-import android.support.annotation.LayoutRes;
-import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import javax.inject.Inject;
-
+import androidx.annotation.IdRes;
+import androidx.annotation.LayoutRes;
+import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
+import androidx.databinding.ViewDataBinding;
+import androidx.lifecycle.ViewModelProviders;
 import dagger.android.support.DaggerFragment;
 
 public abstract class FragmentView<VM extends ViewModel, VD extends ViewDataBinding> extends

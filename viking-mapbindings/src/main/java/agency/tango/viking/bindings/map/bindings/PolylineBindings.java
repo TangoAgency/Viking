@@ -1,6 +1,6 @@
 package agency.tango.viking.bindings.map.bindings;
 
-import android.databinding.BindingAdapter;
+import androidx.databinding.BindingAdapter;
 
 import java.util.Collection;
 

@@ -34,9 +34,9 @@ subprojects { project ->
       }
     }
     dependencies {
-      classpath 'com.android.tools.build:gradle:3.0.1'
-      classpath 'gradle.plugin.com.kageiit:lintrules:1.1.2'
-      classpath 'com.novoda:bintray-release:0.7.0'
+      classpath 'com.android.tools.build:gradle:3.2.0-alpha17'
+      //classpath 'gradle.plugin.com.kageiit:lintrules:1.1.2'
+      //classpath 'com.novoda:bintray-release:0.8.1'
       classpath 'me.tatarka:gradle-retrolambda:3.7.0'
       classpath 'com.dicedmelon.gradle:jacoco-android:0.1.1'
     }
@@ -58,16 +58,16 @@ task clean(type: Delete) {
 
 ext {
   minSdkVersion = 15
-  targetSdkVersion = 27
-  compileSdkVersion = 27
-  buildToolsVersion = '27.0.3'
-  sourceCompatibilityVersion = JavaVersion.VERSION_1_7
-  targetCompatibilityVersion = JavaVersion.VERSION_1_7
+  targetSdkVersion = 28
+  compileSdkVersion = 28
+  buildToolsVersion = '28.0.0rc1'
+  sourceCompatibilityVersion = JavaVersion.VERSION_1_8
+  targetCompatibilityVersion = JavaVersion.VERSION_1_8
 }
 
 def androidToolsVersion = '27.0.3'
 def supportLibraryVersion = '27.0.2'
-def googlePlayServicesVersion = '11.8.0'
+def googlePlayServicesVersion = '15.0.1'
 
 allprojects {
   configurations.all {
@@ -95,7 +95,7 @@ ext.deps = [// Android
 
             espressoCore                     : 'com.android.support.test.espresso:espresso-core:3.0.1',
 
-            androidGradle                    : 'com.android.tools.build:gradle:3.0.1',
+            androidGradle                    : 'com.android.tools.build:gradle:3.2.0-alpha17',
 
 
             lint                             : "com.android.tools.lint:lint:$androidToolsVersion",
@@ -109,14 +109,14 @@ ext.deps = [// Android
 
             // Google Services
             googlePlayServicesMaps           : "com.google.android.gms:play-services-maps:$googlePlayServicesVersion",
-            googleMapsUtils                  : "com.google.maps.android:android-maps-utils:0.4.4",
+            googleMapsUtils                  : "com.google.maps.android:android-maps-utils:0.5",
 
             //dagger
-            dagger                           : 'com.google.dagger:dagger:2.11',
-            daggerCompiler                   : 'com.google.dagger:dagger-compiler:2.11',
-            daggerAndroid                    : "com.google.dagger:dagger-android:2.11",
-            daggerAndroidSupport             : "com.google.dagger:dagger-android-support:2.11",
-            daggerAndroidProccesor           : "com.google.dagger:dagger-android-processor:2.11",
+            dagger                           : 'com.google.dagger:dagger:2.16',
+            daggerCompiler                   : 'com.google.dagger:dagger-compiler:2.16',
+            daggerAndroid                    : "com.google.dagger:dagger-android:2.16",
+            daggerAndroidSupport             : "com.google.dagger:dagger-android-support:2.16",
+            daggerAndroidProccesor           : "com.google.dagger:dagger-android-processor:2.16",
 
             //RxJava
             rxJava                           : 'io.reactivex.rxjava2:rxjava:2.0.0',

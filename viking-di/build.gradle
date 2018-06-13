@@ -1,5 +1,5 @@
 apply plugin: 'java'
-apply plugin: 'com.novoda.bintray-release'
+// apply plugin: 'com.novoda.bintray-release'
 apply from: '../jacoco.gradle'
 
 def logger = new com.android.build.gradle.internal.LoggerWrapper(project.logger)
@@ -26,13 +26,13 @@ dependencies {
   testCompile files(org.gradle.internal.jvm.Jvm.current().getToolsJar())
 }
 
-publish {
-  userOrg = 'tangoagency'
-  groupId = 'agency.tango.android.viking'
-  artifactId = 'viking-di'
-  publishVersion = '0.0.1'
-  desc = ''
-  website = 'https://github.com/TangoAgency/Viking'
-}
+//publish {
+//  userOrg = 'tangoagency'
+//  groupId = 'agency.tango.android.viking'
+//  artifactId = 'viking-di'
+//  publishVersion = '0.0.1'
+//  desc = ''
+//  website = 'https://github.com/TangoAgency/Viking'
+//}
 
 apply from: rootProject.file('gradle/gradle-mvn-push.gradle')

@@ -1,8 +1,8 @@
 package agency.tango.viking.bindings.map.bindings;
 
-import android.databinding.BindingAdapter;
-import android.databinding.InverseBindingAdapter;
-import android.databinding.InverseBindingListener;
+import androidx.databinding.BindingAdapter;
+import androidx.databinding.InverseBindingAdapter;
+import androidx.databinding.InverseBindingListener;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;

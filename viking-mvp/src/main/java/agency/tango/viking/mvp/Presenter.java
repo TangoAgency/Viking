@@ -1,9 +1,9 @@
 package agency.tango.viking.mvp;
 
-import android.arch.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModel;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.CallSuper;
+import androidx.annotation.CallSuper;
 import android.util.SparseArray;
 
 import java.util.ArrayList;

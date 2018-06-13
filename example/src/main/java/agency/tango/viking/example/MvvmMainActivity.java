@@ -1,7 +1,7 @@
 package agency.tango.viking.example;
 
-import android.arch.lifecycle.Observer;
-import android.support.annotation.Nullable;
+import androidx.lifecycle.Observer;
+import androidx.annotation.Nullable;
 import android.util.Log;
 
 import javax.inject.Inject;

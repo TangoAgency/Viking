@@ -11,20 +11,20 @@ public class AnnotationAttributesBuilder {
   private boolean isNotFirst = false;
 
   public AnnotationAttributesBuilder addAttribute(TypeMirror typeMirror) {
-    addComma();
+    addCommaIfNotFirst();
     codeBlockBuilder.add("$T.class", get(typeMirror));
     return this;
   }
 
   public AnnotationAttributesBuilder addAttribute(String packageName, String className) {
-    addComma();
+    addCommaIfNotFirst();
     codeBlockBuilder.add("$T.class", get(packageName, className));
     return this;
   }
 
   public AnnotationAttributesBuilder addAttributes(List<TypeMirror> typeMirrors) {
     for (TypeMirror typeMirror : typeMirrors) {
-      addComma();
+      addCommaIfNotFirst();
       codeBlockBuilder.add("$T.class", get(typeMirror));
     }
     return this;
@@ -38,7 +38,7 @@ public class AnnotationAttributesBuilder {
         .build();
   }
 
-  private void addComma() {
+  private void addCommaIfNotFirst() {
     if (isNotFirst) {
       codeBlockBuilder.add(", ");
     }

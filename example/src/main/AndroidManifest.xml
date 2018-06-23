@@ -4,7 +4,6 @@
 
   <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
   <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-
   <uses-feature
     android:glEsVersion="0x00020000"
     android:required="true"
@@ -18,6 +17,8 @@
     android:supportsRtl="true"
     android:theme="@style/AppTheme"
     >
+
+  <uses-library android:name="org.apache.http.legacy" android:required="false"/>
 
     <activity android:name=".MvvmMainActivity"/>
     <activity android:name=".MvvmSecondActivity"/>

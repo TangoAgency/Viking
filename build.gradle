@@ -125,6 +125,9 @@ ext.deps = [// Android
             // Square
             javapoet                         : 'com.squareup:javapoet:1.7.0',
 
+            // Google
+            guava                            : 'com.google.guava:guava:25.1-jre',
+
             // Third Party
             javaparser                       : 'com.github.javaparser:javaparser-core:2.4.0',
             javax                            : 'javax.inject:javax.inject:1',

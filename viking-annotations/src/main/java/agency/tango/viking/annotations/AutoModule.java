@@ -7,4 +7,5 @@ import static java.lang.annotation.ElementType.TYPE;
 @Target(value = TYPE)
 public @interface AutoModule {
   Class<?>[] includes() default {};
+  Class<?>[] scopes() default {};
 }

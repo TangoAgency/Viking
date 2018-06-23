@@ -22,6 +22,8 @@ dependencies {
   compile deps.autocommon
   compile deps.javapoet
 
+  compileOnly deps.guava
+
   compileOnly deps.dagger
   compileOnly deps.daggerAndroid
   //compileOnly deps.daggerAndroidSupport
@@ -36,6 +38,7 @@ dependencies {
   testCompile deps.truth
 
   testCompile deps.dagger
+  testCompile deps.daggerAndroidProccesor
   testCompile deps.android
 }
 

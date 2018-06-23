@@ -1,19 +1,19 @@
 package agency.tango.viking.processor;
 
 import com.google.common.base.Joiner;
+import com.google.common.base.Splitter;
+import com.google.common.collect.Iterables;
 import com.squareup.javapoet.AnnotationSpec;
 import com.squareup.javapoet.ArrayTypeName;
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.ParameterizedTypeName;
 import com.squareup.javapoet.TypeName;
 import com.squareup.javapoet.WildcardTypeName;
-
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-
 import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.AnnotationValue;
 import javax.lang.model.element.AnnotationValueVisitor;
@@ -45,6 +45,16 @@ public final class Util {
       .build();
 
   private Util() {
+  }
+
+  public static String getPackageName(TypeMirror typeMirror) {
+    List<String> splitName = splitQualifiedName(typeMirror);
+    return Joiner.on(".").join(Iterables.limit(splitName, splitName.size() - 1));
+  }
+
+  public static String getSimpleTypeName(TypeMirror typeMirror) {
+    List<String> splitName = splitQualifiedName(typeMirror);
+    return Iterables.getLast(splitName);
   }
 
   public static PackageElement getPackage(Element type) {
@@ -387,6 +397,10 @@ public final class Util {
       }
     }
     return false;
+  }
+
+  private static List<String> splitQualifiedName(TypeMirror typeMirror) {
+    return Splitter.on(".").trimResults().splitToList(TypeName.get(typeMirror).toString());
   }
 
   /**

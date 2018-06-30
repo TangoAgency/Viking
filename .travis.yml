@@ -1,12 +1,11 @@
 language: android
-
 jdk: oraclejdk8
-
-sudo: required # For faster internet speeds and more memory
+sudo: required
+dist: trusty
 
 env:
   global:
-    - ANDROID_TARGET=android-19
+    - ANDROID_TARGET=android-24
     - ANDROID_ABI=armeabi-v7a
 
 before_install:
@@ -15,22 +14,23 @@ before_install:
   - echo -e "\n84831b9409646a918e30573bab4c9c91346d8abd" > "$ANDROID_HOME/licenses/android-sdk-preview-license"
 
 android:
+  update_sdk: true
   components:
     # https://github.com/travis-ci/travis-ci/issues/6040#issuecomment-219367943
     - tools
     - tools
+    - build-tools-27.0.3
     - platform-tools
-    - build-tools-27.0.2
-    - android-19
+    - tools
+    - android-24
     - android-25
-    - android-26
     - android-27
-    - extra-google-google_play_services
-    - extra-android-m2repository
+    - android-28
+    - extra-android-support
     - extra-google-m2repository
-    - sys-img-armeabi-v7a-android-19
-    - sys-img-armeabi-v7a-google_apis-19
-    - sys-img-armeabi-v7a-google_apis-25
+    - extra-android-m2repository
+    - sys-img-armeabi-v7a-android-24
+    - sys-img-armeabi-v7a-android-25
   licenses:
     - android-sdk-license-.+
     - android-sdk-preview-.+
@@ -55,17 +55,13 @@ cache:
     - $HOME/.gradle/wrapper/
     - $HOME/.android/build-cache
 
+before_install:
+    - yes | sdkmanager "build-tools;28.0.0-rc1"
+
 before_script:
-  - echo y | ${ANDROID_HOME}tools/bin/sdkmanager "build-tools;26.0.2" #remove when travis will support build tools 26.0.2
-  - echo y | ${ANDROID_HOME}tools/bin/sdkmanager "extras;m2repository;com;android;support;constraint;constraint-layout;1.0.2"
-  - echo y | ${ANDROID_HOME}tools/bin/sdkmanager "extras;m2repository;com;android;support;constraint;constraint-layout-solver;1.0.2"
-    # Create and start an emulator for instrumentation tests.
   - android list targets
   - echo no | android create avd --force -n test -t $ANDROID_TARGET --abi $ANDROID_ABI
-  - emulator -avd test -noaudio -no-window &
-#  - avdmanager list
-#  - echo no | ${ANDROID_HOME}tools/bin/avdmanager create avd -n test -k "system-images;android-25;google_apis;armeabi-v7a"
-#  - $ANDROID_HOME/tools/emulator -avd test -no-audio -no-window &
+  - QEMU_AUDIO_DRV=none emulator -avd test -no-window &
   - android-wait-for-emulator
   - adb shell setprop dalvik.vm.dexopt-flags v=n,o=v
   - adb shell input keyevent 82 &

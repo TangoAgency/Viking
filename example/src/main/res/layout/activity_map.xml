@@ -58,10 +58,17 @@
       tools:text="Location: 15.2015, 51.2012"
       />
 
-     <FrameLayout
-       android:layout_width="match_parent"
-       android:layout_height="200dp"
-       android:id="@+id/fragmentBla"
-       ></FrameLayout>
+    <FrameLayout
+      android:layout_width="match_parent"
+      android:layout_height="200dp"
+      android:id="@+id/fragmentBla"
+      />
+
+    <Button
+      android:id="@+id/button_dialog"
+      android:layout_width="match_parent"
+      android:layout_height="65dp"
+      android:text="Show dialog"
+      />
   </LinearLayout>
 </layout>

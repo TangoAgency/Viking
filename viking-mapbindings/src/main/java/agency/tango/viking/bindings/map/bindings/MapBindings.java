@@ -1,15 +1,13 @@
 package agency.tango.viking.bindings.map.bindings;
 
-import androidx.databinding.BindingAdapter;
-import androidx.databinding.InverseBindingAdapter;
-import androidx.databinding.InverseBindingListener;
-
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.maps.android.heatmaps.HeatmapTileProvider;
-
-import agency.tango.viking.bindings.map.models.BindableItem;
 import agency.tango.viking.bindings.map.GoogleMapView;
+import agency.tango.viking.bindings.map.models.BindableItem;
+import androidx.databinding.BindingAdapter;
+import androidx.databinding.InverseBindingAdapter;
+import androidx.databinding.InverseBindingListener;
 
 @SuppressWarnings({ "unused" })
 public class MapBindings {
@@ -18,7 +16,7 @@ public class MapBindings {
 
   @BindingAdapter("gmv_radius")
   public static void setRadius(GoogleMapView googleMapView, int radius) {
-    googleMapView.radius().setValue(radius);
+    googleMapView.radius().setValueAndDisable(radius);
   }
 
   @InverseBindingAdapter(attribute = "gmv_radius", event = "gmv_radiusChanged")
@@ -34,7 +32,7 @@ public class MapBindings {
 
   @BindingAdapter("gmv_zoom")
   public static void setZoom(GoogleMapView googleMapView, float zoom) {
-    googleMapView.zoom().setValue(zoom);
+    googleMapView.zoom().setValueAndDisable(zoom);
   }
 
   @InverseBindingAdapter(attribute = "gmv_zoom", event = "gmv_zoomChanged")
@@ -50,6 +48,7 @@ public class MapBindings {
 
   @BindingAdapter("gmv_latLng")
   public static void setLatLng(GoogleMapView googleMapView, LatLng latLng) {
+
     if (latLng != googleMapView.latLng().getValue()) {
       googleMapView.postChangedLocation(latLng);
     }

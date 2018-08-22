@@ -2,7 +2,6 @@ package agency.tango.viking.bindings.map;
 
 import android.content.Context;
 import android.util.AttributeSet;
-
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -16,9 +15,7 @@ import com.google.maps.android.clustering.ClusterItem;
 import com.google.maps.android.clustering.ClusterManager;
 import com.google.maps.android.clustering.algo.Algorithm;
 import com.google.maps.android.heatmaps.HeatmapTileProvider;
-
 import java.util.Collection;
-
 import agency.tango.viking.bindings.map.adapters.ClusterItemWindowInfoAdapter;
 import agency.tango.viking.bindings.map.adapters.ClusterWindowInfoAdapter;
 import agency.tango.viking.bindings.map.adapters.CompositeInfoWindowAdapter;
@@ -29,8 +26,8 @@ import agency.tango.viking.bindings.map.listeners.CompositeMarkerClickListener;
 import agency.tango.viking.bindings.map.listeners.CompositeOnCameraIdleListener;
 import agency.tango.viking.bindings.map.listeners.ItemClickListener;
 import agency.tango.viking.bindings.map.listeners.MarkerClickListener;
-import agency.tango.viking.bindings.map.listeners.OnMarkerClickListener;
 import agency.tango.viking.bindings.map.listeners.MarkerDragListener;
+import agency.tango.viking.bindings.map.listeners.OnMarkerClickListener;
 import agency.tango.viking.bindings.map.listeners.OverlayClickListener;
 import agency.tango.viking.bindings.map.listeners.PolygonClickListener;
 import agency.tango.viking.bindings.map.listeners.PolylineClickListener;
@@ -52,11 +49,18 @@ import agency.tango.viking.bindings.map.models.BindablePolyline;
 public class GoogleMapView<T> extends MapView {
 
   private BindableItem<LatLng> latLng = new BindableItem<>(value -> {
-    getMapAsync(googleMap -> googleMap.moveCamera(CameraUpdateFactory.newLatLng(value)));
+    getMapAsync(googleMap -> {
+      disable();
+      googleMap.moveCamera(CameraUpdateFactory.newLatLng(value));
+    });
   });
   private BindableItem<Float> zoom = new BindableItem<>(value -> {
-    getMapAsync(googleMap -> googleMap.moveCamera(CameraUpdateFactory.zoomTo(value)));
+    getMapAsync(googleMap -> {
+      disable();
+      googleMap.moveCamera(CameraUpdateFactory.zoomTo(value));
+    });
   });
+
   private BindableItem<Integer> radius = new BindableItem<>();
 
   private MarkerManager<T> markerManager;
@@ -106,8 +110,20 @@ public class GoogleMapView<T> extends MapView {
   }
 
   public void postChangedLocation(LatLng latLng) {
+    disable();
     getMapAsync(googleMap -> googleMap.moveCamera(CameraUpdateFactory.newLatLng(latLng)));
-    this.latLng.setValue(latLng);
+    this.latLng.setValueAndDisable(latLng);
+
+  }
+
+  public void enable() {
+    latLng.enable();
+    zoom.enable();
+  }
+
+  public void disable() {
+    latLng.disable();
+    zoom.disable();
   }
 
   //region Listeners
@@ -560,6 +576,9 @@ public class GoogleMapView<T> extends MapView {
 
   private void initializeListeners() {
     onCameraIdleListener = new CompositeOnCameraIdleListener();
+
+    onCameraIdleListener.addOnCameraIdleListener(() -> post(this::enable));
+
     infoWindowAdapter = new CompositeInfoWindowAdapter();
     markerClickListener = new CompositeMarkerClickListener();
     infoWindowClickListener = new CompositeInfoWindowClickListener();

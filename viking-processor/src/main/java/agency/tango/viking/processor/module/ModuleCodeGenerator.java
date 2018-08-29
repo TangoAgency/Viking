@@ -1,9 +1,13 @@
 package agency.tango.viking.processor.module;
 
+import android.support.annotation.NonNull;
+import com.squareup.javapoet.AnnotationSpec;
+import com.squareup.javapoet.MethodSpec;
 import com.squareup.javapoet.ParameterSpec;
 import com.squareup.javapoet.TypeSpec;
 import java.util.Map;
 import javax.annotation.processing.ProcessingEnvironment;
+import javax.inject.Named;
 import javax.lang.model.element.ExecutableElement;
 import agency.tango.viking.annotations.AutoModule;
 import agency.tango.viking.processor.AnnotatedClass;
@@ -98,16 +102,37 @@ public class ModuleCodeGenerator implements CodeBuilder {
 
     for (int i = 0; i < annotatedClass.getExecutableElements().size(); i++) {
       ExecutableElement element = (ExecutableElement) annotatedClass.getExecutableElements().get(i);
-
-      builder.addMethod(methodBuilder("provides" + element.getSimpleName())
-          .addAnnotation(Provides.class)
-          .addModifiers(PUBLIC)
-          .addParameter(ParameterSpec.builder(get(annotatedClass.getTypeElement()), "view").build())
-          .addCode("return view.$N();", element.getSimpleName())
-          .returns(get(element.getReturnType()))
-          .build());
+      //todo if value is present
+      builder.addMethod(createProvidesMethod(annotatedClass, element));
     }
 
     return builder.build();
+  }
+
+  @NonNull
+  private MethodSpec createProvidesMethod(AnnotatedClass annotatedClass, ExecutableElement element) {
+    MethodSpec.Builder builder = methodBuilder("provides" + element.getSimpleName())
+        .addAnnotation(Provides.class);
+
+    if (shouldBeNamed(element)) {
+      builder.addAnnotation(AnnotationSpec
+          .builder(Named.class)
+          .addMember("value", "\"$N\"", resolveNamedValue(element))
+          .build());
+    }
+
+    return builder.addModifiers(PUBLIC)
+        .addParameter(ParameterSpec.builder(get(annotatedClass.getTypeElement()), "view").build())
+        .addCode("return view.$N();", element.getSimpleName())
+        .returns(get(element.getReturnType()))
+        .build();
+  }
+
+  private Object resolveNamedValue(ExecutableElement element) {
+    return null;
+  }
+
+  private boolean shouldBeNamed(ExecutableElement element) {
+    return false;
   }
 }

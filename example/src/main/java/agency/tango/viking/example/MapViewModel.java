@@ -31,6 +31,7 @@ import java.util.Arrays;
 import java.util.Collection;
 
 import javax.inject.Inject;
+import javax.inject.Named;
 
 import agency.tango.viking.annotations.ProvidesViewModel;
 import agency.tango.viking.bindings.map.InfoWindowAdapterFactory;
@@ -65,11 +66,8 @@ public class MapViewModel extends ViewModel {
 
   MutableLiveData<NavigatorOperation> test = new SingleLiveEvent<>();
 
-
-
-
   @Inject
-  MapViewModel(Context context, String test) {
+  MapViewModel(Context context, @Named("test_string") String test, @Named("second_test_string") String secondTest) {
     Log.d("MapViewModel", this.toString() + " " + context.toString());
     Log.d("MapViewModel", test);
     runOnStartup(new StartupAction() {

@@ -1,6 +1,5 @@
 package agency.tango.viking.processor.module;
 
-import android.support.annotation.NonNull;
 import com.squareup.javapoet.AnnotationSpec;
 import com.squareup.javapoet.MethodSpec;
 import com.squareup.javapoet.ParameterSpec;
@@ -104,15 +103,13 @@ public class ModuleCodeGenerator implements CodeBuilder {
     for (int i = 0; i < annotatedClass.getExecutableElements().size(); i++) {
       ExecutableElement element = (ExecutableElement) annotatedClass.getExecutableElements().get(i);
       //todo if value is present
-      builder.addMethod(createProvidesMethod(annotatedClass, element, parsedAnnotation));
+      builder.addMethod(createProvidesMethod(annotatedClass, element));
     }
 
     return builder.build();
   }
 
-  @NonNull
-  private MethodSpec createProvidesMethod(AnnotatedClass annotatedClass, ExecutableElement element,
-      Map<String, Object> parsedAnnotation) {
+  private MethodSpec createProvidesMethod(AnnotatedClass annotatedClass, ExecutableElement element) {
     MethodSpec.Builder builder = methodBuilder("provides" + element.getSimpleName())
         .addAnnotation(Provides.class);
 
@@ -130,11 +127,11 @@ public class ModuleCodeGenerator implements CodeBuilder {
         .build();
   }
 
-  private String resolveNamedValue(ExecutableElement element) {
+  private static String resolveNamedValue(ExecutableElement element) {
     return element.getAnnotation(AutoProvides.class).value();
   }
 
-  private boolean shouldBeNamed(ExecutableElement element) {
+  private static boolean shouldBeNamed(ExecutableElement element) {
     return !element.getAnnotation(AutoProvides.class).value().isEmpty();
   }
 }

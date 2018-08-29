@@ -10,6 +10,7 @@ import javax.annotation.processing.ProcessingEnvironment;
 import javax.inject.Named;
 import javax.lang.model.element.ExecutableElement;
 import agency.tango.viking.annotations.AutoModule;
+import agency.tango.viking.annotations.AutoProvides;
 import agency.tango.viking.processor.AnnotatedClass;
 import agency.tango.viking.processor.CodeBuilder;
 import dagger.Module;
@@ -103,14 +104,15 @@ public class ModuleCodeGenerator implements CodeBuilder {
     for (int i = 0; i < annotatedClass.getExecutableElements().size(); i++) {
       ExecutableElement element = (ExecutableElement) annotatedClass.getExecutableElements().get(i);
       //todo if value is present
-      builder.addMethod(createProvidesMethod(annotatedClass, element));
+      builder.addMethod(createProvidesMethod(annotatedClass, element, parsedAnnotation));
     }
 
     return builder.build();
   }
 
   @NonNull
-  private MethodSpec createProvidesMethod(AnnotatedClass annotatedClass, ExecutableElement element) {
+  private MethodSpec createProvidesMethod(AnnotatedClass annotatedClass, ExecutableElement element,
+      Map<String, Object> parsedAnnotation) {
     MethodSpec.Builder builder = methodBuilder("provides" + element.getSimpleName())
         .addAnnotation(Provides.class);
 
@@ -128,11 +130,11 @@ public class ModuleCodeGenerator implements CodeBuilder {
         .build();
   }
 
-  private Object resolveNamedValue(ExecutableElement element) {
-    return null;
+  private String resolveNamedValue(ExecutableElement element) {
+    return element.getAnnotation(AutoProvides.class).value();
   }
 
   private boolean shouldBeNamed(ExecutableElement element) {
-    return false;
+    return !element.getAnnotation(AutoProvides.class).value().isEmpty();
   }
 }

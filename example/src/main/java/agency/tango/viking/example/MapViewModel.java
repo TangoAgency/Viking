@@ -1,16 +1,11 @@
 package agency.tango.viking.example;
 
-import androidx.lifecycle.MutableLiveData;
 import android.content.Context;
-import androidx.databinding.Bindable;
-import androidx.databinding.ObservableArrayList;
-import androidx.databinding.ObservableList;
 import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
-
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CircleOptions;
@@ -26,10 +21,8 @@ import com.google.maps.android.clustering.ClusterManager;
 import com.google.maps.android.clustering.algo.StaticCluster;
 import com.google.maps.android.clustering.view.ClusterRenderer;
 import com.google.maps.android.heatmaps.HeatmapTileProvider;
-
 import java.util.Arrays;
 import java.util.Collection;
-
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -47,6 +40,10 @@ import agency.tango.viking.bindings.map.models.BindablePolyline;
 import agency.tango.viking.example.services.Navigator;
 import agency.tango.viking.mvvm.StartupAction;
 import agency.tango.viking.mvvm.ViewModel;
+import androidx.databinding.Bindable;
+import androidx.databinding.ObservableArrayList;
+import androidx.databinding.ObservableList;
+import androidx.lifecycle.MutableLiveData;
 
 @ProvidesViewModel
 public class MapViewModel extends ViewModel {
@@ -190,8 +187,11 @@ public class MapViewModel extends ViewModel {
 
   public void setZoom(float zoom) {
     Log.d("A", "Zoom: " + zoom);
-    this.zoom = zoom;
-    notifyPropertyChanged(BR.zoom);
+
+    if (this.zoom != zoom) {
+      notifyPropertyChanged(BR.zoom);
+      this.zoom = zoom;
+    }
   }
 
   @Bindable

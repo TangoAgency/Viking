@@ -2,6 +2,7 @@ package agency.tango.viking.bindings.map.bindings;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.maps.android.heatmaps.HeatmapTileProvider;
 import agency.tango.viking.bindings.map.GoogleMapView;
 import agency.tango.viking.bindings.map.models.BindableItem;
@@ -12,6 +13,22 @@ import androidx.databinding.InverseBindingListener;
 @SuppressWarnings({ "unused" })
 public class MapBindings {
   private MapBindings() {
+  }
+
+  @BindingAdapter("gmv_bounds")
+  public static void setBounds(GoogleMapView googleMapView, LatLngBounds bounds) {
+    googleMapView.bounds().setValueAndDisable(bounds);
+  }
+
+  @InverseBindingAdapter(attribute = "gmv_bounds", event = "gmv_boundsChanged")
+  public static LatLngBounds getBounds(GoogleMapView googleMapView) {
+    return (LatLngBounds) googleMapView.bounds().getValue();
+  }
+
+  @BindingAdapter("gmv_boundsChanged")
+  public static void setBoundsOnChangeListener(GoogleMapView googleMapView,
+      InverseBindingListener bindingListener) {
+    setOnValueChangedListener(googleMapView.bounds(), bindingListener);
   }
 
   @BindingAdapter("gmv_radius")

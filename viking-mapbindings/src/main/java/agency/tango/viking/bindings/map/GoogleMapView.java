@@ -61,6 +61,13 @@ public class GoogleMapView<T> extends MapView {
     });
   });
 
+  private BindableItem<LatLngBounds> bounds = new BindableItem<>(value -> {
+    getMapAsync(googleMap -> {
+      disable();
+      googleMap.moveCamera(CameraUpdateFactory.newLatLngBounds(value, 100));
+    });
+  });
+
   private BindableItem<Integer> radius = new BindableItem<>();
 
   private MarkerManager<T> markerManager;
@@ -109,6 +116,10 @@ public class GoogleMapView<T> extends MapView {
     return zoom;
   }
 
+  public BindableItem<LatLngBounds> bounds() {
+    return bounds;
+  }
+
   public void postChangedLocation(LatLng latLng) {
     disable();
     getMapAsync(googleMap -> googleMap.moveCamera(CameraUpdateFactory.newLatLng(latLng)));
@@ -119,11 +130,13 @@ public class GoogleMapView<T> extends MapView {
   public void enable() {
     latLng.enable();
     zoom.enable();
+    bounds.enable();
   }
 
   public void disable() {
     latLng.disable();
     zoom.disable();
+    bounds.disable();
   }
 
   //region Listeners
@@ -559,6 +572,7 @@ public class GoogleMapView<T> extends MapView {
 
       onCameraIdleListener.addOnCameraIdleListener(() -> {
         latLng.setValue(getLatLng(googleMap));
+        bounds.setValue(googleMap.getProjection().getVisibleRegion().latLngBounds);
         zoom.setValue(googleMap.getCameraPosition().zoom);
         radius.setValue(currentRadius(googleMap));
       });

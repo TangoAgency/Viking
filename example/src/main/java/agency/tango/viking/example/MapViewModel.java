@@ -59,6 +59,8 @@ public class MapViewModel extends ViewModel {
   private HeatmapTileProvider heatmapTileProvider;
 
   private LatLng latLng;
+  private LatLngBounds bounds;
+
   private float zoom = DEFAULT_ZOOM;
 
   MutableLiveData<NavigatorOperation> test = new SingleLiveEvent<>();
@@ -116,6 +118,7 @@ public class MapViewModel extends ViewModel {
             .build();
 
         setZoom(12);
+        //setBounds(new LatLngBounds(new LatLng(49.2825839249167,12.468222118914127), new LatLng(54.661517199029426,28.288533613085747)));
       }
     });
   }
@@ -158,6 +161,16 @@ public class MapViewModel extends ViewModel {
   @Bindable
   public HeatmapTileProvider getHeatMap() {
     return heatmapTileProvider;
+  }
+
+  @Bindable
+  public LatLngBounds getBounds() {
+    return bounds;
+  }
+
+  public void setBounds(LatLngBounds bounds) {
+    this.bounds = bounds;
+    notifyPropertyChanged(BR.bounds);
   }
 
   @Bindable

@@ -48,12 +48,23 @@ import agency.tango.viking.bindings.map.models.BindablePolyline;
 
 public class GoogleMapView<T> extends MapView {
 
+  private static final float DEFAULT_MAP_CENTER_ZOOM = 16f;
+
   private BindableItem<LatLng> latLng = new BindableItem<>(value -> {
     getMapAsync(googleMap -> {
       disable();
-      googleMap.moveCamera(CameraUpdateFactory.newLatLng(value));
+
+      float mapCenterZoom;
+      if (zoom() != null) {
+        mapCenterZoom = DEFAULT_MAP_CENTER_ZOOM;
+      } else {
+        mapCenterZoom = zoom().getValue();
+      }
+
+      googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(value, mapCenterZoom));
     });
   });
+
   private BindableItem<Float> zoom = new BindableItem<>(value -> {
     getMapAsync(googleMap -> {
       disable();

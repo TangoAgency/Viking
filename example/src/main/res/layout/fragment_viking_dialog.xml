@@ -1,18 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-  xmlns:android="http://schemas.android.com/apk/res/android"
-  android:orientation="vertical"
-  android:layout_width="wrap_content"
-  android:layout_height="wrap_content"
-  android:minWidth="100dp"
-  android:minHeight="100dp"
-  android:gravity="center"
-  >
-  <TextView
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+  <LinearLayout
+    android:orientation="vertical"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:text="@string/app_name"
-    android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
-    />
+    android:gravity="center"
+    android:minHeight="100dp"
+    android:minWidth="100dp"
+    >
+    <TextView
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="@string/app_name"
+      android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
+      />
 
-</LinearLayout>
+  </LinearLayout>
+</layout>

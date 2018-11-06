@@ -4,7 +4,7 @@
         xmlns:tools="http://schemas.android.com/tools"
   >
   <data>
-    <import type="java.lang.String" />
+    <import type="java.lang.String"/>
     <variable
       name="viewModel"
       type="agency.tango.viking.example.MapViewModel"
@@ -13,9 +13,9 @@
 
   <LinearLayout
     android:id="@+id/activity_map"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     tools:context="agency.tango.viking.example.MapActivity"
     >
 
@@ -46,29 +46,43 @@
       bind:gmv_zoom="@={viewModel.zoom}"
       />
 
-
-
-
     <TextView
       android:id="@+id/tv_location"
       android:layout_width="match_parent"
       android:layout_height="48dp"
-      android:text="@{String.valueOf(viewModel.zoom)}"
       android:gravity="center"
+      android:text="@{String.valueOf(viewModel.zoom)}"
       tools:text="Location: 15.2015, 51.2012"
       />
 
     <FrameLayout
+      android:id="@+id/fragmentBla"
       android:layout_width="match_parent"
       android:layout_height="200dp"
-      android:id="@+id/fragmentBla"
       />
 
-    <Button
-      android:id="@+id/button_dialog"
+    <LinearLayout
+      android:orientation="horizontal"
       android:layout_width="match_parent"
-      android:layout_height="65dp"
-      android:text="Show dialog"
-      />
+      android:layout_height="wrap_content"
+      android:layout_gravity="center"
+      android:weightSum="2"
+      >
+      <Button
+        android:id="@+id/button_dialog_mvp"
+        android:layout_width="0dp"
+        android:layout_height="65dp"
+        android:text="Show MVP dialog"
+        android:layout_weight="1"
+        />
+
+      <Button
+        android:id="@+id/button_dialog_mvvm"
+        android:layout_width="0dp"
+        android:layout_height="65dp"
+        android:text="Show MVVM dialog"
+        android:layout_weight="1"
+        />
+    </LinearLayout>
   </LinearLayout>
 </layout>

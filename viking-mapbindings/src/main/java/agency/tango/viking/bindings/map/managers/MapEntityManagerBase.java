@@ -1,13 +1,12 @@
 package agency.tango.viking.bindings.map.managers;
 
-import androidx.databinding.ObservableList;
-
+import android.util.Log;
 import com.google.android.gms.maps.GoogleMap;
-
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import androidx.databinding.ObservableList;
 
 import static agency.tango.viking.bindings.map.CollectionUtils.moveRange;
 
@@ -114,11 +113,17 @@ public abstract class MapEntityManagerBase<T> implements IMapEntityManager<T> {
       MapEntityManagerBase<T> manager = managerBaseReference.get();
       if (manager != null) {
         manager.mapResolver.resolve(googleMap -> {
-          for (int i = fromIndex; i < itemCount; i++) {
-            T entity = manager.entities.remove(i);
-            if (entity != null) {
-              manager.removeFromMap(entity, googleMap);
+
+          try {
+            for (int i = fromIndex; i < itemCount; i++) {
+              T entity = manager.entities.remove(i);
+              if (entity != null) {
+                manager.removeFromMap(entity, googleMap);
+              }
             }
+          }
+          catch (Exception e) {
+            Log.e("Viking","Something went wrong during removing items");
           }
         });
       }

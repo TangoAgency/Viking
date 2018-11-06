@@ -1,16 +1,11 @@
 package agency.tango.viking.example;
 
-import androidx.lifecycle.MutableLiveData;
 import android.content.Context;
-import androidx.databinding.Bindable;
-import androidx.databinding.ObservableArrayList;
-import androidx.databinding.ObservableList;
 import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
-
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CircleOptions;
@@ -26,11 +21,10 @@ import com.google.maps.android.clustering.ClusterManager;
 import com.google.maps.android.clustering.algo.StaticCluster;
 import com.google.maps.android.clustering.view.ClusterRenderer;
 import com.google.maps.android.heatmaps.HeatmapTileProvider;
-
 import java.util.Arrays;
 import java.util.Collection;
-
 import javax.inject.Inject;
+import javax.inject.Named;
 
 import agency.tango.viking.annotations.ProvidesViewModel;
 import agency.tango.viking.bindings.map.InfoWindowAdapterFactory;
@@ -46,6 +40,10 @@ import agency.tango.viking.bindings.map.models.BindablePolyline;
 import agency.tango.viking.example.services.Navigator;
 import agency.tango.viking.mvvm.StartupAction;
 import agency.tango.viking.mvvm.ViewModel;
+import androidx.databinding.Bindable;
+import androidx.databinding.ObservableArrayList;
+import androidx.databinding.ObservableList;
+import androidx.lifecycle.MutableLiveData;
 
 @ProvidesViewModel
 public class MapViewModel extends ViewModel {
@@ -61,15 +59,14 @@ public class MapViewModel extends ViewModel {
   private HeatmapTileProvider heatmapTileProvider;
 
   private LatLng latLng;
+  private LatLngBounds bounds;
+
   private float zoom = DEFAULT_ZOOM;
 
   MutableLiveData<NavigatorOperation> test = new SingleLiveEvent<>();
 
-
-
-
   @Inject
-  MapViewModel(Context context, String test) {
+  MapViewModel(Context context, @Named("test_string") String test, @Named("second_test_string") String secondTest) {
     Log.d("MapViewModel", this.toString() + " " + context.toString());
     Log.d("MapViewModel", test);
     runOnStartup(new StartupAction() {
@@ -121,6 +118,7 @@ public class MapViewModel extends ViewModel {
             .build();
 
         setZoom(12);
+        //setBounds(new LatLngBounds(new LatLng(49.2825839249167,12.468222118914127), new LatLng(54.661517199029426,28.288533613085747)));
       }
     });
   }
@@ -166,6 +164,16 @@ public class MapViewModel extends ViewModel {
   }
 
   @Bindable
+  public LatLngBounds getBounds() {
+    return bounds;
+  }
+
+  public void setBounds(LatLngBounds bounds) {
+    this.bounds = bounds;
+    notifyPropertyChanged(BR.bounds);
+  }
+
+  @Bindable
   public String getLocation() {
     if (latLng != null) {
       return latLng.toString();
@@ -192,8 +200,11 @@ public class MapViewModel extends ViewModel {
 
   public void setZoom(float zoom) {
     Log.d("A", "Zoom: " + zoom);
-    this.zoom = zoom;
-    notifyPropertyChanged(BR.zoom);
+
+    if (this.zoom != zoom) {
+      notifyPropertyChanged(BR.zoom);
+      this.zoom = zoom;
+    }
   }
 
   @Bindable

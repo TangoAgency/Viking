@@ -1,24 +1,39 @@
 package agency.tango.viking.bindings.map.bindings;
 
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.maps.android.heatmaps.HeatmapTileProvider;
+import agency.tango.viking.bindings.map.GoogleMapView;
+import agency.tango.viking.bindings.map.models.BindableItem;
 import androidx.databinding.BindingAdapter;
 import androidx.databinding.InverseBindingAdapter;
 import androidx.databinding.InverseBindingListener;
-
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.maps.android.heatmaps.HeatmapTileProvider;
-
-import agency.tango.viking.bindings.map.models.BindableItem;
-import agency.tango.viking.bindings.map.GoogleMapView;
 
 @SuppressWarnings({ "unused" })
 public class MapBindings {
   private MapBindings() {
   }
 
+  @BindingAdapter("gmv_bounds")
+  public static void setBounds(GoogleMapView googleMapView, LatLngBounds bounds) {
+    googleMapView.bounds().setValueAndDisable(bounds);
+  }
+
+  @InverseBindingAdapter(attribute = "gmv_bounds", event = "gmv_boundsChanged")
+  public static LatLngBounds getBounds(GoogleMapView googleMapView) {
+    return (LatLngBounds) googleMapView.bounds().getValue();
+  }
+
+  @BindingAdapter("gmv_boundsChanged")
+  public static void setBoundsOnChangeListener(GoogleMapView googleMapView,
+      InverseBindingListener bindingListener) {
+    setOnValueChangedListener(googleMapView.bounds(), bindingListener);
+  }
+
   @BindingAdapter("gmv_radius")
   public static void setRadius(GoogleMapView googleMapView, int radius) {
-    googleMapView.radius().setValue(radius);
+    googleMapView.radius().setValueAndDisable(radius);
   }
 
   @InverseBindingAdapter(attribute = "gmv_radius", event = "gmv_radiusChanged")
@@ -34,7 +49,7 @@ public class MapBindings {
 
   @BindingAdapter("gmv_zoom")
   public static void setZoom(GoogleMapView googleMapView, float zoom) {
-    googleMapView.zoom().setValue(zoom);
+    googleMapView.zoom().setValueAndDisable(zoom);
   }
 
   @InverseBindingAdapter(attribute = "gmv_zoom", event = "gmv_zoomChanged")
@@ -50,6 +65,7 @@ public class MapBindings {
 
   @BindingAdapter("gmv_latLng")
   public static void setLatLng(GoogleMapView googleMapView, LatLng latLng) {
+
     if (latLng != googleMapView.latLng().getValue()) {
       googleMapView.postChangedLocation(latLng);
     }

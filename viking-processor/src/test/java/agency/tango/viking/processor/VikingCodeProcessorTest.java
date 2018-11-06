@@ -52,6 +52,62 @@ public class VikingCodeProcessorTest {
   }
 
   @Test
+  public void unNamedActivity_withAutoProvides_generatesUnnamedProvidesModuleWithProvides() {
+    JavaFileObject testActivity = JavaFileObjects.forSourceString("test.AutoProvidesActivity",
+        getTestActivtyWithAutoProvides());
+    JavaFileObject expected = JavaFileObjects.forSourceString("test.AutoProvidesActivity_Module",
+        "package test;\n"
+            + "\n"
+            + "import dagger.Module;\n"
+            + "import dagger.Provides;\n"
+            + "import java.lang.String;\n"
+            + "\n"
+            + "@Module\n"
+            + "public class AutoProvidesActivity_Module {\n"
+            + "  @Provides\n"
+            + "  public String providestest(AutoProvidesActivity view) {\n"
+            + "    return view.test();}\n"
+            + "}"
+    );
+
+    assertAbout(javaSources())
+        .that(ImmutableSet.of(testActivity))
+        .processedWith(new VikingCodeProcessor())
+        .compilesWithoutError()
+        .and()
+        .generatesSources(expected);
+  }
+
+  @Test
+  public void unNamedActivity_withNamedAutoProvides_generatesNnamedProvidesModuleWithProvides() {
+    JavaFileObject testActivity = JavaFileObjects.forSourceString("test.AutoProvidesActivity",
+        getNamedTestActivityWithAutoProvides("important_key"));
+    JavaFileObject expected = JavaFileObjects.forSourceString("test.AutoProvidesActivity_Module",
+        "package test;\n"
+            + "\n"
+            + "import dagger.Module;\n"
+            + "import dagger.Provides;\n"
+            + "import java.lang.String;\n"
+            + "import javax.inject.Named;\n"
+            + "\n"
+            + "@Module\n"
+            + "public class AutoProvidesActivity_Module {\n"
+            + "  @Provides\n"
+            + "  @Named(\"important_key\")\n"
+            + "  public String providestest(AutoProvidesActivity view) {\n"
+            + "    return view.test();}\n"
+            + "}"
+    );
+
+    assertAbout(javaSources())
+        .that(ImmutableSet.of(testActivity))
+        .processedWith(new VikingCodeProcessor())
+        .compilesWithoutError()
+        .and()
+        .generatesSources(expected);
+  }
+
+  @Test
   public void scopedFragment_generatesActivityFragmentsAndScreenMappingsModules(
   ) {
     JavaFileObject testActivity = JavaFileObjects.forSourceString("test.TestActivity",
@@ -250,6 +306,35 @@ public class VikingCodeProcessorTest {
         + "\n"
         + "@AutoModule\n"
         + "public class SecondTestActivity {\n"
+        + "    \n"
+        + "}";
+  }
+
+  private String getTestActivtyWithAutoProvides() {
+    return "package test;\n"
+        + "import agency.tango.viking.annotations.AutoModule;\n"
+        + "import agency.tango.viking.annotations.AutoProvides;\n"
+        + "\n"
+        + "@AutoModule\n"
+        + "public class AutoProvidesActivity {\n"
+        + "\n"
+        + "@AutoProvides\n"
+        + "public String test() { \nreturn \"test\"; \n}"
+        + "    \n"
+        + "}";
+  }
+
+  private String getNamedTestActivityWithAutoProvides(String namedValue) {
+    return "package test;\n"
+        + "import agency.tango.viking.annotations.AutoModule;\n"
+        + "import agency.tango.viking.annotations.AutoProvides;\n"
+        + "import javax.inject.Named;\n"
+        + "\n"
+        + "@AutoModule\n"
+        + "public class AutoProvidesActivity {\n"
+        + "\n"
+        + "@AutoProvides(\""+namedValue+"\")\n"
+        + "public String test() { \nreturn \"test\"; \n}"
         + "    \n"
         + "}";
   }

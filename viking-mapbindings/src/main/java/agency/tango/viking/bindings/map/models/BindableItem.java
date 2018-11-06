@@ -8,6 +8,7 @@ public class BindableItem<T> {
 
   private IValueChangedListener<T> listener;
   private T value;
+  private boolean enabled;
 
   public BindableItem(Binding<T> binding) {
     this.binding = binding;
@@ -18,16 +19,33 @@ public class BindableItem<T> {
     });
   }
 
+  public void enable() {
+    this.enabled = true;
+  }
+
+  public void disable() {
+    this.enabled = false;
+  }
+
   public T getValue() {
     return value;
   }
 
   public void setValue(T value) {
+    if (!equals(this.value, value) && enabled) {
+      this.value = value;
+      this.binding.set(value);
+      onValueChanged(value);
+    }
+  }
+
+  public void setValueAndDisable(T value) {
     if (!equals(this.value, value)) {
       this.value = value;
       this.binding.set(value);
       onValueChanged(value);
     }
+    disable();
   }
 
   public void setOnChangeListener(IValueChangedListener<T> listener) {

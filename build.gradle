@@ -95,7 +95,7 @@ ext.deps = [// Android
 
             espressoCore                     : 'com.android.support.test.espresso:espresso-core:3.0.1',
 
-            androidGradle                    : 'com.android.tools.build:gradle:3.2.0-beta03',
+            androidGradle                    : 'com.android.tools.build:gradle:3.2.1',
 
 
             lint                             : "com.android.tools.lint:lint:$androidToolsVersion",

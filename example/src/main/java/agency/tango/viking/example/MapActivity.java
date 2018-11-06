@@ -62,8 +62,13 @@ public class MapActivity extends MapAwareActivityView<MapViewModel, ActivityMapB
     return binding().map;
   }
 
-  @AutoProvides
+  @AutoProvides("test_string")
   public String test() {
     return "Hello world";
+  }
+
+  @AutoProvides("second_test_string")
+  public String secondTest() {
+    return "Goodbye cruel world";
   }
 }

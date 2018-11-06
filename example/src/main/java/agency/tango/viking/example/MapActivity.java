@@ -7,12 +7,11 @@ import com.google.android.gms.maps.MapView;
 import agency.tango.viking.annotations.AutoModule;
 import agency.tango.viking.annotations.AutoProvides;
 import agency.tango.viking.example.databinding.ActivityMapBinding;
-import agency.tango.viking.example.dialog.VikingDialogFragment;
+import agency.tango.viking.example.dialog.mvp.VikingDialogFragment;
+import agency.tango.viking.example.dialog.mvvm.DialogMvvmFragment;
 import agency.tango.viking.example.services.Navigator;
 import agency.tango.viking.map.views.MapAwareActivityView;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentManager;
-import androidx.lifecycle.Observer;
 
 @AutoModule
 public class MapActivity extends MapAwareActivityView<MapViewModel, ActivityMapBinding> {
@@ -32,10 +31,17 @@ public class MapActivity extends MapAwareActivityView<MapViewModel, ActivityMapB
           .commitAllowingStateLoss();
     }
 
-    Button dialogButton = findViewById(R.id.button_dialog);
-    dialogButton.setOnClickListener(listener -> {
+    Button dialogMvpButton = findViewById(R.id.button_dialog_mvp);
+    dialogMvpButton.setOnClickListener(listener -> {
       FragmentManager fragmentManager = getSupportFragmentManager();
       VikingDialogFragment fragment = VikingDialogFragment.newInstance();
+      fragment.show(fragmentManager, DIALOG_FRAGMENT_TAG);
+    });
+
+    Button dialogMvvmButton = findViewById(R.id.button_dialog_mvvm);
+    dialogMvvmButton.setOnClickListener(listener -> {
+      FragmentManager fragmentManager = getSupportFragmentManager();
+      DialogMvvmFragment fragment = DialogMvvmFragment.newInstance();
       fragment.show(fragmentManager, DIALOG_FRAGMENT_TAG);
     });
   }
@@ -44,12 +50,9 @@ public class MapActivity extends MapAwareActivityView<MapViewModel, ActivityMapB
   protected void bind(ActivityMapBinding binding) {
     binding.setViewModel(viewModel());
 
-    viewModel().test.observe(this, new Observer<NavigatorOperation>() {
-      @Override
-      public void onChanged(@Nullable NavigatorOperation integer) {
-        Log.d("test", String.format("%s", integer));
-        integer.navigate(new Navigator(MapActivity.this));
-      }
+    viewModel().test.observe(this, integer -> {
+      Log.d("test", String.format("%s", integer));
+      integer.navigate(new Navigator(MapActivity.this));
     });
 
   }

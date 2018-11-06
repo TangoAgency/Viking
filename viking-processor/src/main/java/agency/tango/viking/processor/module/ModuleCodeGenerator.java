@@ -41,7 +41,8 @@ public class ModuleCodeGenerator implements CodeBuilder {
     return builder.build();
   }
 
-  private MethodSpec createProvidesMethod(AnnotatedClass annotatedClass, ExecutableElement element) {
+  private MethodSpec createProvidesMethod(AnnotatedClass annotatedClass,
+      ExecutableElement element) {
     MethodSpec.Builder builder = methodBuilder("provides" + element.getSimpleName())
         .addAnnotation(Provides.class);
 

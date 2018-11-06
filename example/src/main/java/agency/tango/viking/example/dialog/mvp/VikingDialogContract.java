@@ -1,4 +1,4 @@
-package agency.tango.viking.example.dialog;
+package agency.tango.viking.example.dialog.mvp;
 
 public interface VikingDialogContract {
   interface View {}

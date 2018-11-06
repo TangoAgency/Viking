@@ -1,4 +1,4 @@
-package agency.tango.viking.example.dialog;
+package agency.tango.viking.example.dialog.mvp;
 
 import agency.tango.viking.annotations.AutoModule;
 import agency.tango.viking.example.R;

@@ -1,4 +1,4 @@
-package agency.tango.viking.example.dialog;
+package agency.tango.viking.example.dialog.mvp;
 
 import javax.inject.Inject;
 import agency.tango.viking.mvp.Presenter;

@@ -333,7 +333,7 @@ public class VikingCodeProcessorTest {
         + "@AutoModule\n"
         + "public class AutoProvidesActivity {\n"
         + "\n"
-        + "@AutoProvides(\""+namedValue+"\")\n"
+        + "@AutoProvides(\"" + namedValue + "\")\n"
         + "public String test() { \nreturn \"test\"; \n}"
         + "    \n"
         + "}";

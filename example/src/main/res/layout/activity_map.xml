@@ -45,10 +45,8 @@
       bind:gmv_rendererFactory="@{viewModel.rendererFactory}"
       bind:gmv_zoom="@={viewModel.zoom}"
       bind:gmv_bounds="@={viewModel.bounds}"
+      bind:gmv_padding="@={viewModel.padding}"
       />
-
-
-
 
     <TextView
       android:id="@+id/tv_location"

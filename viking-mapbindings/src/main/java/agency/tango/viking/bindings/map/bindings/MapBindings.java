@@ -31,6 +31,22 @@ public class MapBindings {
     setOnValueChangedListener(googleMapView.bounds(), bindingListener);
   }
 
+  @BindingAdapter("gmv_padding")
+  public static void setPadding(GoogleMapView googleMapView, float padding) {
+    googleMapView.padding().setValueAndDisable(padding);
+  }
+
+  @InverseBindingAdapter(attribute = "gmv_padding", event = "gmv_paddingChanged")
+  public static float getPadding(GoogleMapView googleMapView) {
+    return (float) googleMapView.padding().getValue();
+  }
+
+  @BindingAdapter("gmv_paddingChanged")
+  public static void setPaddingOnChangeListener(GoogleMapView googleMapView,
+      InverseBindingListener bindingListener) {
+    setOnValueChangedListener(googleMapView.padding(), bindingListener);
+  }
+
   @BindingAdapter("gmv_radius")
   public static void setRadius(GoogleMapView googleMapView, int radius) {
     googleMapView.radius().setValueAndDisable(radius);

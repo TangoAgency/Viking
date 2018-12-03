@@ -47,38 +47,13 @@ import agency.tango.viking.bindings.map.models.BindablePolygon;
 import agency.tango.viking.bindings.map.models.BindablePolyline;
 
 public class GoogleMapView<T> extends MapView {
-
   private static final float DEFAULT_MAP_CENTER_ZOOM = 16f;
+  private static final float DEFAULT_PADDING = 25f;
 
-  private BindableItem<LatLng> latLng = new BindableItem<>(value -> {
-    getMapAsync(googleMap -> {
-      disable();
-
-      float mapCenterZoom;
-      if (zoom() != null) {
-        mapCenterZoom = DEFAULT_MAP_CENTER_ZOOM;
-      } else {
-        mapCenterZoom = zoom().getValue();
-      }
-
-      googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(value, mapCenterZoom));
-    });
-  });
-
-  private BindableItem<Float> zoom = new BindableItem<>(value -> {
-    getMapAsync(googleMap -> {
-      disable();
-      googleMap.moveCamera(CameraUpdateFactory.zoomTo(value));
-    });
-  });
-
-  private BindableItem<LatLngBounds> bounds = new BindableItem<>(value -> {
-    getMapAsync(googleMap -> {
-      disable();
-      googleMap.moveCamera(CameraUpdateFactory.newLatLngBounds(value, 100));
-    });
-  });
-
+  private BindableItem<LatLng> latLng;
+  private BindableItem<Float> zoom;
+  private BindableItem<LatLngBounds> bounds;
+  private BindableItem<Float> padding;
   private BindableItem<Integer> radius = new BindableItem<>();
 
   private MarkerManager<T> markerManager;
@@ -86,7 +61,6 @@ public class GoogleMapView<T> extends MapView {
   private OverlayManager overlayManager;
   private CircleManager circleManager;
   private PolygonManager polygonManager;
-
   private CustomClusterManager<ClusterItem> customClusterManager;
 
   private TileOverlay heatMapTileOverlay;
@@ -131,6 +105,10 @@ public class GoogleMapView<T> extends MapView {
     return bounds;
   }
 
+  public BindableItem<Float> padding() {
+    return padding;
+  }
+
   public void postChangedLocation(LatLng latLng) {
     disable();
     getMapAsync(googleMap -> googleMap.moveCamera(CameraUpdateFactory.newLatLng(latLng)));
@@ -142,12 +120,14 @@ public class GoogleMapView<T> extends MapView {
     latLng.enable();
     zoom.enable();
     bounds.enable();
+    padding.enable();
   }
 
   public void disable() {
     latLng.disable();
     zoom.disable();
     bounds.disable();
+    padding.disable();
   }
 
   //region Listeners
@@ -575,6 +555,7 @@ public class GoogleMapView<T> extends MapView {
   }
 
   private void init() {
+    initializeBindableItems();
     initializeManagers();
     initializeListeners();
 
@@ -588,6 +569,40 @@ public class GoogleMapView<T> extends MapView {
         radius.setValue(currentRadius(googleMap));
       });
     });
+  }
+
+  private void initializeBindableItems() {
+    bounds = new BindableItem<>(value -> getMapAsync(googleMap -> {
+      disable();
+      float finalPadding = padding.getValue() != null ? padding.getValue() : DEFAULT_PADDING;
+      googleMap.animateCamera(CameraUpdateFactory.newLatLngBounds(value, convertDpToPixel(finalPadding)));
+    }));
+
+    padding = new BindableItem<>(value -> getMapAsync(googleMap -> {
+      disable();
+      if (bounds.getValue() != null) {
+        googleMap.animateCamera(
+            CameraUpdateFactory.newLatLngBounds(bounds.getValue(), convertDpToPixel(value)));
+      }
+    }));
+
+    zoom = new BindableItem<>(value -> getMapAsync(googleMap -> {
+      disable();
+      googleMap.moveCamera(CameraUpdateFactory.zoomTo(value));
+    }));
+
+    latLng = new BindableItem<>(value -> getMapAsync(googleMap -> {
+      disable();
+
+      float mapCenterZoom;
+      if (zoom() != null) {
+        mapCenterZoom = DEFAULT_MAP_CENTER_ZOOM;
+      } else {
+        mapCenterZoom = zoom().getValue();
+      }
+
+      googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(value, mapCenterZoom));
+    }));
   }
 
   private void initializeManagers() {
@@ -642,4 +657,9 @@ public class GoogleMapView<T> extends MapView {
     return width > height ? width : height;
   }
 
+  private int convertDpToPixel(float dp) {
+    float density = getContext().getResources().getDisplayMetrics().density;
+    float px = dp * density;
+    return Math.round(px);
+  }
 }

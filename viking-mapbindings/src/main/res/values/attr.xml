@@ -28,6 +28,9 @@
     <attr name="gmv_bounds" format="reference"/>
     <attr name="gmv_boundsChanged" format="reference"/>
 
+    <attr name="gmv_padding" format="reference"/>
+    <attr name="gmv_paddingChanged" format="reference"/>
+
     <attr name="gmv_zoom" format="reference"/>
     <attr name="gmv_zoomChanged" format="reference"/>
     <attr name="gmv_latLng" format="reference"/>

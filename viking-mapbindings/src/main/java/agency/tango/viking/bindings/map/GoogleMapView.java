@@ -575,14 +575,15 @@ public class GoogleMapView<T> extends MapView {
     bounds = new BindableItem<>(value -> getMapAsync(googleMap -> {
       disable();
       float finalPadding = padding.getValue() != null ? padding.getValue() : DEFAULT_PADDING;
-      googleMap.animateCamera(CameraUpdateFactory.newLatLngBounds(value, convertDpToPixel(finalPadding)));
+      googleMap.animateCamera(CameraUpdateFactory.newLatLngBounds(value, getWidth(), getHeight(),
+          convertDpToPixel(finalPadding)));
     }));
 
     padding = new BindableItem<>(value -> getMapAsync(googleMap -> {
       disable();
       if (bounds.getValue() != null) {
-        googleMap.animateCamera(
-            CameraUpdateFactory.newLatLngBounds(bounds.getValue(), convertDpToPixel(value)));
+        googleMap.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds.getValue(), getWidth(),
+            getHeight(), convertDpToPixel(value)));
       }
     }));
 

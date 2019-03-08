@@ -573,18 +573,18 @@ public class GoogleMapView<T> extends MapView {
 
   private void initializeBindableItems() {
     bounds = new BindableItem<>(value -> getMapAsync(googleMap -> {
-      disable();
-      float finalPadding = padding.getValue() != null ? padding.getValue() : DEFAULT_PADDING;
-      googleMap.animateCamera(CameraUpdateFactory.newLatLngBounds(value, getWidth(), getHeight(),
-          convertDpToPixel(finalPadding)));
+//      disable();
+//      float finalPadding = padding.getValue() != null ? padding.getValue() : DEFAULT_PADDING;
+//      googleMap.animateCamera(CameraUpdateFactory.newLatLngBounds(value, getWidth(), getHeight(),
+//          convertDpToPixel(finalPadding)));
     }));
 
     padding = new BindableItem<>(value -> getMapAsync(googleMap -> {
-      disable();
-      if (bounds.getValue() != null) {
-        googleMap.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds.getValue(), getWidth(),
-            getHeight(), convertDpToPixel(value)));
-      }
+//      disable();
+//      if (bounds.getValue() != null) {
+//        googleMap.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds.getValue(), getWidth(),
+//            getHeight(), convertDpToPixel(value)));
+//      }
     }));
 
     zoom = new BindableItem<>(value -> getMapAsync(googleMap -> {
@@ -594,15 +594,15 @@ public class GoogleMapView<T> extends MapView {
 
     latLng = new BindableItem<>(value -> getMapAsync(googleMap -> {
       disable();
+//
+//      float mapCenterZoom;
+//      if (zoom() != null) {
+//        mapCenterZoom = DEFAULT_MAP_CENTER_ZOOM;
+//      } else {
+//        mapCenterZoom = zoom().getValue();
+//      }
 
-      float mapCenterZoom;
-      if (zoom() != null) {
-        mapCenterZoom = DEFAULT_MAP_CENTER_ZOOM;
-      } else {
-        mapCenterZoom = zoom().getValue();
-      }
-
-      googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(value, mapCenterZoom));
+      googleMap.moveCamera(CameraUpdateFactory.newLatLng(value));
     }));
   }
 

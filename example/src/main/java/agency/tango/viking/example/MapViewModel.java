@@ -60,7 +60,6 @@ public class MapViewModel extends ViewModel {
 
   private LatLng latLng;
   private LatLngBounds bounds;
-  private float padding;
 
   private float zoom = DEFAULT_ZOOM;
 
@@ -118,8 +117,8 @@ public class MapViewModel extends ViewModel {
             .radius(50)
             .build();
 
-        setPadding(25f);
-        setBounds(new LatLngBounds(new LatLng(51.2825839249167,20.468222118914127), new LatLng(51.661517199029426,21.288533613085747)));
+        setZoom(10f);
+        setLatLng(new LatLng(52.52, 13.40));
       }
     });
   }
@@ -172,16 +171,6 @@ public class MapViewModel extends ViewModel {
   public void setBounds(LatLngBounds bounds) {
     this.bounds = bounds;
     notifyPropertyChanged(BR.bounds);
-  }
-
-  @Bindable
-  public float getPadding() {
-    return padding;
-  }
-
-  public void setPadding(float padding) {
-    this.padding = padding;
-    notifyPropertyChanged(BR.padding);
   }
 
   @Bindable

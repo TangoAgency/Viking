@@ -65,7 +65,7 @@ public abstract class MapEntityManagerBase<T> implements IMapEntityManager<T> {
     }
 
     @Override
-    public void onChanged(ObservableList<T> observableList) {
+    public synchronized void onChanged(ObservableList<T> observableList) {
       MapEntityManagerBase<T> manager = managerBaseReference.get();
       if (manager != null) {
         manager.mapResolver.resolve(googleMap -> manager.addItems(googleMap, observableList));
@@ -73,7 +73,7 @@ public abstract class MapEntityManagerBase<T> implements IMapEntityManager<T> {
     }
 
     @Override
-    public void onItemRangeChanged(ObservableList<T> observableList, int fromIndex,
+    public synchronized void onItemRangeChanged(ObservableList<T> observableList, int fromIndex,
         int itemCount) {
       MapEntityManagerBase<T> manager = managerBaseReference.get();
       if (manager != null) {
@@ -86,7 +86,7 @@ public abstract class MapEntityManagerBase<T> implements IMapEntityManager<T> {
     }
 
     @Override
-    public void onItemRangeInserted(ObservableList<T> observableList, int fromIndex,
+    public synchronized void onItemRangeInserted(ObservableList<T> observableList, int fromIndex,
         int itemCount) {
       MapEntityManagerBase<T> manager = managerBaseReference.get();
       if (manager != null) {
@@ -99,7 +99,7 @@ public abstract class MapEntityManagerBase<T> implements IMapEntityManager<T> {
     }
 
     @Override
-    public void onItemRangeMoved(ObservableList<T> observableList, int fromPosition,
+    public synchronized void onItemRangeMoved(ObservableList<T> observableList, int fromPosition,
         int toPosition, int itemCount) {
       MapEntityManagerBase<T> manager = managerBaseReference.get();
       if (manager != null) {
@@ -108,7 +108,7 @@ public abstract class MapEntityManagerBase<T> implements IMapEntityManager<T> {
     }
 
     @Override
-    public void onItemRangeRemoved(ObservableList<T> observableList, int fromIndex,
+    public synchronized void onItemRangeRemoved(ObservableList<T> observableList, int fromIndex,
         int itemCount) {
       MapEntityManagerBase<T> manager = managerBaseReference.get();
       if (manager != null) {
